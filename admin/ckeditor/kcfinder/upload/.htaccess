@@ -1,0 +1,9 @@
+Allow from all
+Satisfy Any
+
+<IfModule mod_php4.c>
+  php_value engine off
+</IfModule>
+<IfModule mod_php5.c>
+  php_value engine off
+</IfModule>

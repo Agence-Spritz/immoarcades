@@ -1,0 +1,11 @@
+AuthUserFile /home/www/immoarcades.com/admin/.htpasswd
+
+AuthGroupFile /dev/null
+AuthName "Acces Restreint"
+AuthType Basic
+<Limit GET POST>
+require user sullymaz admin
+</Limit>
+
+DirectoryIndex page.php
+

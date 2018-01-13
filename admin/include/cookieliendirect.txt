@@ -1,0 +1,5 @@
+<?
+if ( substr($_SERVER['HTTP_HOST'],0,9) == "127.0.0.1" )
+{ setcookie("adminlogged","1",0,"/","127.0.0.1");  }
+else  { setcookie("adminlogged","1",0,"/","immoarcades.com");  }
+?>
