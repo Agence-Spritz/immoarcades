@@ -131,10 +131,6 @@ if ( $modif )
 							        } else { echo '<input type="hidden" name="lg" value="'.$langues[0].'">';}
 							        ?>
 							        
-							        <h4><i class='fa fa-pencil-square-o '></i> Mini texte intro</h4>
-							        <div class="form-group">
-								        <input name="<?=$chps[7]?>" value="<?=$$chps[7]?>" class="form-control" type="text" required  />
-							        </div>
 	
 							        <h4><i class='fa fa-pencil-square-o '></i> Titre</h4>
 							        <div class="form-group">
@@ -143,13 +139,9 @@ if ( $modif )
 							        
 							        <h4><i class='fa fa-pencil-square-o '></i> Petit texte</h4>
 							        <div class="form-group">
-								        <input name="<?=$chps[2]?>" value="<?=$$chps[2]?>" class="form-control" type="text" required  />
+								        <input name="<?=$chps[7]?>" value="<?=$$chps[7]?>" class="form-control" type="text" required  />
 							        </div>
 							        
-							        <h4><i class='fa fa-link '></i> Lien</h4>
-							        <div class="form-group">
-								        <input name="<?=$chps[6]?>" value="<?=$$chps[6]?>" class="form-control" type="text" required  />
-							        </div>
 							        
 							        <h4><i class='fa fa-calendar '></i> Date de tri</h4>
 							        <div class="form-group">
