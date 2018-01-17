@@ -32,7 +32,7 @@ session_start(); ?>
 		<link rel="stylesheet" href="css/owl.theme.css" type="text/css" media="all"/>
 		<link rel="stylesheet" href="css/style.css" type="text/css" media="all"/>
 		<link rel="stylesheet" href="css/custom.css" type="text/css" media="all"/>
-		<link rel="stylesheet" href="fonts/flaticons-perso/flaticon.css" type="text/css" media="all" />
+		<link rel="stylesheet" href="fonts/collection-generale/font/flaticon.css" type="text/css" media="all" />
 		<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i%7CPlayfair+Display:400,400i,700,700i,900,900i" />
 		<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 		<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -63,22 +63,15 @@ session_start(); ?>
 					<div class="nav-extra pull-right">
 						<div class="header-popup clearfix">
 							<div class="nav-extra-icon">
-								<a href="javascript:void(0)" class="header-icon" data-display=".mini-search" data-no-display=".mini-tools, .mini-cart">
-									<i class="pe-7s-search"></i>
+								<a href="#" class="header-icon">
+									<i class="flaticon-shopping-cart"></i>
 								</a>
-								<a href="contacter-agence-immo--73--contact" class="header-icon" data-display=".mini-tools" data-no-display=".mini-search, .mini-cart">
-									<i class="pe-7s-mail"></i>
+								<a href="#" class="header-icon">
+									<i class="flaticon-technology"></i>
 								</a>
 								<a href="javascript:void(0)" id="menu-mobile" class="header-icon menu-mobile">
 									<i class="pe-7s-menu" title="Open Menu"></i>
 								</a>
-							</div>
-							
-							<div class="popup mini-search">
-								<form class="searchform" method="POST" action="bien-immobiliers-tourcoing--T--resultat">
-									<input type="text" class="s" name="recherche_generale" value="" placeholder="Rechercher...">
-									<button type="submit" value="Rechercher" name="submit" class="searchsubmit"><i class="pe-7s-search"></i></button>
-								</form>
 							</div>
 						</div>
 					</div>
@@ -88,12 +81,10 @@ session_start(); ?>
 							<ul>
 								<li class="<?php if ($pg==$defaultpg) { echo 'active'; } else { echo ''; } ?>">
 									<a href="<?php echo $defaultpg; ?>.php" title="Accueil" class="header-icon" >
-										<i style="font-size: 22px; position: relative; top: 4px;" class="pe-7s-home"></i>
+										<i style="font-size: 22px; position: relative; top: 4px;" class="flaticon-buildings"></i>
 									</a>
 								</li>
-								<li class="<?php if ($id==66) { echo 'active'; } else { echo ''; } ?>">
-									<a href="vendre-bien-immobilier-tourcoing--66--page-vendre">Vendre</a>
-								</li>
+								
 								<li class="<?php if ($id=="T") { echo 'active'; } else { echo ''; } ?>">
 									<a href="biens-immobiliers-nord-tourcoing--T--resultat">Acheter</a>
 									<ul class="sub-menu">
@@ -103,27 +94,16 @@ session_start(); ?>
 										<li class="<?php if (($id=="T") && ($_GET['agence']=="lys-lez-lannoy")) { echo 'active'; } else { echo ''; } ?>">
 											<a href="maisons-tourcoing-lys-lez-lannoy--T--resultat?agence=lys-lez-lannoy">Agence Lys-lez-Lannoy</a>
 										</li>
-										
-										
-<!--
-										<li class="<?php if ($id==70 && $type=="Maison") { echo 'active'; } else { echo ''; } ?>">
-											<a href="maisons-tourcoing-lys-lez-lannoy--70--resultat?type=Maison">Maisons</a>
-										</li>
-										<li class="<?php if ($id==85) { echo 'active'; } else { echo ''; } ?>">
-											<a href="appartements-vente-tourcoing-lys-lez-lannoy--85--resultat?type=Appartement">Appartements</a>
-										</li>
-										<li class="<?php if ($id==84) { echo 'active'; } else { echo ''; } ?>">
-											<a href="terrains-a-vendre-tourcoing-lys-lez-lannoy--84--resultat">Terrains</a>
-										</li>
-										<li class="<?php if ($id==71) { echo 'active'; } else { echo ''; } ?>">
-											<a href="immeuble-rapport-tourcoing-lys-lez-lannoy--71--resultat">Immeubles de rapport</a>
-										</li>
--->
 									</ul>
 									<span class="menu-toggle">
 										<i class="fa fa-angle-right"></i>
 									</span>
 								</li>
+								
+								<li class="<?php if ($id==66) { echo 'active'; } else { echo ''; } ?>">
+									<a href="vendre-bien-immobilier-tourcoing--66--page-vendre">Vendre</a>
+								</li>
+								
 								<li class="<?php if ($id==68) { echo 'active'; } else { echo ''; } ?>">
 									<a href="agence-immobiliere-tourcoing--68--nos-atouts">Nos atouts</a>
 								</li>
@@ -131,7 +111,7 @@ session_start(); ?>
 									<a href="actualite-immo-hauts-de-france--69--blog">Blog</a>
 								</li>
 								<li class="<?php if ($id==171) { echo 'active'; } else { echo ''; } ?>">
-									<a href="insciption-alerte--171--alertemail">Restez en alerte</a>
+									<a href="insciption-alerte--171--alertemail">Restez en alerte!</a>
 								</li>
 								<li class="<?php if ($id==73) { echo 'active'; } else { echo ''; } ?>">
 									<a href="contacter-agence-immo--73--contact">Contact</a>
