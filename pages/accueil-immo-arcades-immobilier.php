@@ -121,7 +121,7 @@
 								</p>
 							</div>
 							<a href="<?php echo $data['type']; ?>-nord-tourcoing-<?php echo $data['localite']; ?>--<?php echo $data['ID']; ?>--fiche">
-								<div style="position: relative;" class="mt-2 mb-3">
+								<div style="position: relative;" class="visuel-bien mt-2 mb-3">
 									<img src="<?php echo $data['PHOTO_01']; ?>" alt="<?php echo $data['titre']; ?>" title="<?php echo $data['titre']; ?>" />
 									<?php if ($venduloue=="Vendu" || $venduloue=="Loué") { //Lou&eacute;?>
 									<div class="banniere-venduloue" ><?php echo $venduloue; ?></div>
@@ -164,7 +164,7 @@
 								</p>
 							</div>
 							<a href="<?php echo $data['type']; ?>-nord-tourcoing-<?php echo $data['localite']; ?>--<?php echo $data['ID']; ?>--fiche">
-								<div style="position: relative;" class="mt-2 mb-3">
+								<div style="position: relative;" class="visuel-bien mt-2 mb-3">
 									<img src="<?php echo $data['PHOTO_01']; ?>" alt="<?php echo $data['titre']; ?>" title="<?php echo $data['titre']; ?>" />
 									<?php if ($venduloue=="Vendu" || $venduloue=="Loué") { //Lou&eacute;?>
 									<div class="banniere-venduloue" ><?php echo $venduloue; ?></div>
