@@ -1859,7 +1859,7 @@ table {
     position: relative;
 	border-top: 0px solid #eee;
 	background-color: #4a4a4a;
-	height: 120px;
+	height: auto;
 }
 .header-sticky {
     position: fixed;
@@ -5393,4 +5393,53 @@ bottom: 10px;
 .espacenews button:hover {
 background: #999;
 border: 2px solid #999;
+}
+
+.visuel-bien {
+	overflow: hidden;
+}
+
+.visuel-bien img {
+	max-width: 100%;
+	 -moz-transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+.visuel-bien:hover img {
+	-moz-transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+	
+	.espacenews input, .searchform input {
+	    width: 100%;
+	    float: none;
+	    margin-top: 10px;
+	}
+	.espacenews button, .searchform button {
+		width: 100%;
+		float: none;
+		margin-left: 0;
+		margin-top: 10px;
+	}
+	
+	.edito.pt-8 {
+		padding-top: 50px !important;
+	}
+	
+	#header-logo {
+	     width: 100px; 
+	}
+	
+	h2.sub-heading.text-center.text-surligne {
+		font-size: 18px;
+	}
+	
+	.zone-titre-liste {
+		height: 100px;
+	}
+	
 }
