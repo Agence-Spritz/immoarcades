@@ -133,45 +133,52 @@ session_start(); ?>
 					<div class="container">
 						<div class="row">
 							<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-1">
-								<img alt="" src="images/footer_logo.png" />
-								<div class="widget mt-2">
+								
+								<div class="widget text-center">
 									<p>
 										L’agence immobilière immobilière des Arcades est affiliée au SNPI, premier syndicat français de l’Immobilier.
                                     </p>
+                                    <img style="margin-top: 25px;" alt="Logo SNPI" src="images/logo-snpi.png" />
 								</div>
-								<div class="widget mt-5">
+								
+							</div>
+							<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-2">
+								<div class="widget">
+									<h6 class="wg-title">Infos & horaires</h6>
+									<ul class="contact-info">
+										<li>7, avenue Gustave Dron<br />
+										59200 Tourcoing<br />
+										<a href="callto:+33320250567">T 03 20 25 05 67</a>
+										</li>
+										<li>
+											<span style="color: #fff;">Du lundi au vendredi</span>
+											<p>9h-12h / 14h-19</p>
+										</li>
+										<li>
+											<span style="color: #fff;">Samedi</span>
+											<p>9h-12h30 / 13h30-17h</p>
+										</li>
+									</ul>
 									<ul class="social">
 										<li><a target="_blank" href="http://www.facebook.com/sharer.php?u=http://<?=$_SERVER[HTTP_HOST]?><?=$_SERVER[REQUEST_URI]?>&t=<?=$ogtitre?>"><i class="fa fa-facebook"></i></a></li>
 										<li><a target="_blank" href="http://twitter.com/intent/tweet/?url=<?=$_SERVER[HTTP_HOST]?><?=$_SERVER[REQUEST_URI]?>&text=<?=$ogtitre?>"><i class="fa fa-twitter"></i></a></li>
 										<li><a target="_blank" href="http://www.linkedin.com/shareArticle?mini=true&amp;url=<?=$_SERVER[HTTP_HOST]?><?=$_SERVER[REQUEST_URI]?>&title=<?=$ogtitre?>"><i class="fa fa-linkedin"></i></a></li>
 										<li><a target="_blank" href="https://plus.google.com/share?url=<?=$_SERVER[HTTP_HOST]?><?=$_SERVER[REQUEST_URI]?>"><i class="fa fa-google-plus"></i></a></li>
 									</ul>
-									
-								</div>
-							</div>
-							<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-2">
-								<div class="widget">
-									<h6 class="wg-title">Infos & horaires</h6>
-									<ul class="contact-info">
-										<li>Rue Joseph Hoyois, 1<br />
-										7500 Tournai</li>
-										<li>
-                                        <a href="contacter-agence-immo--73--contact" title="Nous contacter">NOUS CONTACTER</a></li>
-										<a href="callto:+3269669700">Agence &nbsp;&nbsp;&nbsp; 069 66 97 00</a><br />
-                                        <a href="callto:+32475481980">Valérie &nbsp;&nbsp;&nbsp; 0475 48 19 80</a><br />
-                                        <a href="callto:+32472966468">Christophe &nbsp;&nbsp;&nbsp; 0472 96 64 68</a><br />
-                                        </li>										
-                                        <li>
-                                        <a href="agence-jorion-desmet-tournai--73--contact">Nous contacter</a><br />
-                                        <a href="http://www.joriondesmet.be">www.joriondesmet.be</a>
-                                        </li>
-									</ul>
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-3">
-								<div class="widget widget-recent-entries">
-									
-									
+								<div class="widget text-center">
+									<div class="ecran">
+										<i class="flaticon-monitor"></i>
+									</div>
+									<p style="text-align: left;">Vous n’avez pas trouvé de bien qui vous convient. Laissez <span style="color: #fff">votre email</span>, et soyez les <span style="color: #fff">1er</span> informés sur les <span style="color: #fff">nouveautés</span> de ces prochaines semaines</p>
+									<div>
+										<form class="espacenews" method="POST" action="#">
+											<input type="text" class="s" name="recherche_generale" value="" placeholder="Votre email">
+											<button type="submit" value="Rechercher" name="submit" class="searchsubmit"><i class="flaticon-right-arrow"></i></button>
+										</form>
+									</div>
 								</div>
 							</div>
 						</div>
