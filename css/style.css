@@ -391,7 +391,7 @@ text-align: left;
 	
 #carte {
 	width: 100%;
-	height: 1008px;
+	height: 500px;
 }
 .gm-style-iw * {
     display: block;
@@ -5673,4 +5673,9 @@ div.progresswrap {
 
 .autosize {
 	width: auto;
+}
+
+.fz-40[class^="flaticon-"]:before {
+	margin-left: 0;
+	font-size: 40px;
 }
