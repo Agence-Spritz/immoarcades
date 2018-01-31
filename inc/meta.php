@@ -38,7 +38,7 @@ $ogdescr='Depuis 2 générations, l’agence IMA de Tourcoing compte parmi les p
 	
 	$description="Jorion&Desmet vous propose une sélection de projets neufs à Tournai, Mouscron et Mons";
 	$keywords=motcle($titre).",".motcle($description);
-  	$ogimg='http://'.$_SERVER[HTTP_HOST].dirname($_SERVER["PHP_SELF"]).'/images/pages-immobilier-prestige-neufs-tournai-mouscron-mons/'.$id.'.jpg';
+  	$ogimg='http://'.$_SERVER[HTTP_HOST].dirname($_SERVER["PHP_SELF"]).'/images/pages-immobilier-tourcoing-lys-les-lannoy/'.$id.'.jpg';
 	$ogtitre=$titre;
 	$ogdescr=$description;
   } 
@@ -50,7 +50,7 @@ $ogdescr='Depuis 2 générations, l’agence IMA de Tourcoing compte parmi les p
 	
 	$description="Jorion&Desmet vous propose une sélection de biens à louer, pour tous vos budgets";
 	$keywords=motcle($titre).",".motcle($description);
-  	$ogimg='http://'.$_SERVER[HTTP_HOST].dirname($_SERVER["PHP_SELF"]).'/images/pages-immobilier-prestige-neufs-tournai-mouscron-mons/'.$id.'.jpg';
+  	$ogimg='http://'.$_SERVER[HTTP_HOST].dirname($_SERVER["PHP_SELF"]).'/images/pages-immobilier-tourcoing-lys-les-lannoy/'.$id.'.jpg';
 	$ogtitre=$titre;
 	$ogdescr=$description;
   } 
@@ -67,7 +67,7 @@ $ogdescr='Depuis 2 générations, l’agence IMA de Tourcoing compte parmi les p
 	
 	$description=substr($textemeta,0,250);
 	$keywords=motcle($titremeta).",".motcle($description);
-  	$ogimg='http://'.$_SERVER[HTTP_HOST].dirname($_SERVER["PHP_SELF"]).'/images/pages-immobilier-prestige-neufs-tournai-mouscron-mons/'.$id.'.jpg';
+  	$ogimg='http://'.$_SERVER[HTTP_HOST].dirname($_SERVER["PHP_SELF"]).'/images/pages-immobilier-tourcoing-lys-les-lannoy/'.$id.'.jpg';
 	$ogtitre=$titremeta;
 	$ogdescr=$description;
   } 

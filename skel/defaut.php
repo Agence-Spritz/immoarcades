@@ -67,7 +67,7 @@ session_start(); ?>
 									<i class="flaticon-shopping-cart"></i>
 								</a>
 								<a href="#" class="header-icon">
-									<i class="flaticon-technology"></i>
+									<i class="flaticon-technology-2"></i>
 								</a>
 								<a href="javascript:void(0)" id="menu-mobile" class="header-icon menu-mobile">
 									<i class="pe-7s-menu" title="Open Menu"></i>
@@ -81,7 +81,7 @@ session_start(); ?>
 							<ul>
 								<li class="<?php if ($pg==$defaultpg) { echo 'active'; } else { echo ''; } ?>">
 									<a href="<?php echo $defaultpg; ?>.php" title="Accueil" class="header-icon" >
-										<i style="font-size: 22px; position: relative; top: 4px;" class="flaticon-buildings"></i>
+										<i style="font-size: 22px; position: relative; top: 4px;" class="flaticon-buildings-1"></i>
 									</a>
 								</li>
 								
@@ -146,8 +146,13 @@ session_start(); ?>
 								<div class="widget">
 									<h6 class="wg-title">Infos & horaires</h6>
 									<ul class="contact-info">
-										<li>7, avenue Gustave Dron<br />
-										59200 Tourcoing<br />
+										
+											<li>
+											<a href="https://www.google.fr/maps/place/Immobilière+des+Arcades/@50.7198621,3.1596517,17z/data=!3m1!4b1!4m5!3m4!1s0x47c32f2b4af46d21:0x822e1f6608d51c24!8m2!3d50.7198621!4d3.1618404" title="Voir le plan" target="_blank">
+												7, avenue Gustave Dron<br />
+												59200 Tourcoing<br />
+											</a>
+										
 										<a href="callto:+33320250567">T 03 20 25 05 67</a>
 										</li>
 										<li>
