@@ -35,36 +35,21 @@
 	<div class="section pt-9 pb-9">
 		<div class="container">
 			<div class="row">
-				<div class="text-center mb-2">
-					<ul class="masonry-filter extra-font">
-						<li><a href="#" data-filter="" class="active">Toutes les actus</a></li>
-						<?php $req = mysqli_query($link,"SELECT rub FROM ".$table_prefix."_pages WHERE page='actu' GROUP BY rub ORDER BY rub"); 
-						  	while ($data = mysqli_fetch_array($req)) { 
-							  	
-						?>
-						
-						<li><a href="#" data-filter=".<?php echo slugify($data['rub']); ?>"><?php echo $data['rub']; ?></a></li>
-						
-						<?php } ?>
-					
-					</ul>
-				</div>
 				<div class="portfolio-grid masonry-grid-post">
 					
 					<?php $req = mysqli_query($link,"SELECT ID, titre, dbu, rub, texte FROM ".$table_prefix."_pages WHERE page='actu' AND masquer <> '1'  ORDER BY dbu DESC"); 
 					  	while ($data = mysqli_fetch_array($req)) { 
 						  	
 						  	$date = date_fr($data['dbu']);
-						  	
 					?>
 					
-					<div class="masonry-item col-lg-4 col-md-4 col-sm-6 col-xs-12 <?php echo slugify($data['rub']); ?>">
+					<div class="masonry-item col-lg-6 col-md-6 col-sm-6 col-xs-12 <?php echo slugify($data['rub']); ?>">
 						<div class="portfolio-grid-item overlay-wrap">
 							<div class="entry-media">
 								<?php if (is_file('./images/pages-immobilier-tourcoing-lys-les-lannoy/'.$data['ID'].'.jpg')) { ?>
 									<img src="<?php echo './images/pages-immobilier-tourcoing-lys-les-lannoy/'.$data['ID'].'.jpg'; ?>" alt="<?php echo $data['titre']; ?>" title="<?php echo $data['titre']; ?>" />
 								<?php } else { ?>
-									<img src="images/projects/project_442x442.jpg" alt="Actualité Jorion Desmet" />
+									<img src="images/blog/fond-agence.jpg" alt="Actualité Immobilière des Arcades, Tourcoing, Lys-les-Lannoy" title="Actualité Immobilière des Arcades, Tourcoing, Lys-les-Lannoy" />
 								<?php } ?>
 					
 								
@@ -73,7 +58,7 @@
 								<div class="overlay-inner">
 									<div class="entry-header">
 										<h3 class="entry-title">
-											<a href="<?php echo slugify($data['titre']); ?>--constructions-neuves-tournai-mons-mouscron--<?php echo $data['ID'] ?>--detail-actu"><?php echo $data['titre']; ?></a>
+											<a href="<?php echo slugify($data['titre']); ?>--agence-immobiliere-tourcoing-lys-les-lannoy--<?php echo $data['ID'] ?>--detail-actu"><?php echo $data['titre']; ?></a>
 										</h3>
 										<ul class="entry-meta extra-font italic">
 											<li><?php echo $data['rub']; ?></li>
@@ -81,7 +66,7 @@
 									</div>
 								</div>
 								<div class="entry-footer text-right">
-									<a class="entry-readmore" href="<?php echo slugify($data['titre']); ?>--constructions-neuves-tournai-mons-mouscron--<?php echo $data['ID'] ?>--detail-actu">En savoir plus</a>
+									<a class="entry-readmore" href="<?php echo slugify($data['titre']); ?>--agence-immobiliere-tourcoing-lys-les-lannoy--<?php echo $data['ID'] ?>--detail-actu">En savoir plus</a>
 								</div>
 							</div>
 						</div>
