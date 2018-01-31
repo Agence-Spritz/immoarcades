@@ -5670,3 +5670,7 @@ border: 1px solid #d90102
 div.progresswrap {
 	background: #fff ;
 }
+
+.autosize {
+	width: auto;
+}
