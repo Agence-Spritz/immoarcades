@@ -8,36 +8,16 @@ $page = "page"; 										// Variable pour definir la sous cat page
 
 // PHOTOS
 $photosize = "1140x390";									// Dimensions idéales d'information pour la photo
-$chemin = "../images/pages-ambulance-mouscron-transport-hopital/";  							// "/" à la fin
+$chemin = "../images/pages-immobilier-tourcoing-lys-les-lannoy/";  							// "/" à la fin
 $wmax = 100; $hmax = 80;  $tdvisuphoto = $wmax*2+20;  	// Dimension pour affichage des vigettes
 $redim_w=1140; $redim_h=390;
 
 // masquer les vignettes pour certaines pages
-if($modif=='135') {
+
 	
 	$masquervignette=1;
 	$nbr=0; // Nombre de photos
 	
-} else if($modif=='133') {
-	
-	$masquervignette=0;
-	$nbr=2; // Nombre de photos
-	
-} else {
-	$masquervignette=0;
-	$nbr=1; // Nombre de photos
-}
-
-// Masquer la description pour certaines pages
-if($modif=='135'||$modif=='134') {
-	
-	$masquerdescription=1;
-	
-} else {
-	$masquerdescription=0;
-}
-	
-
 
 // CHAMPS
 $chps=array('page','titre','texte','dbu','masquer','lg','rub', 'texte2');
