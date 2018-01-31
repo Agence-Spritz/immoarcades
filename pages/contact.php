@@ -191,8 +191,10 @@
   				<div class="section section-bg-12 section-fixed pt-14 pb-3">
 					<div class="bg-overlay-dark"></div>
 					<div class="container">
+						
 						<div class="row">
 							<div class="col-sm-12">
+								
 								
 								<?php // Si on vient des boutons visiter ou demande d'infos
 									if (isset($_GET['ref_bien'])) { 
@@ -230,8 +232,8 @@
 								<?php } else { ?>
 								
 									<div class="text-center">
-										<h2 class="page-title">Plus fort ensemble</h2>
-										<div class="page-title-subtext extra-font">Quelles que soient vos questions, nous serions ravis de pouvoir vous assister. Réponse garantie dans les 24h</div>
+										<h2 class="page-title">Nous sommes à votre écoute</h2>
+										<div class="page-title-subtext extra-font"><?php echo $texte2p; ?></div>
 										<div class="breadcrumb">
 											<ul class="breadcrumbs">
 												<li><a href="<?php echo $defaultpg; ?>.php">Accueil</a></li>

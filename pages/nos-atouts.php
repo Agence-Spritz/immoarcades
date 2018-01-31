@@ -7,7 +7,7 @@
 	
 	<!-- Page en-tête
 	================================================== -->
-	<div class="section section-bg-21 section-fixed pt-14 pb-3">
+	<div class="section section-bg-atouts section-fixed pt-14 pb-3">
 		<div class="bg-overlay-dark"></div>
 		<div class="container">
 			<div class="row">
@@ -26,139 +26,121 @@
 			</div>
 		</div>
 	</div>
+
+	<!-- Corps de la page
+	================================================== -->
 	
-	<div class="section pt-10 pb-10">
+	
+	<div class="section pt-8 pb-11">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6 col-lg-5">
+					<div class="mb-4">
+						<h3 class="heading wg-title">Agence immobilière des Arcades</h3>
+						<h2 class="sub-heading">
+							<span class="f1">Spécialistes de l'immobilier</span> 
+							<span class="f2"> depuis plus de 60 ans</span> 
+						</h2>
+					</div>
+					<p>
+						Incenderat autem audaces usque ad insaniam homines ad haec, quae nefariis egere conatibus, Luscus quidam curator urbis subito visus: eosque ut heiulans baiolorum praecentor ad expediendum quod orsi sunt incitans vocibus crebris. qui haut longe postea ideo vivus exustus est.
+					</p>
+				</div>
+				<div class="col-sm-6 col-lg-offset-1 col-lg-6">
+					<div class="text-left">
+						<img src="images/background/fond-histoire-2.jpg" title="Tourcoing 1972" alt="Tourcoing 1972" />
+					</div>
+					<div class="text-right image-overlay">
+						<img src="images/background/tram-actuel.jpg" alt="Centre ville de Tourcoing" title="Centre ville de Tourcoing" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="section section-bg-atouts-2 section-fixed pt-11 pb-3">
+		<div class="bg-overlay-dark-total"></div>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="service-item mb-9">
+						<i class="fa fa-desktop white"></i>
+						<div class="service-content-wrap white">
+							<h2 class="service-title white">ATOUT 1</h2>
+							<p>
+								Incenderat autem audaces usque ad insaniam homines ad haec, quae nefariis egere conatibus
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="service-item mb-9">
+						<i class="fa fa-star-o white"></i>
+						<div class="service-content-wrap white">
+							<h2 class="service-title white">ATOUT 2</h2>
+							<p>
+								Incenderat autem audaces usque ad insaniam homines ad haec, quae nefariis egere conatibus
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="service-item mb-9">
+						<i class="fa fa-mobile white"></i>
+						<div class="service-content-wrap white">
+							<h2 class="service-title white">ATOUT 3</h2>
+							<p>
+								Incenderat autem audaces usque ad insaniam homines ad haec, quae nefariis egere conatibus
+							</p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-6">
+					<div class="service-item mb-9">
+						<i class="fa fa-heart-o white"></i>
+						<div class="service-content-wrap white">
+							<h2 class="service-title white">ATOUT 4</h2>
+							<p>
+								Incenderat autem audaces usque ad insaniam homines ad haec, quae nefariis egere conatibus
+							</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="section pt-11 pb-13 bg-gray">
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-12 col-lg-5 col-md-5">
-					<div class="mb-4">
-						<h3 class="heading wg-title">Jorion & Desmet - Une agence spécialisée</h3>
+					<div class="mb-3">
+						<h3 class="heading wg-title">Ce qui fait notre force</h3>
 						<h2 class="sub-heading">
-										<span class="f1">Double compétence pour</span> 
-										<span class="f2"> 2 experts en immobilier.</span> 
-									</h2>
-					</div>
-					<p class="mb-3">
-						<?php 
-				        	$req = mysqli_query($link,"SELECT ID, titre, rub, texte FROM ".$table_prefix."_pages WHERE page='page' and rub='edito'");
-							$data = mysqli_fetch_assoc($req);
-						?>
-								
-						<?php echo $data['texte']; ?>
-												
-					</p>
-					
-				</div>
-				<div class="col-sm-12 col-lg-7 col-md-7">
-					<?php if (is_file('./images/pages-immobilier-prestige-neufs-tournai-mouscron-mons/'.$id.'.jpg')) { ?>
-						<img src="<?php echo './images/pages-immobilier-prestige-neufs-tournai-mouscron-mons/'.$id.'.jpg'; ?>" alt="<?php echo $titrep; ?>" title="<?php echo $titrep; ?>" />
-					<?php } else { ?>
-						<img src="images/image_659x402.jpg" alt="Jorion Desmet" />
-					<?php } ?>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-
-	<!-- Corps de la page
-	================================================== 	
-	<div class="section pt-12 pb-7">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-4">
-					<div class="mb-2">
-						<h3 class="heading wg-title">FEATURES 01</h3>
-						<h2 class="extra-font">
-							<span class="f2">Supersonic import</span> 
+							<span class="f1">Expertise</span> 
+							<span class="f2"> et notoriété</span> 
 						</h2>
 					</div>
 					<p>
-						No more time wasting in data import. We rocket its speed by improving the progress which strikingly reduces your waiting time.
+						Incenderat autem audaces usque ad insaniam homines ad haec, quae nefariis egere conatibus, Luscus quidam curator urbis subito visus
 					</p>
-					<div class="entry-footer mb-4">
-						<a class="readmore" href="#">Explore &#10230;</a>
-					</div>
 				</div>
-				<div class="col-sm-4">
-					<div class="mb-2">
-						<h3 class="heading wg-title">FEATURES 02</h3>
-						<h2 class="extra-font">
-							<span class="f2">Effortless customize</span> 
-						</h2>
-					</div>
-					<p>
-						Never run into trouble when customizing your website. We created Nito with a mindset of ease your process.
-					</p>
-					<div class="entry-footer mb-4">
-						<a class="readmore" href="#">Explore &#10230;</a>
-					</div>
-				</div>
-				<div class="col-sm-4">
-					<div class="mb-2">
-						<h3 class="heading wg-title">FEATURES 03</h3>
-						<h2 class="extra-font">
-							<span class="f2">Powerful shortcodes</span> 
-						</h2>
-					</div>
-					<p>
-						There may be some complicated establishing tasks. But no worry as all of those have been solved by Nito’s effective shortcodes system.
-					</p>
-					<div class="entry-footer mb-4">
-						<a class="readmore" href="#">Explore &#10230;</a>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>-->
-	<div class="section bg-light">
-		<div class="container">
-			<div class="row">
-				<div class="full-left p-0 col-sm-12 col-lg-5 col-md-5 hidden-sm hidden-xs">
-					<div class="fullwidth section-bg-9" style="background: url(images/agence.jpg) no-repeat center;"></div>
-				</div>
-				<div class="col-sm-12 col-lg-offset-6 col-lg-6 col-md-offset-5 col-md-7 pt-5">
-					<div class="col-sm-6">
-						<div class="service-item mb-5">
-							<i class="fa fa-desktop dark fullwidth"></i>
-							<div class="service-content-wrap pl-0">
-								<h2 class="service-title">VISIBILITE ABSOLUE</h2>
-								<p>
-									En tant qu’agence hyper spécialisée, l’ensemble de notre communication et de nos démarches tendent vers un unique flux spécialisé adapté à votre bien.
-								</p>
+				<div class="col-sm-12 col-lg-offset-1 col-lg-6 col-md-offset-1 col-md-6">
+					<div class="progress-wraper group-progressbar pt-6">
+						<div class="block-progressbar wow fadeInUp">
+							<h3 class="progress-title">+ de 150 biens à la vente</h3>
+							<div class="progresswrap">
+								<div role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width:70%" class="progressbar"></div>
 							</div>
 						</div>
-					</div>
-					<div class="col-sm-6">
-						<div class="service-item mb-5">
-							<i class="fa fa-star-o dark fullwidth"></i>
-							<div class="service-content-wrap pl-0">
-								<h2 class="service-title">LA QUALITE GARANTIE</h2>
-								<p>
-									Plus de <?=date("Y")-2007?> ans d’expérience dans la vente immobilière, de quoi vous garantir un travail de pro et une qualité de prestation en adéquation avec nos biens.
-								</p>
+						<div class="block-progressbar wow fadeInUp">
+							<h3 class="progress-title">une équipe de 6 personnes à votre service</h3>
+							<div class="progresswrap">
+								<div role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width:50%" class="progressbar"></div>
 							</div>
 						</div>
-					</div>
-					<div class="col-sm-6">
-						<div class="service-item mb-5">
-							<i class="fa fa-mobile dark fullwidth"></i>
-							<div class="service-content-wrap pl-0">
-								<h2 class="service-title">REACTIF & DISPONIBLE</h2>
-								<p>
-									Nous exploitons l’ensemble des technologies pour servir nos clients, mais à ce jour, rien ne remplace le contact humain pour gérer vos affaires. Restons en contact !
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-6">
-						<div class="service-item mb-5">
-							<i class="fa fa-heart-o dark fullwidth"></i>
-							<div class="service-content-wrap pl-0">
-								<h2 class="service-title">UNE VRAIE RELATION</h2>
-								<p>
-									Nos clients se distinguent par un trait commun : «L’exigence». La discrétion, le dévouement et les résultats créent un bon climat de confiance, pour une relation durable.
-								</p>
+						<div class="block-progressbar wow fadeInUp">
+							<h3 class="progress-title">des outils de diffusion modernes</h3>
+							<div class="progresswrap">
+								<div role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" style="width:90%" class="progressbar"></div>
 							</div>
 						</div>
 					</div>
@@ -166,169 +148,72 @@
 			</div>
 		</div>
 	</div>
-	<div class="section pt-6">
+	<div class="section pt-10 pb-10">
 		<div class="container">
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-3">
 					<div class="mb-6">
-						<h3 class="heading wg-title">Notre agence</h3>
-						<h2 class="sub-heading">
-							<span class="f2">Spécialistes </span> 
-							<span class="f1">de l'immobilier de prestige</span> 
+						<h3 class="heading wg-title">Notre équipe</h3>
+					</div>
+				</div>
+				<div class="col-md-9">
+					<div class="mb-6">
+						<h2 class="sub-heading text-right">
+							<span class="f1">Nous travaillons</span> 
+							<span class="f2"> pour vous</span> 
 						</h2>
 					</div>
 				</div>
-				<div class="col-md-6">
-					<div class="mb-6">
-						
-					</div>
-				</div>
 			</div>
-		</div>
-	</div>
-	<div class="section">
-		<div class="container-fluid">
 			<div class="row">
-				<div class="portfolio-grid masonry-grid-post no-margin">
-					<div class="masonry-item col-lg-2 col-md-2 col-sm-6 col-xs-12 creative-strategy">
-						<div class="portfolio-grid-item overlay-wrap">
-							<div class="entry-media">
-								<img src="images/agence6.jpg" alt="" />
+				<div class="col-sm-12 p-0">
+					<div class="team-carousel" data-auto-play="false" data-desktop="4" data-laptop="4" data-tablet="1" data-mobile="1">
+						<div class="team-item">
+							<div class="team-media">
+									<img src="images/team/team_370x420.jpg" alt="" />
 							</div>
-							<!--<div class="overlay left-right">
-								<div class="overlay-inner">
-									<div class="entry-header">
-										<h3 class="entry-title">
-											<a href="portfolio-detail.html">A perfect day in New York</a>
-										</h3>
-										<ul class="entry-meta extra-font italic">
-											<li><a href="#">Creative strategy</a></li>
-										</ul>
-									</div>
-								</div>
-								<div class="entry-footer text-right">
-									<a class="entry-readmore" href="portfolio-detail.html">Explore</a>
-								</div>
-							</div>-->
+							<h5>John Doe</h5>
+							<div class="position extra-font italic">Agent immobilier</div>
+							<div class="description">
+								Incenderat autem audaces usque ad insaniam homines ad haec
+							</div>
 						</div>
-					</div>
-					<div class="masonry-item col-lg-2 col-md-2 col-sm-6 col-xs-12 art-direction">
-						<div class="portfolio-grid-item overlay-wrap">
-							<div class="entry-media">
-								<img src="images/agence5.jpg" alt="" />
+						<div class="team-item">
+							<div class="team-media">
+									<img src="images/team/team_370x420.jpg" alt="" />
 							</div>
-							<!--<div class="overlay left-right">
-								<div class="overlay-inner">
-									<div class="entry-header">
-										<h3 class="entry-title">
-											<a href="portfolio-detail.html">Giving back to your fans</a>
-										</h3>
-										<ul class="entry-meta extra-font italic">
-											<li><a href="#">Art direction</a></li>
-										</ul>
-									</div>
-								</div>
-								<div class="entry-footer text-right">
-									<a class="entry-readmore" href="portfolio-detail.html">Explore</a>
-								</div>
-							</div>-->
+							<h5>John Doe</h5>
+							<div class="position extra-font italic">Agent immobilier</div>
+							<div class="description">
+								Incenderat autem audaces usque ad insaniam homines ad haec
+							</div>
 						</div>
-					</div>
-					<div class="masonry-item col-lg-4 col-md-4 col-sm-6 col-xs-12 art-direction">
-						<div class="portfolio-grid-item overlay-wrap">
-							<div class="entry-media">
-								<img src="images/agence1.jpg" alt="" />
+						<div class="team-item">
+							<div class="team-media">
+									<img src="images/team/team_370x420.jpg" alt="" />
 							</div>
-							<!--<div class="overlay left-right">
-								<div class="overlay-inner">
-									<div class="entry-header">
-										<h3 class="entry-title">
-											<a href="portfolio-detail.html">Unifying a brand identity and experience</a>
-										</h3>
-										<ul class="entry-meta extra-font italic">
-											<li><a href="#">Art direction</a></li>
-										</ul>
-									</div>
-								</div>
-								<div class="entry-footer text-right">
-									<a class="entry-readmore" href="portfolio-detail.html">Explore</a>
-								</div>
-							</div>-->
+							<h5>John Doe</h5>
+							<div class="position extra-font italic">Agent immobilier</div>
+							<div class="description">
+								Incenderat autem audaces usque ad insaniam homines ad haec
+							</div>
 						</div>
-					</div>
-					<div class="masonry-item col-lg-4 col-md-4 col-sm-6 col-xs-12 art-direction">
-						<div class="portfolio-grid-item overlay-wrap">
-							<div class="entry-media">
-								<img src="images/agence2.jpg" alt="" />
+						<div class="team-item">
+							<div class="team-media">
+									<img src="images/team/team_370x420.jpg" alt="" />
 							</div>
-							<!--<div class="overlay left-right">
-								<div class="overlay-inner">
-									<div class="entry-header">
-										<h3 class="entry-title">
-											<a href="portfolio-detail.html">Explore nature</a>
-										</h3>
-										<ul class="entry-meta extra-font italic">
-											<li><a href="#">Art direction</a></li>
-										</ul>
-									</div>
-								</div>
-								<div class="entry-footer text-right">
-									<a class="entry-readmore" href="portfolio-detail.html">Explore</a>
-								</div>
-							</div>-->
-						</div>
-					</div>
-					<div class="masonry-item col-lg-4 col-md-4 col-sm-6 col-xs-12 creative-strategy">
-						<div class="portfolio-grid-item overlay-wrap">
-							<div class="entry-media">
-								<img src="images/agence3.jpg" alt="" />
+							<h5>John Doe</h5>
+							<div class="position extra-font italic">Agent immobilier</div>
+							<div class="description">
+								Incenderat autem audaces usque ad insaniam homines ad haec
 							</div>
-							<!--<div class="overlay left-right">
-								<div class="overlay-inner">
-									<div class="entry-header">
-										<h3 class="entry-title">
-											<a href="portfolio-detail.html">The end of social media?</a>
-										</h3>
-										<ul class="entry-meta extra-font italic">
-											<li><a href="#">Creative strategy</a></li>
-										</ul>
-									</div>
-								</div>
-								<div class="entry-footer text-right">
-									<a class="entry-readmore" href="portfolio-detail.html">Explore</a>
-								</div>
-							</div>-->
-						</div>
-					</div>
-					<div class="masonry-item col-lg-4 col-md-4 col-sm-6 col-xs-12 art-direction">
-						<div class="portfolio-grid-item overlay-wrap">
-							<div class="entry-media">
-								<img src="images/agence4.jpg" alt="" />
-							</div>
-							<!--<div class="overlay left-right">
-								<div class="overlay-inner">
-									<div class="entry-header">
-										<h3 class="entry-title">
-											<a href="portfolio-detail.html">Marrying high-end audio &amp; luxury fashion</a>
-										</h3>
-										<ul class="entry-meta extra-font italic">
-											<li><a href="#">Art direction</a></li>
-										</ul>
-									</div>
-								</div>
-								<div class="entry-footer text-right">
-									<a class="entry-readmore" href="portfolio-detail.html">Explore</a>
-								</div>
-							</div>-->
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
-    <!-- TEMOGNAGES 
-    <div class="section section-bg-2 section-fixed pt-11 pb-11">
+	<div class="section section-bg-atouts-3 section-fixed pt-11 pb-11">
 		<div class="bg-overlay"></div>
 		<div class="container">
 			<div class="row">
@@ -337,23 +222,23 @@
 						<div class="carousel-item">
 							<i class="quote-icon circle fa fa-quote-right"></i>
 							<div class="description extra-font italic">
-								Un service au top, une équipe de professionnels à votre écoute et soucieux de vous fournir un service digne de ce nom !
+								Great theme! Fast response and excellent technical support. Code is clean and the entire site is so flexible.
 							</div>
-							<div class="author-name white">André Dupont</div>
-							<div class="author-position extra-font italic white">Ostéopathe</div>
+							<div class="author-name white">Andy Murray</div>
+							<div class="author-position extra-font italic white">Project Manager</div>
 						</div>
 						<div class="carousel-item">
 							<i class="quote-icon circle fa fa-quote-right"></i>
 							<div class="description extra-font italic">
-								Entièrement satisfait de la prestation reçue, je recommande chaudement les services de Jorion Desmet.
+								I’m completely amazed. I got this theme set up and running in no time. The design quality is amazing.
 							</div>
 							<div class="author-name white">John Smith</div>
-							<div class="author-position extra-font italic white">Restaurateur</div>
+							<div class="author-position extra-font italic white">Project Manager</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>-->
-				
+	</div>
+
 </div>

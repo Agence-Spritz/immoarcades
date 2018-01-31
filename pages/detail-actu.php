@@ -44,13 +44,13 @@
 							<div class="blog-item bg-white">
 								<div class="entry-media">
 									
-									<?php if (is_file('./images/pages-immobilier-prestige-neufs-tournai-mouscron-mons/'.$id.'.jpg')) { ?>
+									<?php if (is_file('./images/pages-immobilier-tourcoing-lys-les-lannoy/'.$id.'.jpg')) { ?>
 									
 										<?php if($texte2p) {?>
 											<a href="<?php echo $texte2p; ?>" target="_blank">
 										<?php } ?>
 									
-										<img src="<?php echo './images/pages-immobilier-prestige-neufs-tournai-mouscron-mons/'.$id.'.jpg'; ?>" alt="<?php echo $titrep; ?>" title="<?php echo $titrep; ?>" />
+										<img src="<?php echo './images/pages-immobilier-tourcoing-lys-les-lannoy/'.$id.'.jpg'; ?>" alt="<?php echo $titrep; ?>" title="<?php echo $titrep; ?>" />
 									<?php } else { ?>
 										<img src="images/blog/blog_1140x590.jpg" alt="Actualité Jorion Desmet" />
 									<?php } ?>

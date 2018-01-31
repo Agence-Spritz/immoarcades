@@ -1,13 +1,86 @@
 <?php	// Requête pour récupérer le contenu de la page concernée
-		list($titrep, $textep, $texte2p) = mysqli_fetch_array(mysqli_query($link, "SELECT titre, texte, texte2 FROM ".$table_prefix."_pages WHERE page='page' AND ID='$id' "));
+	list($titrep, $textep, $texte2p) = mysqli_fetch_array(mysqli_query($link, "SELECT titre, texte, texte2 FROM ".$table_prefix."_pages WHERE page='page' AND ID='$id' "));
 ?>
 
+<?php 			
+// Si formulaire soumis	  
+if ($_POST['submit'] ) {
+	
+	//	On récupére le mail de destination	
+	$req = mysqli_query($link,"SELECT mail1,mail2,mail3,mail4,nom_titre_meta FROM ".$table_prefix."_divers WHERE ID=1 ");
+	while ($data = mysqli_fetch_array($req)) {
+			$mail1 = $data['mail1'];
+	}
+	
+	// récupération des variables
+	$nom= clean_form($_POST['nom']);	
+	$email= clean_form(trim($_POST['email']));
+	$tel= clean_form($_POST['tel']);		
+	$adresse= clean_form($_POST['adresse']);	
+	$code= clean_form($_POST['cp']);				
+	$ville= clean_form($_POST['ville']);
+	$dispos = 	clean_form($_POST['dispos']);
+	
+	
+	$type = "Estimation";
+	$objet = "Contact pour estimation <br /><br />";
+	$subject = "Contact pour estimation DE : " . (($nom)?($nom):("-")) ." - ". (($email)?($email):("-")) . "\n" ;
+	
+	if ( $nom && $tel && check_mail($email) )
+	{	
+		$to		= $mail1 ;
+		$subject	= $subject ;
+		$headers  = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type: text/html; charset=utf-8'."\r\n";
+        $headers .= 'From: ' . $email . "\r\n";
+        $headers .= 'Reply-to: '.$email . "\r\n";
+    
+		$body = "<html><body><div style=\"text-align: left;\">";
+		$body .= "<h2>".$objet."</h2>" ;
+		$body .= "<strong>Nom :</strong> " . (($nom)?($nom):("-")) ."<br />";
+		$body .= "<strong>Adresse e-mail :</strong> " . (($email)?($email):("-")) ."<br />";
+		$body .= "<strong>Tel :</strong> " . (($tel)?($tel):("-")) ."<br />";
+		$body .= "<strong>Coordonnées du bien à estimer</strong>";
+		$body .= "<strong>Adresse</strong> : " . (($adresse)?($adresse):("-"))."<br />";
+		$body .= "<strong>Code Postal</strong> : " . (($code)?($code):("-"))."<br />";
+		$body .= "<strong>Ville</strong> : " . (($ville)?($ville):("-"))."<br />";
+		
+		$body .= "<strong>Disponibilités du contact</strong> : " .(($dispos)?($dispos):("-"))."<br />" ;
+		
+		$body .= "</div></body></html>";
+		$res = mail ($to,$subject,$body,$headers) ; //print ("$to,$subject,$body,$headeradd");
+		
+		
+		// Traitement de la réponse
+		if ( $res )
+		{
+			$confirm	= "<div class='alert alert-success' role='alert'>Votre message a correctement été envoyé.</div>";
+			 
+			// ENREGISTREMENT DES FORMULAIRES DANS UNE TABLE
+			$dbu=date('Y-m-d');
+			$IP_exp=$_SERVER["REMOTE_ADDR"];
+				 
+			$resultat_ins = mysqli_query ($link, "INSERT INTO ".$table_prefix."_contact ( `ID` , `type` ,`nom` ,`email` , `tel` , `dbu` , `message` )
+				VALUES ('' , '$type', '$nom', '$email', '$tel',  '$dbu', '$body') ");
+		
+		} else {
+			$confirm = "<div class='alert alert-danger' role='alert'>Une erreur est survenue lors de l'envoi de votre message. Merci de renouveler l'opération.</div>";				
+		}
+		
+	} else {
+		  
+		$confirm = "<div class='alert alert-danger' role='alert'>Merci de renseigner tous les champs obligatoires.</div>";		
+		  
+	}
+}
+			
+	?>
 
 <div id="main">
 	
 	<!-- Page en-tête
 	================================================== -->
-	<div class="section section-bg-21 section-fixed pt-14 pb-3">
+	<div class="section section-bg-generique section-fixed pt-14 pb-3">
 		<div class="bg-overlay-dark"></div>
 		<div class="container">
 			<div class="row">
@@ -26,182 +99,185 @@
 			</div>
 		</div>
 	</div>
-	
 
 	<!-- Corps de la page
-	================================================== -->	
-	<div class="section pt-10 pb-10">
+	================================================== -->
+	<div class="section pt-8 pb-8">
 		<div class="container">
 			<div class="row">
-				<div class="col-sm-12 col-lg-5 col-md-5">
-					<div class="mb-4">
-						<h3 class="heading wg-title">Jorion & Desmet - Un service sur mesure</h3>
-						<h2 class="sub-heading">
-							<span class="f2">Construire</span> 
-							<span class="f1"> une relation</span><br />
-							<span class="f2"> de confiance</span>
-						</h2>
-					</div>
-					<p class="mb-3">
-						Dans la vente de votre bien immobilier, nous vous accompagnons en tant que véritable partenaire, experts de notre métier, et sommes là pour vous conseiller, vous guider, en toute confiance et transparence.
-						
-					</p>
-					<ul class="bullet-list mb-5">
-						<li>Nous sommes humains, proches de vous</li>
-						<li>Respectueux de vos interêts, de vos idées</li>
-						<li>Efficaces dans notre métier</li>
-					</ul>
-				</div>
-				<div class="col-sm-12 col-lg-7 col-md-7">
-					<?php if (is_file('./images/pages-immobilier-prestige-neufs-tournai-mouscron-mons/'.$id.'.jpg')) { ?>
-						<img src="<?php echo './images/pages-immobilier-prestige-neufs-tournai-mouscron-mons/'.$id.'.jpg'; ?>" alt="<?php echo $titrep; ?>" title="<?php echo $titrep; ?>" />
-					<?php } else { ?>
-						<img src="images/image_659x402.jpg" alt="Jorion Desmet" />
-					<?php } ?>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="section bg-light">
-		<div class="container">
-			<div class="row">
-				<div class="full-left p-0 col-sm-12 col-lg-5 col-md-5 hidden-sm hidden-xs">
-					<div class="fullwidth section-bg-9" style="background: url(images/vendre.jpg) no-repeat center;"></div>
-				</div>
-				<div class="col-sm-12 col-lg-offset-6 col-lg-6 col-md-offset-5 col-md-7 pt-5">
-					<div class="col-sm-6">
-						<div class="service-item mb-5">
-							<i class="fa fa-desktop dark fullwidth"></i>
-							<div class="service-content-wrap pl-0">
-								<h2 class="service-title">VISIBILITE ABSOLUE</h2>
-								<p>
-									En tant qu’agence hyper spécialisée, l’ensemble de notre communication et de nos démarches tendent vers un unique flux spécialisé adapté à votre bien.
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-6">
-						<div class="service-item mb-5">
-							<i class="fa fa-star-o dark fullwidth"></i>
-							<div class="service-content-wrap pl-0">
-								<h2 class="service-title">LA QUALITE GARANTIE</h2>
-								<p>
-									Plus de <?=date("Y")-2007?> ans d’expérience dans la vente immobilière, de quoi vous garantir un travail de pro et une qualité de prestation en adéquation avec nos biens.
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-6">
-						<div class="service-item mb-5">
-							<i class="fa fa-mobile dark fullwidth"></i>
-							<div class="service-content-wrap pl-0">
-								<h2 class="service-title">REACTIF & DISPONIBLE</h2>
-								<p>
-									Nous exploitons l’ensemble des technologies pour servir nos clients, mais à ce jour, rien ne remplace le contact humain pour gérer vos affaires. Restons en contact !
-								</p>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-6">
-						<div class="service-item mb-5">
-							<i class="fa fa-heart-o dark fullwidth"></i>
-							<div class="service-content-wrap pl-0">
-								<h2 class="service-title">UNE VRAIE RELATION</h2>
-								<p>
-									Nos clients se distinguent par un trait commun : «L’exigence». La discrétion, le dévouement et les résultats créent un bon climat de confiance, pour une relation durable.
-								</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	<div class="section pt-10 pb-10">
-		<div class="container">
-			<div class="row">
+				
 				<div class="col-md-3">
-					<div class="mb-6">
-						<h3 class="heading wg-title">Process de vente</h3>
+					<div class="mb-4">
+						<h3 class="heading wg-title"><?php echo $texte2p; ?></h3>
 					</div>
 				</div>
 				<div class="col-md-9">
-					<div class="mb-6">
+					<div class="mb-4">
 						<h2 class="sub-heading text-right">
-							<span class="f1">Etapes d'une mise en vente</span> 
+							<span class="f2">Nous vous accompagnons</span> 
+							<span class="f1"> jusqu'au bout.</span>
 						</h2>
 					</div>
 				</div>
-			</div>
+				
+				<div class="col-sm-12 col-lg-12 col-md-12 mb-4">
+					<p><?php echo $textep; ?></p>
+				</div>
+						
+					
+				<?php if (is_file('./images/pages-immobilier-tourcoing-lys-les-lannoy/'.$id.'.jpg')) { ?>
+					<div class="col-sm-12 col-lg-7 col-md-7">
+						<img src="<?php echo './images/pages-immobilier-tourcoing-lys-les-lannoy/'.$id.'.jpg'; ?>" alt="<?php echo $titrep; ?>" title="<?php echo $titrep; ?>" />
+					</div>
+				<?php } ?>
+				<div style="clear: both;"></div>
+			
+				<div class="col-sm-12 col-lg-12 col-md-12">		
+					<h3 class="heading wg-title">Un service sur mesure en 5 étapes</h3>
+			        <div class="wizard">
+			            <div class="wizard-inner">
+			                <div class="connecting-line"></div>
+			                <ul class="nav nav-tabs" role="tablist">
+			
+			                    <li role="presentation" class="active">
+			                        <a href="#rencontre" data-toggle="tab" aria-controls="rencontre" role="tab" title="Rencontre">
+			                            <span class="round-tab">
+			                                <i class="flaticon-interview"></i>
+			                            </span>
+			                        </a>
+			                    </li>
+			
+			                    <li role="presentation" class="">
+			                        <a href="#mise_en_vente" data-toggle="tab" aria-controls="mise_en_vente" role="tab" title="Mise en vente">
+			                            <span class="round-tab">
+			                                <i class="flaticon-advertising"></i>
+			                            </span>
+			                        </a>
+			                    </li>
+			                    <li role="presentation" class="">
+			                        <a href="#acheteur" data-toggle="tab" aria-controls="acheteur" role="tab" title="Trouver le bon acheteur">
+			                            <span class="round-tab">
+			                                <i class="flaticon-group"></i>
+			                            </span>
+			                        </a>
+			                    </li>
+			
+			                    <li role="presentation" class="">
+			                        <a href="#suivi" data-toggle="tab" aria-controls="suivi" role="tab" title="Suivi, analyse et compte rendu">
+			                            <span class="round-tab">
+			                                <i class="flaticon-report"></i>
+			                            </span>
+			                        </a>
+			                    </li>
+			                    
+			                    <li role="presentation" class="">
+			                        <a href="#vente" data-toggle="tab" aria-controls="vente" role="tab" title="Vente">
+			                            <span class="round-tab">
+			                                <i class="flaticon-champagne-and-two-glasses"></i>
+			                            </span>
+			                        </a>
+			                    </li>
+			                </ul>
+			            </div>
+			
+			            <form role="form">
+			                <div class="tab-content">
+			                    <div class="tab-pane active" role="tabpanel" id="rencontre">
+			                        <h3>Se rencontrer</h3>
+			                        <p>Apprendre à se connaitre et comprendre vos souhaits</p>
+			                    </div>
+			                    <div class="tab-pane" role="tabpanel" id="mise_en_vente">
+			                        <h3>Mise en vente</h3>
+			                        <p>Nous mettons votre bien en vente au sein de notre agence et sur nos réseaux de diffusion.<br /> Cette démarche est appuyée par la création et l'utilisation de supports de communication, vidéos, publicités, réseaux sociaux, ...</p> 
+			                    </div>
+			                    <div class="tab-pane" role="tabpanel" id="acheteur">
+			                        <h3>Trouver le bon acheteur</h3>
+			                        <p>Nous proposons votre bien à nos clients en recherche, nous recueillons les demandes de visites, rencontrons les personnes intéressées et leur présentons votre bien.</p>
+			                    </div>
+			                    <div class="tab-pane" role="tabpanel" id="suivi">
+			                        <h3>Suivi, analyse et compte rendu</h3>
+			                        <p>Nous vous informons des actions que nous réalisons pour promouvoir votre bien ainsi que des "touches" que nous aurons eues.</p>
+			                    </div>
+			                    <div class="tab-pane" role="tabpanel" id="vente">
+			                        <h3>Vente de votre bien</h3>
+			                        <p>Félicitations, votre bien est vendu !<br />
+				                        Nous nous chargeons de la rédaction des contrats et vous accompagnons dans les différentes démarches liées à la vente de votre bien immobilier.
+			                        </p>
+			                    </div>
+			                    <div class="clearfix"></div>
+			                </div>
+			            </form>
+			        </div>
+				</div>
+		   	</div>
+		</div>
+
+	</div>
+	
+	<div class="section bg-light">
+		<div class="container">
 			<div class="row">
-				<div class="col-sm-12 p-0">
-					<div class="team-carousel" data-auto-play="true" data-desktop="4" data-laptop="4" data-tablet="2" data-mobile="1">
-						<div class="team-item text-center">
-							<div class="team-media">
-								<a href="team-detail.html">
-									<img class="img-circle" src="images/vendre-etape1.jpg" alt="" />
-								</a>
+				<div class="full-left has-overlay p-0 col-sm-5 hidden-sm hidden-xs">
+					<div class="fullwidth section-bg-estimation section-cover">
+						
+					</div>
+				</div>
+				<div class="col-sm-12 col-lg-offset-5 col-lg-7 col-md-offset-5 col-md-7 pt-9 pb-9">
+					<div class="mb-4">
+						<h3 class="heading wg-title">Que vaut votre bien ?</h3>
+						<h2 class="sub-heading mb-1">
+							<span class="f2">Estimation</span> 
+							<span class="f1"> gratuite</span> 
+						</h2>
+						<p>Vous souhaitez faire estimer votre bien GRATUITEMENT et sans engagement. Remplissez ce formulaire nous vous contacterons au plus vite. </p>
+					</div>
+					<div class="contact-form">
+						<?php if ($confirm) {
+					       echo $confirm;
+					       }
+					    ?>
+						<form action="" method="POST" id="estimation">
+							<div class="row">
+								<div class="col-md-6 mb-3">
+									<input type="text" name="nom" value="" placeholder="Votre nom*" />
+								</div>
+								<div class="col-md-6 mb-3">
+									<input type="tel" name="tel" value="" placeholder="Votre téléphone*" />
+								</div>
 							</div>
-							<h5><a href="team-detail.html">Rencontre</a></h5>
-							<div class="position extra-font italic">Vos souhaits</div>
-							<div class="description">
-								Définition de vos souhaits et mise en valeur de votre bien.
+							<div class="row">
+								<div class="col-md-12 mb-3">
+									<input type="email" name="email" value="" placeholder="Votre Email*" />
+								</div>
 							</div>
-						</div>
-						<div class="team-item text-center">
-							<div class="team-media">
-								<a href="team-detail.html">
-									<img class="img-circle" src="images/vendre-etape2.jpg" alt="" />
-								</a>
+							<div class="row">
+								<div class="col-md-12 mb-3">
+									<textarea name="adresse" cols="40" rows="2" value="" placeholder="Adresse du bien à visiter*"></textarea>
+								</div>
 							</div>
-							<h5><a href="team-detail.html">Mise en vente</a></h5>
-							<div class="position extra-font italic">Photos, Vidéos, Pubs</div>
-							<div class="description">
-								Préparation des différents médias de diffusion et de publicité.
+							<div class="row">
+								<div class="col-md-6 mb-3">
+									<input type="text" name="cp" value="" placeholder="Code postal du bien à visiter*" />
+								</div>
+								<div class="col-md-6 mb-3">
+									<input type="text" name="ville" value="" placeholder="Ville du bien à visiter*" />
+								</div>
 							</div>
-						</div>
-						<div class="team-item text-center">
-							<div class="team-media">
-								<a href="team-detail.html">
-									<img class="img-circle" src="images/vendre-etape3.jpg" alt="" />
-								</a>
+							<div class="row">
+								<div class="col-md-12 mb-3">
+									<textarea name="dispos" cols="40" rows="2" value="" placeholder="Vos disponibilités*"></textarea>
+								</div>
 							</div>
-							<h5><a href="team-detail.html">Suivi de la vente</a></h5>
-							<div class="position extra-font italic">Analyse et compte rendu</div>
-							<div class="description">
-								Parce qu'il est indispensable que nos clients soient tenus informés.
+							<div class="row">
+								<div class="col-md-12 mb-3">
+									<input type="submit" value="Envoyer" name="submit" class="btn btn-white" />
+								</div>
 							</div>
-						</div>
-						<div class="team-item text-center">
-							<div class="team-media">
-								<a href="team-detail.html">
-									<img class="img-circle" src="images/vendre-etape4.jpg" alt="" />
-								</a>
-							</div>
-							<h5><a href="team-detail.html">C'est vendu</a></h5>
-							<div class="position extra-font italic">Rédaction des contrats</div>
-							<div class="description">
-								Prise en charge totale jusqu’à la conclusion de la vente. 
-							</div>
-						</div>
-						<div class="team-item text-center">
-							<div class="team-media">
-								<a href="team-detail.html">
-									<img class="img-circle" src="images/vendre-etape5.jpg" alt="" />
-								</a>
-							</div>
-							<h5><a href="team-detail.html">Cheers</a></h5>
-							<div class="position extra-font italic">.Santé ! </div>
-							<div class="description">
-								Il est temps de sceller notre collaboration.
-							</div>
-						</div>
+						</form>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-	
-	
 	
 </div>

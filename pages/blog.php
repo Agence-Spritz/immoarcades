@@ -7,23 +7,19 @@
 	
 	<!-- Page en-tête
 	================================================== -->
-	<div class="section section-bg-2 section-fixed pt-6 pb-3">
+	<div class="section section-bg-blog section-fixed pt-14 pb-3">
 		<div class="bg-overlay-dark"></div>
 		<div class="container">
 			<div class="row">
-				<div class="col-md-6 col-lg-6">
-					<h2 class="page-title"><?php echo $titrep; ?></h2>
-					<div class="breadcrumb mt-1 pl-0">
-						<ul class="breadcrumbs">
-							<li><a href="<?php echo $defaultpg; ?>.php">Accueil</a></li>
-							<li><?php echo $titrep; ?></li>
-						</ul>
-					</div>
-				</div>
-				<div class="col-md-6 col-lg-6">
-					<div class="text-right">
-						<div class="page-title-subtext extra-font">
-							<?php if ($texte2p) { echo $texte2p; } ?>
+				<div class="col-sm-12">
+					<div class="text-center">
+						<h2 class="page-title"><?php echo $titrep; ?></h2>
+					
+						<div class="breadcrumb">
+							<ul class="breadcrumbs">
+								<li><a href="<?php echo $defaultpg; ?>.php">Accueil</a></li>
+								<li><?php echo $titrep; ?></li>
+							</ul>
 						</div>
 					</div>
 				</div>
@@ -65,8 +61,8 @@
 					<div class="masonry-item col-lg-4 col-md-4 col-sm-6 col-xs-12 <?php echo slugify($data['rub']); ?>">
 						<div class="portfolio-grid-item overlay-wrap">
 							<div class="entry-media">
-								<?php if (is_file('./images/pages-immobilier-prestige-neufs-tournai-mouscron-mons/'.$data['ID'].'.jpg')) { ?>
-									<img src="<?php echo './images/pages-immobilier-prestige-neufs-tournai-mouscron-mons/'.$data['ID'].'.jpg'; ?>" alt="<?php echo $data['titre']; ?>" title="<?php echo $data['titre']; ?>" />
+								<?php if (is_file('./images/pages-immobilier-tourcoing-lys-les-lannoy/'.$data['ID'].'.jpg')) { ?>
+									<img src="<?php echo './images/pages-immobilier-tourcoing-lys-les-lannoy/'.$data['ID'].'.jpg'; ?>" alt="<?php echo $data['titre']; ?>" title="<?php echo $data['titre']; ?>" />
 								<?php } else { ?>
 									<img src="images/projects/project_442x442.jpg" alt="Actualité Jorion Desmet" />
 								<?php } ?>

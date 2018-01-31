@@ -44,7 +44,7 @@
 					<div class="col-md-6">
 						<form class="searchform" method="POST" action="bien-immobiliers-tourcoing--T--resultat">
 							<input type="text" class="s" name="recherche_generale" value="" placeholder="Mot clé, ville, code postal, réf...">
-							<button type="submit" value="Rechercher" name="submit" class="searchsubmit"><i class="flaticon-construction"></i> Chercher</button>
+							<button type="submit" value="Rechercher" name="submit" class="searchsubmit"><i class="flaticon-construction-12"></i> Chercher</button>
 						</form>
 					</div>
 					<div class="col-md-3">
@@ -58,13 +58,14 @@
 			<div class="container">
 				<div class="row">
 					<div class="col-sm-6 col-lg-5">
-						<div class="mb-4">
-							<h4 class="heading wg-title">Immobilière des arcades</h4>
-						</div>
+						
 						<?php 
-				        	$req = mysqli_query($link,"SELECT ID, titre, rub, texte FROM ".$table_prefix."_pages WHERE page='page' and rub='edito'");
+				        	$req = mysqli_query($link,"SELECT ID, titre, rub, texte, texte2 FROM ".$table_prefix."_pages WHERE page='page' and rub='edito'");
 							$data = mysqli_fetch_assoc($req);
 						?>
+						<div class="mb-4">
+							<h4 class="heading wg-title"><?php echo $data['texte2']; ?></h4>
+						</div>
 						<h2 class="sub-heading mb-2">
 							<span class="f1"><?php echo $data['titre']; ?></span>
 						</h2>
@@ -98,7 +99,7 @@
 							</h2>
 						</div>
 						
-						<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE cat='V' ORDER BY dmod DESC LIMIT 0,3"); 
+						<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE cat='V' AND nouveaute IS NOT NULL ORDER BY dmod DESC LIMIT 0,3"); 
 						  	while ($data = mysqli_fetch_array($req)) { 
 								$venduloue = $data['venduloue'];
 						?>
@@ -116,7 +117,7 @@
 							</div>
 							<div class="zone-titre-liste">
 								<p class="description">
-									<?php echo CleanCut($data['descrlight'],100); ?><br />
+									<?php echo CleanCut($data['descrlight'],90); ?><br />
 									<? if ($data['peb']>0){?><img src="img-PEB/img/peb_<?=peblettre($data['peb'])?>.png" style="width:68px" /><?php } ?>
 								</p>
 							</div>
@@ -126,7 +127,7 @@
 									<?php if ($venduloue=="Vendu" || $venduloue=="Loué") { //Lou&eacute;?>
 									<div class="banniere-venduloue" ><?php echo $venduloue; ?></div>
 									<?php } ?>
-									<div class="label"><i class="flaticon-construction-4"></i></div>
+									<div class="label"><a href="javascript: void(0)" title="Belle opportunité"><i class="flaticon-construction"></i></a></div>
 								</div>
 							</a>
 						</div>
@@ -141,7 +142,7 @@
 				<div class="container">
 					<div class="row">
 						
-						<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE cat='V' ORDER BY dmod DESC LIMIT 3,3"); 
+						<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE cat='V' AND nouveaute IS NOT NULL ORDER BY dmod DESC LIMIT 3,3"); 
 						  	while ($data = mysqli_fetch_array($req)) { 
 								$venduloue = $data['venduloue'];
 						?>
@@ -159,7 +160,7 @@
 							</div>
 							<div class="zone-titre-liste">
 								<p class="description">
-									<?php echo CleanCut($data['descrlight'],100); ?><br />
+									<?php echo CleanCut($data['descrlight'],90); ?><br />
 									<? if ($data['peb']>0){?><img src="img-PEB/img/peb_<?=peblettre($data['peb'])?>.png" style="width:68px" /><?php } ?>
 								</p>
 							</div>
@@ -169,7 +170,7 @@
 									<?php if ($venduloue=="Vendu" || $venduloue=="Loué") { //Lou&eacute;?>
 									<div class="banniere-venduloue" ><?php echo $venduloue; ?></div>
 									<?php } ?>
-									<div class="label"><i class="flaticon-construction-4"></i></div>
+									<div class="label"><a href="javascript: void(0)" title="Belle opportunité"><i class="flaticon-construction"></i></a></div>
 								</div>
 							</a>
 						</div>
