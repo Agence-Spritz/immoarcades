@@ -160,12 +160,10 @@ if ( $modif )
 								        <input name="<?=$chps[1]?>" value="<?=$$chps[1]?>" class="form-control" type="text" required  />
 							        </div>
 							        
-							        <?php if($modif=='120') { ?>
-								        <h4><i class='fa fa-pencil-square-o '></i> Sous-titre</h4>
-								        <div class="form-group">
-									        <input name="<?=$chps[7]?>" value="<?=$$chps[7]?>" class="form-control" type="text" required  />
-								        </div>
-							        <?php } ?>
+							        <h4><i class='fa fa-pencil-square-o '></i> Sous-titre (optionnel)</h4>
+							        <div class="form-group">
+								        <input name="<?=$chps[7]?>" value="<?=$$chps[7]?>" class="form-control" type="text"  />
+							        </div>
 									
 							</div> 
 							<div class="col-sm-12 col-md-6 ">
@@ -270,7 +268,7 @@ if ( $modif )
 							  	if ($masquer=="1") {$class="normalgrisclair";} else {$class="";}
 							    echo "<tr class='".$class."'>";
 							    echo "<td><a href=\"?modif=$ID&word=$word\"><i class='fa fa-pencil '></i></a></td>";
-							    echo "<td>$ID - $lg</td><td>".$page." <i class='fa fa-angle-right '></i>".$rub."</td><td>".strip_tags($titre)."</td><td>".substr(strip_tags($texte),0,60)."...</td><td>".date_barre($dbu)."</td><td><!--<a href=\"?del=$ID&word=$word\"><i class='fa fa-trash-o '></i></a>--></td>";
+							    echo "<td>$ID - $lg</td><td>".$page." <i class='fa fa-angle-right '></i>".$rub."</td><td>".strip_tags($titre)."</td><td>".substr(strip_tags($texte2),0,60)."...</td><td>".date_barre($dbu)."</td><td><!--<a href=\"?del=$ID&word=$word\"><i class='fa fa-trash-o '></i></a>--></td>";
 							    echo "</tr>";
 							  }
 							 ?>
