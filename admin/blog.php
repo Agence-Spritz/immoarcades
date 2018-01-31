@@ -8,13 +8,13 @@ $titrepage= "Actualités";
 $tableencours = $table_prefix."_pages";
 
 // Cela définit la valeur de la colonne "pages" dans la Bdd (ex : page, actu, offre, etc...)
-$lapage = "blog"; 	
+$lapage = "actu"; 	
 
 // PHOTOS
 $photosize = "1000x750"; // Dimensions idéales d'information pour la photo
 
 // le repertoir du dossier où m'on range les images, tout peut etre ds le même dossier
-$chemin = "../images/pages-ambulance-mouscron-transport-hopital/";  // "/" à la fin
+$chemin = "../images/pages-immobilier-tourcoing-lys-les-lannoy/";  // "/" à la fin
 $wmax = 100; $hmax = 80;  $tdvisuphoto = $wmax*2+20;  	// Dimension pour affichage des vigettes
 $redim_w=1000; $redim_h=750;
 
@@ -23,7 +23,7 @@ $redim_w=1000; $redim_h=750;
 $masquervignette=0;
 
 // Nombre de photo dispo
-$nbr=3;
+$nbr=0;
 
 // Si on veut desactiver la possibilité de mettre une rubrique
 // 1 = désactivé - 0 = actif
@@ -31,7 +31,7 @@ $masquer_rubrique = 1;
 
 // CHAMPS
 // A personnaliser si la table que l'on interroge a des champs différents, ou si on veut en ajouter.
-$chps=array('page','titre','texte','dbu','masquer','lg', 'rub');
+$chps=array('page','titre','texte','dbu','masquer','lg', 'texte2');
 $chpsNb = count($chps);
  
 ?>
@@ -86,7 +86,7 @@ if ( $Submit )
     }
     
     // Si on a ajouté des champs, il faudra les ajouter ici aussi !
-	unset($ID,$page,$titre,$texte,$dbu,$masquer,$lg, $rub);
+	unset($ID,$page,$titre,$texte,$dbu,$masquer,$lg, $texte2);
 
 	// ENVOYER LES PHOTOS
 	$nom_tmp = $_FILES['vignette']['tmp_name']; sent_photo($updatevign,$nom_tmp,$chemin); 
@@ -118,7 +118,7 @@ if ( $modif )
 
 	// Si on a ajouté des champs, il faudra les ajouter ici aussi !
 	
-	list($ID,$page,$titre,$texte,$dbu,$masquer,$lg, $rub) = $result;
+	list($ID,$page,$titre,$texte,$dbu,$masquer,$lg, $texte2) = $result;
 	$$chps[3]=date_barre($$chps[3]);
 }  
 ?>
@@ -164,7 +164,7 @@ if ( $modif )
 								        <input name="<?=$chps[1]?>" value="<?=$$chps[1]?>" class="form-control" type="text" required  />
 							        </div>
 							        
-							        <h4><i class='fa fa-pencil-square-o '></i> Sous-titre</h4>
+							        <h4><i class='fa fa-pencil-square-o '></i> Source (lien url)</h4>
 							        <div class="form-group">
 								        <input name="<?=$chps[6]?>" value="<?=$$chps[6]?>" class="form-control" type="text" required  />
 							        </div>
@@ -257,7 +257,7 @@ if ( $modif )
 						</form>
 						 
 						 
-						 <? // Requête d'affichage des résultats existants
+						<?php // Requête d'affichage des résultats existants
 						$addQ="AND page='$lapage'"; 
 						if ($word)  {$result = mysqli_query($link,"SELECT ID,".$liste1." FROM $tableencours WHERE (".$chps[1]." LIKE '%$word%' OR ".$chps[2]." LIKE '%$word%' OR ".$chps[3]." LIKE '%$word%' OR ".$chps[4]." LIKE '%$word%' OR ID LIKE '%$word%') ".$addQ." ORDER  BY dbu DESC ");}
 						else {  $result = mysqli_query($link," SELECT ID,".$liste1." FROM $tableencours WHERE 1 ".$addQ."  ORDER BY dbu DESC ");}
@@ -277,7 +277,7 @@ if ( $modif )
 				      	</thead>
 						<tbody>
 						  <?php 
-						  while ( list($ID,$page,$titre,$texte,$dbu,$masquer,$lg,$rub) = mysqli_fetch_array($result) ) 
+						  while ( list($ID,$page,$titre,$texte,$dbu,$masquer,$lg, $texte2) = mysqli_fetch_array($result) ) 
 						  { 
 						  	if ($masquer=="1") {$class="normalgrisclair";} else {$class="";}
 						    echo "<tr class='".$class."'>";
