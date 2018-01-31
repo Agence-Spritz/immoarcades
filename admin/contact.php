@@ -1,4 +1,4 @@
-<?
+<?php
 include "include/menu-new.php";
 
 // VARIABLES
@@ -6,7 +6,7 @@ $titrepage= "Contacts du site";
 $tableencours = $table_prefix."_contact";
 
 // CHAMPS
-$chps=array('nom','email','dbu','message','messagefourn','paiement_info');
+$chps=array('type', 'nom', 'email', 'tel', 'dbu','message');
 $chpsNb = count($chps);
 
 ?>
@@ -57,7 +57,7 @@ if ( $Submit )
 
 	  	$msg.= "<i class='fa fa-check-circle fa-2x'></i> Enregistrement ajout&eacute;";
     }
-	unset($ID,$nom,$email,$dbu,$message,$messagefourn);
+	unset($ID, $type, $nom, $email, $tel, $dbu,$message);
 
 	
 } // FIN DU SUBMIT
@@ -65,8 +65,7 @@ if ( $Submit )
 // RECUPERATION DES VALEURS ENREGISTREES
 if ( $modif ) 
 {	$result = mysqli_fetch_array( mysqli_query($link, " SELECT ID,$liste1 FROM $tableencours WHERE ID=$modif ") );
-	list($ID,$nom,$email,$dbu,$message,$messagefourn) = $result;
-	$$chps[2]=date_barre($$chps[2]);
+	list($ID, $type, $nom, $email, $tel, $dbu, $message) = $result;
 }  
 ?>
 		<!-- Messages d'alertes ou de confirmation -->
@@ -105,23 +104,31 @@ if ( $modif )
 							        } else { echo '<input type="hidden" name="lg" value="'.$langues[0].'">';}
 							        ?>
 							        
-							        <h4><i class='fa fa-user '></i> Nom </h4>
+							        <h4><i class='fa fa-user '></i> Type de contact</h4>
 							        <div class="form-group">
 								        <input name="<?=$chps[0]?>" value="<?=$$chps[0]?>" class="form-control" type="text" required  />
 							        </div>
 							        
-							        
-							        <h4><i class='fa fa-envelope-o '></i> Email</h4>
+							        <h4><i class='fa fa-user '></i> Nom</h4>
 							        <div class="form-group">
 								        <input name="<?=$chps[1]?>" value="<?=$$chps[1]?>" class="form-control" type="text" required  />
 							        </div>
 							        
+							        <h4><i class='fa fa-user '></i> Email</h4>
+							        <div class="form-group">
+								        <input name="<?=$chps[2]?>" value="<?=$$chps[2]?>" class="form-control" type="text" required  />
+							        </div>
 							        
+							        <h4><i class='fa fa-user '></i> Tél</h4>
+							        <div class="form-group">
+								        <input name="<?=$chps[3]?>" value="<?=$$chps[3]?>" class="form-control" type="text" required  />
+							        </div>
 							        
 							        <h4><i class='fa fa-calendar '></i> Date</h4>
 							        <div class="form-group">
-								        <input name="<?=$chps[2]?>" value="<?=($$chps[2])?($$chps[2]):(date("d/m/Y"))?>" class="form-control" type="text" required  />
+								        <input name="<?=$chps[4]?>" value="<?=($$chps[4])?($$chps[4]):(date("d/m/Y"))?>" class="form-control" type="text" required  />
 							        </div>
+							        
 							        
 							</div>
 							<div class="col-sm-12 col-md-6">
@@ -132,7 +139,7 @@ if ( $modif )
 						    <div class="col-sm-12 col-md-12 texte-principal">
 					    
 						      <h4><i class='fa fa-align-justify '></i> Message</h4>
-						      <div style=""><?php echo utf8_encode($$chps[3]); ?></div>
+						      <div style=""><?=$$chps[5]?></div>
 <!-- 						      <textarea name="<?=$chps[3]?>" row contenu-admins="10" cols="50" ><?=$$chps[3]?></textarea><script type="text/javascript">CKEDITOR.replace( '<?=$chps[4]?>' );</script> -->
 						      <div class="clearfix"></div>
 <!--
@@ -172,16 +179,15 @@ if ( $modif )
 						  <?php } ?>
 						</form>
 						
-						<?
-						if ($word)  {$result = mysqli_query($link, "SELECT ID,".$liste1." FROM $tableencours WHERE (".$chps[0]." LIKE '%$word%' OR ".$chps[1]." LIKE '%$word%' OR ".$chps[2]." LIKE '%$word%' OR ID LIKE '%$word%') ORDER BY dbu DESC ");}
-						else {  $result = mysqli_query($link, " SELECT ID,".$liste1." FROM $tableencours WHERE 1 ORDER BY dbu DESC ");}
+						<? if ($word)  {$result = mysqli_query($link, "SELECT ID,".$liste1." FROM $tableencours WHERE (".$chps[0]." LIKE '%$word%' OR ".$chps[1]." LIKE '%$word%' OR ".$chps[2]." LIKE '%$word%' OR ID LIKE '%$word%') ORDER BY dbu DESC ");}
+						else {  $result = mysqli_query($link, "SELECT ID,".$liste1." FROM $tableencours WHERE 1 ORDER BY dbu DESC");}
 						?>
 						
 						<table style="margin-top: 25px;" class="table table-bordered table-striped">
 						  	<thead>
 							    <tr>
 							      <th>&nbsp;</th>
-							      <th><i class='fa fa-sort-numeric-asc '></i> - <i class='fa fa-flag '></i></th>
+							      <th><i class='fa fa-sort-numeric-asc '></i> - <i class='fa fa-asterisk '></i></th>
 							      <th><i class='fa fa-user '></i></th>
 							      <th><i class='fa fa-pencil-square-o '></i></th>
 							      <th><i class='fa fa-calendar '></i></th>
@@ -190,12 +196,12 @@ if ( $modif )
 					      	</thead>
 							<tbody>
 							  	<?php 
-								  while ( list($ID,$nom,$email,$dbu,$message,$messagefourn) = mysqli_fetch_array($result) ) 
+								  while ( list($ID, $type, $nom, $email, $tel, $dbu, $message) = mysqli_fetch_array($result) )  
 								  { 
 								  	if ($masquer=="1") {$class="normalgrisclair";} else {$class="";}
 								    echo "<tr class='".$class."'>";
 								    echo "<td><a href=\"?modif=$ID&word=$word\"><i class='fa fa-pencil '></i></a></td>";
-								    echo "<td>$ID - $lg</td><td>".$nom."</td><td>".substr(strip_tags($message),0,60)."...</td><td>".date_barre($dbu)."</td><td><a href=\"?del=$ID&word=$word\"><i class='fa fa-trash-o '></i></a></td>";
+								    echo "<td>$ID - $type</td><td>".$nom."</td><td>".substr(strip_tags($message),0,60)."...</td><td>".$dbu."</td><td><a href=\"?del=$ID&word=$word\"><i class='fa fa-trash-o '></i></a></td>";
 								    echo "</tr>";
 								  }
 						 		?>
