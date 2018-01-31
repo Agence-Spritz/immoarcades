@@ -717,6 +717,10 @@ color: #FFF;
     padding: 0;
     margin: 0;
 }
+
+.sub-heading.text-right {
+    color: #d90102;
+}
 .sub-heading .f1 {
     font-family:Playfair Display;
 	font-weight:400;
@@ -1056,7 +1060,19 @@ color: #FFF;
     z-index: 0;
 }
 .bg-overlay-dark {
-    background-color: rgba(47,54,64,.8);
+    background-color: rgba(0,0,0,.5);
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+    max-width: 1170px;
+    margin: 0 auto 0 auto;
+}
+
+.bg-overlay-dark-total {
+    background-color: rgba(0,0,0,.5);
     position: absolute;
     top: 0;
     right: 0;
@@ -1064,6 +1080,15 @@ color: #FFF;
     left: 0;
     z-index: 0;
 }
+
+@media (min-width: 1170px) {
+	.bg-overlay-dark {
+	    top: 20%;
+	    bottom: 20%;
+	   
+	}
+}
+
 .img-translate-left {
 	max-width: none;
 	-webkit-transform: translateX(-130px);
@@ -1329,7 +1354,8 @@ color: #FFF;
     letter-spacing: 1.2px;
 	color: #d90102;
 	position: relative;
-	margin-top: 130px;
+	margin-top: 30px;
+	margin-bottom: 110px;
 	background: none;
 }
 ul.breadcrumbs li {
@@ -2750,6 +2776,48 @@ border: 2px solid #999;
 }
 
 /* Section utilisée pour les pages génériques */
+.section-bg-generique {
+	background-image:url(../images/background/fond-pages.jpg);
+}
+
+/* Section utilisée pour la page agence */
+.section-bg-agence {
+	background-image:url(../images/background/fond-agence.jpg);
+}
+
+/* Section utilisée pour la page blog */
+.section-bg-blog {
+	background-image:url(../images/background/fond-blog.jpg);
+}
+
+/* Section utilisée pour la page résultats */
+.section-bg-biens {
+	background-image:url(../images/background/fond-agence.jpg);
+}
+
+/* Section utilisée pour la page vendre */
+.section-bg-estimation {
+	background-image:url(../images/background/fond-estimation.jpg);
+}
+
+/* Section utilisée pour la page Nos atouts, en-tête */
+.section-bg-atouts {
+	background-image:url(../images/background/fond-histoire.jpg);
+	background-position: 50% bottom !important;
+}
+
+/* Section utilisée pour la page Nos atouts, section points foprts */
+.section-bg-atouts-2 {
+	background-image:url(../images/background/fond-atouts-parallax-2.jpg);
+}
+
+/* Section utilisée pour la page Nos atouts, section témoignages */
+.section-bg-atouts-3 {
+	background-image:url(../images/background/fond-atouts-parallax-3.jpg);
+}
+
+
+/* Ancien : Section utilisée pour les pages génériques */
 .section-bg-1 {
 	background-image:url(../images/background/fond-pages.jpg);
 }
@@ -5412,6 +5480,10 @@ border: 2px solid #999;
   transform: scale(1.1);
 }
 
+.visuel-bien a {
+	color: #fff;
+}
+
 @media (max-width: 768px) {
 	
 	.espacenews input, .searchform input {
@@ -5442,4 +5514,159 @@ border: 2px solid #999;
 		height: 100px;
 	}
 	
+}
+
+/* Bootstrap progress bar */
+.wizard {
+    margin: 0 auto;
+    background: #fff;
+}
+
+    .wizard .nav-tabs {
+        position: relative;
+        margin: 40px auto;
+        margin-bottom: 0;
+        border-bottom-color: #e0e0e0;
+    }
+
+    .wizard > div.wizard-inner {
+        position: relative;
+    }
+
+.connecting-line {
+    height: 2px;
+    background: #e0e0e0;
+    position: absolute;
+    width: 80%;
+    margin: 0 auto;
+    left: 0;
+    right: 0;
+    top: 50%;
+    z-index: 1;
+}
+
+.wizard .nav-tabs > li.active > a, .wizard .nav-tabs > li.active > a:hover, .wizard .nav-tabs > li.active > a:focus {
+    color: #555555;
+    cursor: default;
+    border: 0;
+    border-bottom-color: transparent;
+}
+
+span.round-tab {
+    width: 100px;
+    height: 70px;
+    line-height: 70px;
+    display: inline-block;
+    border-radius: 100px;
+    background: #fff;
+    border: 2px solid #e0e0e0;
+    z-index: 2;
+    position: absolute;
+    left: 0;
+    text-align: center;
+    font-size: 25px;
+}
+span.round-tab i{
+    color:#555555;
+}
+.wizard li.active span.round-tab {
+    background: #fff;
+    border: 2px solid #d90102;
+    
+}
+.wizard li.active span.round-tab i{
+    color: #d90102;
+}
+
+span.round-tab:hover {
+    color: #333;
+    border: 2px solid #333;
+}
+
+span.round-tab [class^="flaticon-"]:before {
+	padding-left: 0;
+	margin-left: 0;
+	font-size: 40px;
+}
+
+.wizard .nav-tabs > li {
+    width: 20%;
+}
+
+.wizard li:after {
+    content: " ";
+    position: absolute;
+    left: 46%;
+    opacity: 0;
+    margin: 0 auto;
+    bottom: 0px;
+    border: 5px solid transparent;
+    border-bottom-color: #d90102;
+    transition: 0.1s ease-in-out;
+}
+
+.wizard li.active:after {
+    content: " ";
+    position: absolute;
+    left: 46%;
+    opacity: 1;
+    margin: 0 auto;
+    bottom: 0px;
+    border: 10px solid transparent;
+    border-bottom-color: #d90102;
+}
+
+.wizard .nav-tabs > li a {
+    width: 100px;
+    height: 70px;
+    margin: 20px auto;
+    border-radius: 100%;
+    padding: 0;
+}
+
+    .wizard .nav-tabs > li a:hover {
+        background: transparent;
+    }
+
+.wizard .tab-pane {
+    position: relative;
+/*     padding-top: 50px; */
+background: #eee;
+border: 1px solid #d90102
+}
+
+.wizard h3 {
+    margin-top: 0;
+    color: #d90102;
+}
+
+@media( max-width : 585px ) {
+
+    .wizard {
+        width: 90%;
+        height: auto !important;
+    }
+
+    span.round-tab {
+        font-size: 16px;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+    }
+
+    .wizard .nav-tabs > li a {
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+    }
+
+    .wizard li.active:after {
+        content: " ";
+        position: absolute;
+        left: 35%;
+    }
+}
+
+div.progresswrap {
+	background: #fff ;
 }
