@@ -1,94 +1,58 @@
-<?php if ($id=='T'){
-	
-	$titrep = ' biens';
-	$texte2p = 'Valérie et Christophe vous accompagnent dans l\'acquisition du bien de vos rêves';
-	
-	} else {
-		
-		// Requête pour récupérer le contenu de la page concernée
+<?php // Requête pour récupérer le contenu de la page concernée
 		list($titrep, $textep, $texte2p) = mysqli_fetch_array(mysqli_query($link, "SELECT titre,texte, texte2 FROM ".$table_prefix."_pages WHERE page='page' AND ID='$id' "));
+	
+	// On initialise la variable agence
+	$agence = NULL;
+	$add_agence = "AND agence = '$agence'";
+	
+	if ($id=='178' || $id=='179' || $id=='67'){
+		// On adapte le titre en fonction de l'agence sélectionnée dans le menu
 		
-	}
-	
-	?>
-
-
-<div id="main">
-	
-	<!-- Page en-tête
-	================================================== -->
-	<div class="section section-bg-biens section-fixed pt-14 pb-3">
-		<div class="bg-overlay-dark"></div>
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="text-center">
-						<h2 class="page-title"><?php if ($texte2p) { echo $texte2p; }  else { echo $titrep; } ?></h2>
-					
-						<div class="breadcrumb">
-							<h3><?php echo $titrep; ?></h3>
-						</div>
-						
-						
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	
-
-	<?php // On détermine la nature de la recherche (vente, location, etc...)
-		
-		// Maisons
-		if ($id==70) {
-			$cat_v_l = "V";
-			$add_cat = "AND cat = '$cat_v_l'";
+			if($id=='178' && !$_POST['agence']) {
+				
+				$fond = "section-bg-tourcoing";
+				$agence = 1;
+				$add_agence = "AND agence = '$agence'";
+				
+			} else if($id=='179' && !$_POST['agence']) {
+				$fond = "section-bg-lys";
+				$agence = 2;
+				$add_agence = "AND agence = '$agence'";
+				
+			} else if($id=='67') {
 			
-		// Projets neufs
-		} else if ($id==71) {
-			$cat_v_l = "N";
-			$add_cat = "AND cat = '$cat_v_l'";
-		// Locations
-		} else if ($id==72) {
-			$cat_v_l = "L";
-			$add_cat = "AND cat = '$cat_v_l'";
-		// Terrains
-		} else if ($id==84) {
-			$cat_v_l = "T";
-			$add_cat = "AND cat = '$cat_v_l'";
-		// Appartements
-		} else if ($id==85) {
-			$cat_v_l = "V";
-			$add_cat = "AND cat = '$cat_v_l'";
-		
-		} else if ($id=="T"){
-			
-			$add_cat = "";
-		} else {
-			
-			$add_cat = "";
-		}
-		
-		
-		// Si on a un type en paramétre ds l'url ET qu'on n'est pas ds le cadre d'une recherche en POST
-		if (!$_POST['submit']=='Rechercher') {
-			if ($_GET['type']) {
-					$add_type = "AND typesimple = '".$_GET['type']."'";
+				$fond = "section-bg-generique";
 			} 
-		}
 		
-		
-		
+	} 
+	?>
+	
+	<?php 	
 		// On va adapter la requête en fonction des elements postés lors de la recherche
 		if ($_POST['submit']=='Rechercher') {
 			
+			// recherche sur l'agence
+			if ($_POST['agence']) {
+				$agence = $_POST['agence'];
+				$add_agence = "AND agence = '$agence'";
+			} 
+			
 			//argument de type
 			if ($_POST['type']) {
+				$type = array();
 				$type = $_POST['type'];
-				$add_type = "AND typesimple = '$type'";
+				$type = implode(',', $type);
+				$add_type = "AND typesimple IN ('$type')";
 			} else {
 				$type = "";
+			}
+			
+			//argument de Code postal
+			if ($_POST['codepostal']) {
+				$codepostal = $_POST['codepostal'];
+				$add_codepostal = "AND codepostal = '$codepostal'";
+			} else {
+				$codepostal = "";
 			}
 			
 			//argument de localite
@@ -99,34 +63,46 @@
 				$localite = "";
 			}
 			
-			//argument de chambres
-			if ($_POST['chambres']) {
-				$chambres = $_POST['chambres'];
-				$add_chambres = "AND chambre = '$chambres'";
+			//argument de surface
+			if ($_POST['surface_min']) {
+				$surface_min = $_POST['surface_min'];
+				$add_surface_min = "AND qsurfhab >= '$surface_min'";
 
 			} else {
-				$chambres = "";
+				$surface_min = "";
 			}
 			
 			//argument de prix
-			if ($_POST['prix']) {
-				$fourchette_prix = array();
-				$fourchette_prix = explode(';', $_POST['prix']);
+			if ($_POST['prix_mini'] || $_POST['prix_maxi']) {
 				
-				$prix_min_fourchette = $fourchette_prix[0];
-				$prix_max_fourchette = $fourchette_prix[1];
+				// On va déterminer les prix min et max de la BDD
+				$req = mysqli_query($link,"SELECT MAX(prix) as max, MIN(prix) as min FROM ".$table_prefix."_biens"); 
+			  	$data = mysqli_fetch_array($req);
+
 				
-				$add_prix = "AND prix BETWEEN '$prix_min_fourchette' AND '$prix_max_fourchette'";
+				if($_POST['prix_mini']!="") {
+					$prix_min = $_POST['prix_mini'];	
+				} else {
+					$prix_min = $data['min'];
+				}
+				
+				if($_POST['prix_maxi']!="") {
+					$prix_max = $_POST['prix_maxi'];	
+				} else {
+					$prix_max = $data['max'];
+				}
+				
+				$add_prix = "AND prix BETWEEN '$prix_min' AND '$prix_max'";
 				
 			} else {
-				$prix_min_fourchette = "";
-				$prix_max_fourchette = "";
+				$prix_min = "";
+				$prix_max = "";
 			}
 			
 			//argument de terme clé
 			if ($_POST['recherche_terme']) {
 				$recherche_terme = $_POST['recherche_terme'];
-				$add_terme = "AND (titre LIKE '%$recherche_terme%' OR descrlight LIKE '%$recherche_terme%' OR composition LIKE '%$recherche_terme%' OR type LIKE '%$recherche_terme%' OR typesimple LIKE '%$recherche_terme%' OR localite LIKE '%$recherche_terme%' OR codepostal LIKE '%$recherche_terme%' OR cregion LIKE '%$recherche_terme%')";
+				$add_terme = "AND (titre LIKE '%$recherche_terme%' OR descrlight LIKE '%$recherche_terme%' OR composition LIKE '%$recherche_terme%' OR type LIKE '%$recherche_terme%' OR typesimple LIKE '%$recherche_terme%' OR localite LIKE '%$recherche_terme%' OR codepostal LIKE '%$recherche_terme%' OR ref LIKE '%$recherche_terme%')";
 			} else {
 				$recherche_terme = "";
 			}
@@ -148,107 +124,270 @@
 	            $add_recherche = "";
             }
 
-			
-			//Enlever les commentaires pour afficher les valeurs postées
-/*
-				echo $add_type.'<br />';
-				echo $add_localite.'<br />';
-				echo $add_chambres.'<br />';
-				echo $add_prix.'<br />';
-				echo $add_terme.'<br />';
-*/
-			
-			
 		}
 		
+		//Enlever les commentaires pour afficher les valeurs postées
+
+/*
+				echo $add_agence.'<br />';
+				echo $add_type.'<br />';
+				echo $add_codepostal.'<br />';
+				echo $add_localite.'<br />';
+				echo $add_surface_min.'<br />';
+				echo $add_prix.'<br />';
+				echo $add_terme.'<br />';
+				echo $add_recherche. '<br />';
+*/
+?>
+
+
+<div id="main">
 	
-		
-		
-	?>
+	<!-- Page en-tête
+	================================================== -->
+	<div class="section <?php echo $fond; ?> section-fixed pt-14 pb-3">
+		<div class="bg-overlay-dark"></div>
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="text-center">
+						<h2 class="page-title"><?php echo $texte2p; ?></h2>
+					
+						<div class="breadcrumb" style="color: #fff;">
+							<?php if($textep) {?>
+								<p><?php echo $textep; ?></p>
+							<?php } ?>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	
+	<!--  Biens à la une première ligne-->
+	<div class="section liste-biens pt-4 mobile-hide">
+		<div class="container">
+			<div class="row">
+				
+				<div class="mb-5">
+					<h2 class="sub-heading text-center text-surligne">
+						<span class="f2">Belles opportunités</span>
+					</h2>
+				</div>
+				
+				<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE nouveaute IS NOT NULL ORDER BY dmod DESC LIMIT 0,3"); 
+				  	while ($data = mysqli_fetch_array($req)) { 
+						$venduloue = $data['venduloue'];
+				?>
+				
+				<div class="col-sm-4 entry-media" style="<?php if ($n==4){ echo 'clear:both';} ?>">
+					<div class="mb-2">
+						<h3 class="heading wg-title"><?php echo $data['localite']; ?></h3>
+						<h2 class="extra-font">
+							<span class="f2">
+							<?php if ($data['cacherprix']!=1){?>
+								<?php echo number_format($data['prix'], 0, ',', ' ').'<sup>€</sup>'; ?>
+                            <?php } else {echo "Prix sur demande";} ?>
+							</span>
+						</h2>
+					</div>
+					<div class="zone-titre-liste">
+						<p class="description">
+							<?php echo CleanCut($data['descrlight'],100); ?><br />
+						</p>
+					</div>
+					<a href="<?php echo $data['type']; ?>-nord-tourcoing-<?php echo $data['localite']; ?>--<?php echo $data['ID']; ?>--fiche">
+						<div style="position: relative;" class="visuel-bien mt-2 mb-3">
+							<img src="<?php echo $data['PHOTO_01']; ?>" alt="<?php echo $data['titre']; ?>" title="<?php echo $data['titre']; ?>" />
+							<?php if ($venduloue=="Vendu" || $venduloue=="Loué") { //Lou&eacute;?>
+							<div class="banniere-venduloue" ><?php echo $venduloue; ?></div>
+							<?php } ?>
+							<div class="label"><a href="javascript: void(0)" title="Belle opportunité"><i class="flaticon-construction"></i></a></div>
+						</div>
+					</a>
+				</div>
+				
+				<?php } ?>
+			</div>
+		</div>
+	</div>
+
 
 	<!-- Zone de filtres
 	================================================== -->	
 	
-	<div class="section pt-9">
+	<div class="section pt-2">
 		<div class="container">
 			<div class="row">
-				
 				
 				<div class="col-md-12 col-lg-12">
 					<div class="zone-recherche">
 						<form id="recherche_generale" method="POST" action="">
-							<div class="col-xs-12 col-md-4 col-lg-4">
-								<label>Recherche par type</label>
-								<select name="type">
-									<option value="">Tous les types</option>
-									<?php $req = mysqli_query($link,"SELECT DISTINCT typesimple FROM ".$table_prefix."_biens WHERE 1 ".$add_cat." AND typesimple<>''  ORDER BY typesimple ASC"); 
-									  	while ($data = mysqli_fetch_array($req)) { 
-									?>
-										<option value="<?php echo $data['typesimple']; ?>" <?php if ( (($_POST['type'])&&($_POST['type']==$data['typesimple'])) || (($_GET['type'])&&($_GET['type']==$data['typesimple'])) ) { echo 'selected=selected';} ?>><?php echo $data['typesimple']; ?></option>
-									<?php } ?>
-						
-								</select>
+							
+							<div class="col-xs-12 col-md-6 col-lg-6 mb-2">
+							<h4 class="heading wg-title"><i class="flaticon-house-search"></i>Que recherchez-vous ?</h4>
 							</div>
 							
-							<div class="col-xs-12 col-md-4 col-lg-4">
-								<label>Recherche par ville</label>
-								<select name="localite">
-									<option value="">Toutes les villes</option>
-									<?php $req = mysqli_query($link,"SELECT DISTINCT localite FROM ".$table_prefix."_biens WHERE 1 ".$add_cat." AND localite<>'' ORDER BY localite ASC"); 
-									  	while ($data = mysqli_fetch_array($req)) { 
-									?>
-										<option value="<?php echo $data['localite']; ?>" <?php if (($_POST['localite'])&&($_POST['localite']==$data['localite']) ) { echo 'selected=selected';} ?>><?php echo $data['localite']; ?></option>
-									<?php } ?>
-								</select>
+							<div class="col-xs-12 col-md-6 col-lg-6 mb-2 text-right lien_recherche">
+								<a id="lien_recherche" href="javascript: void(0);">Recherche avancée</a>
 							</div>
 							
-							<div class="col-xs-12 col-md-4 col-lg-4">
-								<label>Nombre de chambre(s)</label>
-								<select name="chambres">
-									<option value="">Tout</option>
-									<?php $req = mysqli_query($link,"SELECT DISTINCT chambre FROM ".$table_prefix."_biens WHERE 1 ".$add_cat." AND chambre<>'' ORDER BY chambre ASC"); 
-									  	while ($data = mysqli_fetch_array($req)) { 
-									?>
-										<option value="<?php echo $data['chambre']; ?>" <?php if (($_POST['chambres'])&&($_POST['chambres']==$data['chambre']) ) { echo 'selected=selected';} ?>><?php echo $data['chambre']; ?></option>
-									<?php } ?>
-								</select>
+							<div class="col-xs-12 col-md-12 col-lg-12 mb-2">
+								<input type="text" name="recherche_terme" placeholder="tapez ici un mot clé" value="<?php if ($_POST['recherche_terme']) { echo $recherche_terme; } else if ($_POST['recherche_generale']) { echo $_POST['recherche_generale']; } ?>" />
 							</div>
-							<div style="margin-bottom: 25px;" class="clearfix"></div>
 							
 							<div class="col-xs-12 col-md-12 col-lg-12">
-								<label>Fourchette de Prix</label>
-								<input type="text" id="prix" name="prix" value="" />
+							<label>Recherche par prix</label>
 							</div>
 							
-							
-							<div class="col-xs-12 col-md-4 col-lg-4">
-								
+							<div class="col-xs-12 col-md-6 col-lg-6 mb-2">
+								<select name="prix_mini">
+									<option value="">-- prix mini --</option>
+									<option value="0" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==0) {echo "selected";} ?>>0</option>
+									<option value="25000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==25000) {echo "selected";} ?>>25 000</option>
+									<option value="50000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==50000) {echo "selected";} ?>>50 000</option>
+									<option value="75000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==75000) {echo "selected";} ?>>75 000</option>
+									<option value="100000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==100000) {echo "selected";} ?>>100 000</option>
+									<option value="125000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==125000) {echo "selected";} ?>>125 000</option>
+									<option value="150000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==150000) {echo "selected";} ?>>150 000</option>
+									<option value="175000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==175000) {echo "selected";} ?>>175 000</option>
+									<option value="200000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==200000) {echo "selected";} ?>>200 000</option>
+									<option value="250000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==250000) {echo "selected";} ?>>250 000</option>
+									<option value="300000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==300000) {echo "selected";} ?>>300 000</option>
+									<option value="350000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==350000) {echo "selected";} ?>>350 000</option>
+									<option value="400000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==400000) {echo "selected";} ?>>400 000</option>
+									<option value="500000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==500000) {echo "selected";} ?>>500 000</option>
+									<option value="1000000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==1000000) {echo "selected";} ?>>1 000 000</option>
+								</select>
 							</div>
 							
-							
+							<div class="col-xs-12 col-md-6 col-lg-6 mb-2">
+								<select name="prix_maxi">
+									<option value="">-- prix maxi --</option>
+									<option value="25000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==25000) {echo "selected";} ?>>25 000</option>
+									<option value="50000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==50000) {echo "selected";} ?>>50 000</option>
+									<option value="75000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==75000) {echo "selected";} ?>>75 000</option>
+									<option value="100000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==100000) {echo "selected";} ?>>100 000</option>
+									<option value="125000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==125000) {echo "selected";} ?>>125 000</option>
+									<option value="150000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==150000) {echo "selected";} ?>>150 000</option>
+									<option value="175000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==175000) {echo "selected";} ?>>175 000</option>
+									<option value="200000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==200000) {echo "selected";} ?>>200 000</option>
+									<option value="250000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==250000) {echo "selected";} ?>>250 000</option>
+									<option value="300000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==300000) {echo "selected";} ?>>300 000</option>
+									<option value="350000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==350000) {echo "selected";} ?>>350 000</option>
+									<option value="400000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==400000) {echo "selected";} ?>>400 000</option>
+									<option value="500000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==500000) {echo "selected";} ?>>500 000</option>
+									<option value="1000000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==1000000) {echo "selected";} ?>>1 000 000</option>
+								</select>
+							</div>
 							<div class="clearfix"></div>
 							
-							<div class="col-xs-12 col-md-4 col-lg-4">
-								<label><i style="margin-right: 10px;" class="fa fa-search" aria-hidden="true"></i> Recherche par mot clé</label>
-								<input type="text" name="recherche_terme" placeholder="tapez votre mot clé" value="<?php if ($_POST['recherche_terme']) { echo $recherche_terme; } else if ($_POST['recherche_generale']) { echo $_POST['recherche_generale']; } ?>" />
+							<div id="recherche_simple" class="col-xs-12 col-md-6 col-lg-6 mb-1">
+								<label>Recherche par zone géographique</label>
+								<select name="agence">
+									<option value="" selected=selected>toute zone</option>
+									<option value="1" <?php if(isset($_POST['agence']) && $_POST['agence']==1) {echo "selected";} ?>>autour de Tourcoing</option>
+									<option value="2" <?php if(isset($_POST['agence']) && $_POST['agence']==2) {echo "selected";} ?>>autour de Lys-lez-lannoy</option>
+								</select>
 							</div>
 							
-							<div class="col-xs-12 col-md-4 col-lg-4">
+							<div id="recherche_avancee">
+								<div class="col-xs-12 col-md-6 col-lg-6 mb-2">
+									<label>Code Postal</label>
+									<input type='text'
+									       placeholder='Tapez un code postal'
+									       class='flexdatalist'
+									       data-min-length='1'
+									       list='code_postal'
+									       name='codepostal'
+									       value='<?php if(isset($_POST['codepostal'])) {echo $_POST['codepostal'];} ?>'>
+									
+									<datalist id="code_postal">
+									    <?php $req = mysqli_query($link,"SELECT DISTINCT codepostal FROM ".$table_prefix."_biens WHERE 1 AND codepostal<>'' ORDER BY codepostal ASC"); 
+										  	while ($data = mysqli_fetch_array($req)) { 
+										?>
+											<option value="<?php echo $data['codepostal']; ?>"><?php echo $data['codepostal']; ?></option>
+										<?php } ?>
+									    
+									</datalist>
+								</div>
+							
+								<div class="col-xs-12 col-md-6 col-lg-6 mb-2 ">
+									<label>Ville</label>
+									<input type='text'
+									       placeholder='Entrez la ville de votre choix'
+									       class='flexdatalist'
+									       data-min-length='1'
+									       list='localite'
+									       name='localite'
+									       value='<?php if(isset($_POST['localite'])) {echo $_POST['localite'];} ?>'>
+									
+									<datalist id="localite">
+									    <?php $req = mysqli_query($link,"SELECT DISTINCT localite FROM ".$table_prefix."_biens WHERE 1 AND localite<>'' ORDER BY localite ASC"); 
+										  	while ($data = mysqli_fetch_array($req)) { 
+										?>
+											<option value="<?php echo $data['localite']; ?>"><?php echo $data['localite']; ?></option>
+										<?php } ?>
+									    
+									</datalist>
+								</div>
+								<div class="col-xs-12 col-md-6 col-lg-6 mb-1">
+									<label>Recherche par type</label>
+									<div class="form-check form-check-inline">
+									  <input class="form-check-input" name="type[]" type="checkbox" id="maison" value="maison" <?php if(isset($_POST['type']) && in_array("maison", $_POST['type'])) {echo "checked";} ?>>
+									  <label class="form-check-label" for="maison">Maison</label>
+									</div>
+									<div class="form-check form-check-inline">
+									  <input class="form-check-input" name="type[]" type="checkbox" id="appartement" value="appartement" <?php if(isset($_POST['type']) && in_array("appartement", $_POST['type'])) {echo "checked";} ?>>
+									  <label class="form-check-label" for="appartement">Appartement</label>
+									</div>
+									<div class="form-check form-check-inline">
+									  <input class="form-check-input" name="type[]" type="checkbox" id="terrain" value="terrain" <?php if(isset($_POST['type']) && in_array("terrain", $_POST['type'])) {echo "checked";} ?>>
+									  <label class="form-check-label" for="terrain">Terrain</label>
+									</div>
+									<div class="form-check form-check-inline">
+									  <input class="form-check-input" name="type[]" type="checkbox" id="immeuble" value="immeuble" <?php if(isset($_POST['type']) && in_array("immeuble", $_POST['type'])) {echo "checked";} ?>>
+									  <label class="form-check-label" for="immeuble">Immeuble de rapport</label>
+									</div>
+									<div class="form-check form-check-inline">
+									  <input class="form-check-input" name="type[]" type="checkbox" id="autre" value="autre" <?php if(isset($_POST['type']) && in_array("autre", $_POST['type'])) {echo "checked";} ?>>
+									  <label class="form-check-label" for="autre">Autre</label>
+									</div>
+								</div>
 								
+								<div class="col-xs-12 col-md-6 col-lg-6 mb-1">
+									<label>Surface minimale</label>
+									<input type='text'
+									       placeholder='en m2'
+									       class='flexdatalist'
+									       data-min-length='1'
+									       list='surface_min'
+									       name='surface_min'
+									       value='<?php if(isset($_POST['surface_min'])) {echo $_POST['surface_min'];} ?>'>
+									
+									<datalist id="surface_min">
+											<option value="20" >20</option>
+											<option value="30" >30</option>
+											<option value="50" >50</option>
+											<option value="75" >75</option>
+											<option value="100" >100</option>
+											<option value="130" >130</option>
+											<option value="150" >150</option>
+											<option value="200" >200</option>
+											<option value="300" >300</option>
+									</datalist>
+								</div>
+							
 							</div>
 							
-							<div class="col-xs-12 col-md-4 col-lg-4">
+							<div class="col-xs-12 col-md-12 col-lg-12 mb-1">
 								<input style="margin-top: 25px;float: right;" type="submit" name="submit" value="Rechercher" id="recherche_generale" />
 							</div>
 							<div class="clearfix"></div>
-							
+		
 						</form>
-						
 					</div>
 				</div>
-				
-				
 			</div>
 		</div>
 	</div>
@@ -264,13 +403,33 @@
 					<div class="blog-list">
 						
 						<?php // Requête générale pour lister les biens
-							$req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$add_cat." ".$add_type." ".$add_localite." ".$add_chambres." ".$add_prix." ".$add_terme." ".$add_recherche." ORDER BY venduloue, dmod DESC"); 
 							
-							 //echo "SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$add_cat." ".$add_type." ".$add_localite." ".$add_chambres." ".$add_prix." ".$add_terme." ".$add_recherche." ORDER BY ID DESC";
+							// On met dans une variable le nombre de biens qu'on veut par page
+							$nombreDeBiensParPage = 10;
+							// On récupère le nombre total de biens
+							$req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$add_type." ".$add_codepostal." ".$add_localite." ".$add_surface_min." ".$add_prix." ".$add_terme." ".$add_recherche.""); 
 							
 								// Calcule le nbr de biens retournés par la requête
 								$nb_biens = mysqli_num_rows($req);
 								
+									// On calcule le nombre de pages à créer
+									$nombreDePages  = ceil($nb_biens / $nombreDeBiensParPage);
+									
+									 
+									if (isset($_GET['page']))
+									{
+									        $page = $_GET['page']; // On récupère le numéro de la page indiqué dans l'adresse
+									}
+									else // La variable n'existe pas, c'est la première fois qu'on charge la page
+									{
+									        $page = 1; // On se met sur la page 1 (par défaut)
+									}
+									  
+									// On calcule le numéro du premier bien qu'on prend pour le LIMIT de MySQL
+									$premierBienAafficher = ($page - 1) * $nombreDeBiensParPage;
+									 
+									$req1 = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$add_type." ".$add_codepostal." ".$add_localite." ".$add_surface_min." ".$add_prix." ".$add_terme." ".$add_recherche." ORDER BY dmod DESC LIMIT " . $premierBienAafficher . ", " . $nombreDeBiensParPage);
+										
 						?>
 				
 							<?php if ($nb_biens=='0') { ?>
@@ -279,7 +438,7 @@
 							
 							<?php }  else { 
 								
-									while ($data = mysqli_fetch_array($req)) {
+									while ($data = mysqli_fetch_array($req1)) {
 										$venduloue = $data['venduloue'];
 								  	
 										// Détermination des variables
@@ -298,41 +457,38 @@
 												<?php // On affiche la zone de survol que si on a au moins 1 autre photo
 													if($data['PHOTO_02']!="") { ?>
 														<div class="survol-photo">
-															<a href="<?php echo $url_fiche; ?>" title="Découvrir ce bien" > 
+															
+															<a href="<?php echo $url_fiche; ?>" title="En savoir plus" > 
 																<img style="float: left;" src="<?php echo $data['PHOTO_01']; ?>" alt="<?php echo $data['localite']; ?>" title="<?php echo $data['titre']; ?>" />
 															</a>
 															
 															<?php if($data['PHOTO_02']!="") { ?>
-																<a href="<?php echo $url_fiche; ?>" title="Découvrir ce bien" > 
+																<a href="<?php echo $url_fiche; ?>" title="En savoir plus" > 
 																	<img style="float: left;" src="<?php echo $data['PHOTO_02']; ?>" alt="<?php echo $data['localite']; ?>" title="<?php echo $data['titre']; ?>" />
 																</a>
 															<?php } ?>
 															
 															<?php if($data['PHOTO_03']!="") { ?>
-																<a href="<?php echo $url_fiche; ?>" title="Découvrir ce bien" > 
+																<a href="<?php echo $url_fiche; ?>" title="En savoir plus" > 
 																	<img style="float: left;" src="<?php echo $data['PHOTO_03']; ?>" alt="<?php echo $data['localite']; ?>" title="<?php echo $data['titre']; ?>" />
 																</a>
 															<?php } ?>
 																
 																<?php if ($venduloue=="") { ?>
-																<a href="<?php echo $url_fiche; ?>" title="Découvrir ce bien" class="carre-plus"> 
-																	<i class="fa fa-arrow-circle-o-right fa-2x"></i>
+																<a href="<?php echo $url_fiche; ?>" title="En savoir plus" class="carre-plus"> 
+																	<i class="flaticon-search"></i>
 																</a>
 																<?php } ?>
+																
 														</div>
 												<?php } ?>
 												
 												<div class="col-md-4 col-lg-4">
 													<div class="entry-media">
-													<?php if ($data[virtuel]) {?>
-                                                        <div style="float:left; position:absolute; width:75px; height:75px; margin:20px; background-color:RGBA(255,255,255,0.7); border-radius:60px; padding:15px; z-index:9999">
-                                                            <img src="images/icon-video.png"style="width:80px"/> 
-                                                        </div>
-                                                    <?php } ?>
 															<img class="photo-principale" src="<?php echo $data['PHOTO_01']; ?>" alt="<?php echo $data['localite']; ?>" title="<?php echo $data['titre']; ?>" />
 
 															<?php if ($venduloue=="") { ?>
-															<a href="<?php echo $url_fiche; ?>" class="nectar-love right" title="Découvrir ce bien"> 
+															<a href="<?php echo $url_fiche; ?>" class="nectar-love right" title="En savoir plus"> 
 																<i class="fa fa-plus"></i>
 															</a>
 															<?php } elseif ($venduloue=="Vendu" || $venduloue=="Loué") { //Lou&eacute;?>
@@ -340,7 +496,6 @@
 															<?php } else { ?>
 																<div class="banniere-venduloue" style="background-color:RGBA(47,54,63,0.8)"><?php echo $venduloue; ?></div>
 															<?php } ?>
-														
 													</div>
 												</div>
 												<div class="col-md-8 col-lg-8">
@@ -352,11 +507,7 @@
 														<div class="entry-header">
 															<div class="mb-2">
 																<h3 class="heading wg-title"><?php echo $data['type']; ?> à <?php echo $data['localite']; ?></h3>
-																<h2 class="extra-font">
-																		<!-- 	<a href="bien-de-prestige-tournai-mouscron--<?php echo $data['ID']; ?>--fiche"><span class="f2"><?php echo $data['type']; ?></span> </a> -->
-																</h2>
 															</div>
-															
 														</div>
 														<div style="position: relative;" class="content">
 															<div class="description">
@@ -366,41 +517,34 @@
 															<div class="zone-pictos">
 																<ul>
 																<?php if (($data['qsurfhab']!='')&&($data['qsurfhab']!='0')) { ?>
-																	<li><img src="images/fiche-surf.png" style="height:40px; margin-top:-15px" /> <?php echo number_format($data['qsurfhab'], 0, ',', ' '); ?>m<sup>2</sup></li>
+																	<li>Surface habitable : <?php echo number_format($data['qsurfhab'], 0, ',', ' '); ?>m<sup>2</sup></li>
 																<?php } ?>
                                                                 <?php if ($data['cat']=="T" && $data['qsurfterrain']!='' && $data['qsurfterrain']!='0') { ?>
-																	<li><img src="images/fiche-surf.png" style="height:40px; margin-top:-15px" /> <?php echo number_format($data['qsurfterrain'], 0, ',', ' '); ?>m<sup>2</sup></li>
+																	<li>Surface terrain :  <?php echo number_format($data['qsurfterrain'], 0, ',', ' '); ?>m<sup>2</sup></li>
 																<?php } ?>
 																<?php if ($data['chambre']!='') { ?>
-																	<li><i class="glyph-icon flaticon-bed"></i> <?php echo $data['chambre']; ?></li>
+																	<li>Nbr de chambres : <?php echo $data['chambre']; ?></li>
 																<?php } ?>
 																<?php if ($data['qgarages']!='') { ?>
-																	<li><i class="glyph-icon flaticon-vehicle"></i>  <?php echo $data['qgarages']; ?></li>
+																	<li>Garage(s) :  <?php echo $data['qgarages']; ?></li>
 																<?php } ?>
                                                                 <?php if($data['sdb']>0) { ?>
-                                                                    <li><i class="glyph-icon flaticon-medical"></i> <?php echo $data['sdb']; ?></li>
+                                                                    <li>Salle(s) de bain : <?php echo $data['sdb']; ?></li>
                                                                 <?php } ?>
 																</ul>
 															</div>
 														</div>
 														
-														
                                                         <?php if (!$venduloue) { ?>
-                                                        <div class="prix">
-															<?php if ($data['cacherprix']!=1){?>
-																<?php echo number_format($data['prix'], 0, ',', ' ').'<sup>€</sup>'; ?>
-                                                            <?php } else {echo "Prix sur demande";} ?>
-                                                            <?php if ($data['peb']>0){?>
-                                                            	<br /><img src="img-PEB/img/peb_<?=peblettre($data['peb'])?>.png" style="margin-top:-10px" />
-                                                            <?php } ?>
-														</div>
+	                                                        <div class="prix extra-font">
+		                                                        <span class="f2">
+																<?php if ($data['cacherprix']!=1){?>
+																	<?php echo number_format($data['prix'], 0, ',', ' ').'<sup>€</sup>'; ?>
+	                                                            <?php } else {echo "Prix sur demande";} ?>
+	                                                            </span>
+															</div>
                                                         <?php } ?>
-                                                        
-                                                 <!-- PEB -->
-												<div style="float:left; position:relative; width:auto; height:50px; margin:30px 0px 0 0;  padding:15px; z-index:9999">
-                               	
-                        </div>
-														
+                                 
 													</div>
 												</div>
 												<div style="clear: both;"></div>
@@ -412,6 +556,35 @@
 						
 						<?php } ?>
 						
+						<nav aria-label="Page navigation example">
+						  <ul class="pagination">
+							<?php if ( (isset($_GET['page']))&&($_GET['page']!=1) ) { ?>
+						    <li class="page-item">
+						      <a class="page-link" href="<?php echo "?page="; echo $_GET['page']-1; ?>" aria-label="Previous">
+						        <span aria-hidden="true">&laquo;</span>
+						        <span class="sr-only">Précédent</span>
+						      </a>
+						    </li>
+						    <?php } ?>
+						    <?php 
+							    for ($i = 1 ; $i <= $nombreDePages ; $i++)
+								{ ?>
+									
+									<li class="page-item <?php if($_GET['page']==$i) { echo "active"; } ?>"><a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+								<?php }
+						    ?>
+						    
+						    <?php if ( (isset($_GET['page']))&&($_GET['page']!=6) ) { ?>
+						    <li class="page-item">
+						      <a class="page-link" href="<?php echo "?page="; echo $_GET['page']+1; ?>" aria-label="Next">
+						        <span aria-hidden="true">&raquo;</span>
+						        <span class="sr-only">Suivant</span>
+						      </a>
+						    </li>
+						    <?php } ?>
+						  </ul>
+						</nav>
+
 					</div>
 					
 				</div>
@@ -419,8 +592,22 @@
 			</div>
 		</div>
 	</div>
-	
-	
-	
-	
+
 </div>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script>
+	// Apparition de la zone de recherche avancée
+$( document ).ready(function() {
+   
+   
+   $('#recherche_avancee').hide();
+   	$('#lien_recherche').click(function(){
+    	$('#recherche_simple,#recherche_avancee').toggle();
+	});
+	
+	$('.flexdatalist').flexdatalist({
+	     minLength: 1
+	});
+
+});
+</script>
