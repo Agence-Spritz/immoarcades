@@ -18,10 +18,8 @@ session_start(); ?>
 		setlocale(LC_TIME, 'fr','fr_FR','fr_FR@euro','fr_FR.utf8','fr-FR','fra');
 		?>
     
-    
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0"/>
-		<link rel="shortcut icon" href="images/favicon.ico"/>
 		
 		<link rel="stylesheet" href="css/bootstrap.min.css" type="text/css" media="all"/>
 		<link rel="stylesheet" href="css/font-awesome.min.css" type="text/css" media="all" />
@@ -41,10 +39,10 @@ session_start(); ?>
 			<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 		<![endif]-->
 		
-		<link href="script-prix/css/ion.rangeSlider.css" rel="stylesheet" type="text/css">
-		<link href="script-prix/css/ion.rangeSlider.skinFlat.css" rel="stylesheet" type="text/css">
+		<link href="js/jquery-flexdatalist-2.2.1/jquery.flexdatalist.min.css" rel="stylesheet" type="text/css">
+		
 	</head>
-	
+
 	<body>
 		<!--<div class="noo-spinner">
 			<div class="spinner">
@@ -57,19 +55,20 @@ session_start(); ?>
 				<div class="no-container clearfix">
 					<div id="header-logo" class="pull-left">
 						<a href="./">
-							<img class="main-logo" alt="" src="images/logo.png" />
+							<img class="main-logo" alt="Agence immobilière des Arcades Tourcoing, Lys-lez-Lannoy" title="Retour à l'accueil" src="images/logo.png" />
 						</a>
 					</div>
 					<div class="nav-extra pull-right">
 						<div class="header-popup clearfix">
 							<div class="nav-extra-icon">
-								<a href="#" class="header-icon">
+								
+								<a href="selection-de-biens-immobiliers--177--panier" title="Voir ma sélection de biens" class="header-icon">
 									<i class="flaticon-shopping-cart"></i>
 								</a>
-								<a href="#" class="header-icon">
+								<a href="contacter-agence-immo--73--contact" class="header-icon">
 									<i class="flaticon-technology-2"></i>
 								</a>
-								<a href="javascript:void(0)" id="menu-mobile" class="header-icon menu-mobile">
+								<a href="javascript:void(0)" id="menu-mobile" title="Contactez-nous" class="header-icon menu-mobile">
 									<i class="pe-7s-menu" title="Open Menu"></i>
 								</a>
 							</div>
@@ -85,14 +84,14 @@ session_start(); ?>
 									</a>
 								</li>
 								
-								<li class="<?php if ($id=="T") { echo 'active'; } else { echo ''; } ?>">
-									<a href="biens-immobiliers-nord-tourcoing--T--resultat">Acheter</a>
+								<li class="<?php if (($id=="67")||($id=="178")||($id=="179"))  { echo 'active'; } else { echo ''; } ?>">
+									<a href="biens-immobiliers-nord-tourcoing--67--resultat">Acheter</a>
 									<ul class="sub-menu">
-										<li class="<?php if (($id=="T") && ($_GET['agence']=="tourcoing")) { echo 'active'; } else { echo ''; } ?>">
-											<a href="maisons-tourcoing-lys-lez-lannoy--T--resultat?agence=tourcoing">Agence Tourcoing</a>
+										<li class="<?php if ($id=="178") { echo 'active'; } else { echo ''; } ?>">
+											<a href="maisons-tourcoing-lys-lez-lannoy--178--resultat">Agence Tourcoing</a>
 										</li>
-										<li class="<?php if (($id=="T") && ($_GET['agence']=="lys-lez-lannoy")) { echo 'active'; } else { echo ''; } ?>">
-											<a href="maisons-tourcoing-lys-lez-lannoy--T--resultat?agence=lys-lez-lannoy">Agence Lys-lez-Lannoy</a>
+										<li class="<?php if ($id=="179") { echo 'active'; } else { echo ''; } ?>">
+											<a href="maisons-tourcoing-lys-lez-lannoy--179--resultat">Agence Lys-lez-Lannoy</a>
 										</li>
 									</ul>
 									<span class="menu-toggle">
@@ -179,9 +178,9 @@ session_start(); ?>
 									</div>
 									<p style="text-align: left;">Vous n’avez pas trouvé de bien qui vous convient. Laissez <span style="color: #fff">votre email</span>, et soyez les <span style="color: #fff">1er</span> informés sur les <span style="color: #fff">nouveautés</span> de ces prochaines semaines</p>
 									<div>
-										<form class="espacenews" method="POST" action="#">
-											<input type="text" class="s" name="recherche_generale" value="" placeholder="Votre email">
-											<button type="submit" value="Rechercher" name="submit" class="searchsubmit"><i class="flaticon-right-arrow"></i></button>
+										<form class="espacenews" method="POST" action="insciption-alerte--171--alertemail">
+											<input type="text" class="s" name="email" value="" placeholder="Votre email">
+											<button type="submit" value="Rechercher" name="submit_footer" class="searchsubmit"><i class="flaticon-right-arrow"></i></button>
 										</form>
 									</div>
 								</div>
@@ -207,6 +206,8 @@ session_start(); ?>
 
 		<script type="text/javascript" src="js/jquery.min.js"></script>
 		<script type="text/javascript" src="js/jquery-migrate.min.js"></script>
+		<script type="text/javascript" src="js/jquery-flexdatalist-2.2.1/jquery.flexdatalist.min.js"></script>
+		
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/jquery.singlePageNav.js"></script>
 		<script type="text/javascript" src="js/modernizr-2.7.1.min.js"></script>
@@ -229,54 +230,6 @@ session_start(); ?>
 		<script type="text/javascript" src="js/extensions/revolution.extension.navigation.min.js"></script>
 		<script type="text/javascript" src="js/extensions/revolution.extension.migration.min.js"></script>
 		<script type="text/javascript" src="js/extensions/revolution.extension.parallax.min.js"></script>
-		
-		
-		<?php // On va aller chercher les fourchettes de prix à afficher
-			$req = mysqli_query($link,"SELECT MAX(prix) as max, MIN(prix) as min FROM ".$table_prefix."_biens WHERE 1 ".$add_cat.""); 
-		  	$data = mysqli_fetch_array($req);
-		  	$prix_max = $data['max'];
-		  	$prix_min = $data['min'];
-		  	
-		  	
-		  	//condition qui fait que si l'on n'a pas de $prix_min et de $prix_max (par défaut sur le type de bien, ou via le formulaire de recherche) sur l'échelle de prix, alors on les fixe à 0 et à 1000000. Et spécifiquement à 250-2000 si on est sur les locations.
-		  	if ($id==72) {
-			  	
-			  	if (!$prix_min) {
-				  $prix_min = '250';	
-			  	}
-			  	
-			  	if (!$prix_max) {
-				  $prix_max = '2000';	
-			  	}
-			  	
-		  	} else {
-			  	if (!$prix_min) {
-				  $prix_min = '0';	
-			  	}
-			  	
-			  	if (!$prix_max) {
-				  $prix_max = '1000000';	
-			  	}
-		  	}
-		  	
-		?>
-		
-	<script src="script-prix/js/ion-rangeSlider/ion.rangeSlider.min.js"></script>
-	<script>
-	jQuery("#prix").ionRangeSlider({
-	    type: "double",
-	    grid: true,
-	    min: 0,
-	    max: <?php echo $prix_max; ?>,
-	    from: <?php if($prix_min_fourchette) { echo $prix_min_fourchette; } else { echo $prix_min; } ?>,
-	    to: <?php if($prix_max_fourchette) { echo $prix_max_fourchette; } else { echo $prix_max; } ?>,
 
-	    prefix: "€"
-	    
-	    
-	});		
-	</script>	
-	
-	
 	</body>
 </html>
