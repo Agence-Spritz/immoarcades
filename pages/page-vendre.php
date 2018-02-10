@@ -239,33 +239,33 @@ if ($_POST['submit'] ) {
 						<form action="" method="POST" id="estimation">
 							<div class="row">
 								<div class="col-md-6 mb-3">
-									<input type="text" name="nom" value="" placeholder="Votre nom*" />
+									<input type="text" name="nom" value="" placeholder="Votre nom*" required />
 								</div>
 								<div class="col-md-6 mb-3">
-									<input type="tel" name="tel" value="" placeholder="Votre téléphone*" />
+									<input type="tel" name="tel" value="" placeholder="Votre téléphone*" required />
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-12 mb-3">
-									<input type="email" name="email" value="" placeholder="Votre Email*" />
+									<input type="email" name="email" value="" placeholder="Votre Email*" required />
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-12 mb-3">
-									<textarea name="adresse" cols="40" rows="2" value="" placeholder="Adresse du bien à visiter*"></textarea>
+									<textarea name="adresse" cols="40" rows="2" value="" placeholder="Adresse du bien à visiter*" required></textarea>
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-6 mb-3">
-									<input type="text" name="cp" value="" placeholder="Code postal du bien à visiter*" />
+									<input type="text" name="cp" value="" placeholder="Code postal du bien à visiter*" required />
 								</div>
 								<div class="col-md-6 mb-3">
-									<input type="text" name="ville" value="" placeholder="Ville du bien à visiter*" />
+									<input type="text" name="ville" value="" placeholder="Ville du bien à visiter*" required />
 								</div>
 							</div>
 							<div class="row">
 								<div class="col-md-12 mb-3">
-									<textarea name="dispos" cols="40" rows="2" value="" placeholder="Vos disponibilités*"></textarea>
+									<textarea name="dispos" cols="40" rows="2" value="" placeholder="Vos disponibilités*" required></textarea>
 								</div>
 							</div>
 							<div class="row">

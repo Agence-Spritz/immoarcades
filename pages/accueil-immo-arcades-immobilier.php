@@ -42,7 +42,7 @@
 					<div class="col-md-3">
 					</div>
 					<div class="col-md-6">
-						<form class="searchform" method="POST" action="bien-immobiliers-tourcoing--T--resultat">
+						<form class="searchform" method="POST" action="bien-immobiliers-tourcoing--67--resultat">
 							<input type="text" class="s" name="recherche_generale" value="" placeholder="Mot clé, ville, code postal, réf...">
 							<button type="submit" value="Rechercher" name="submit" class="searchsubmit"><i class="flaticon-construction-12"></i> Chercher</button>
 						</form>
@@ -87,6 +87,69 @@
 				</div>
 			</div>
 		</div>
+		
+		<?php if($_COOKIE['immo-selection']) { 
+			
+			// On créé la liste des ID contenus dans le cookie
+			$list_cookie = explode('-', $_COOKIE['immo-selection']);
+			
+			//On transforme l'array en string
+			$ids = implode(',', $list_cookie);
+			
+			// On supprime le dernier séparateur
+			$ids = rtrim($ids, ",");
+		?>
+		
+		<!--  Ma sélection-->
+			<div class="section liste-biens pt-5 pb-2">
+				<div class="container">
+					<div class="row">
+						
+						<div class="mb-5">
+							<h2 class="sub-heading text-center text-surligne">
+								<span class="f2">Ma sélection</span>
+							</h2>
+						</div>
+						
+						<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE id IN ($ids) ORDER BY dmod DESC LIMIT 0,6");
+						  	while ($data = mysqli_fetch_array($req)) { 
+								$venduloue = $data['venduloue'];
+						?>
+						
+						<div class="col-sm-4 entry-media" style="<?php if ($n==4){ echo 'clear:both';} ?>">
+							<div class="mb-2">
+								<h3 class="heading wg-title"><?php echo $data['localite']; ?></h3>
+								<h2 class="extra-font">
+									<span class="f2">
+									<?php if ($data['cacherprix']!=1){?>
+										<?php echo number_format($data['prix'], 0, ',', ' ').'<sup>€</sup>'; ?>
+                                    <?php } else {echo "Prix sur demande";} ?>
+									</span>
+								</h2>
+							</div>
+							<div class="zone-titre-liste">
+								<p class="description">
+									<?php echo CleanCut($data['descrlight'],100); ?><br />
+								</p>
+							</div>
+							<a href="<?php echo $data['type']; ?>-nord-tourcoing-<?php echo $data['localite']; ?>--<?php echo $data['ID']; ?>--fiche">
+								<div style="position: relative;" class="visuel-bien mt-2 mb-3">
+									<img src="<?php echo $data['PHOTO_01']; ?>" alt="<?php echo $data['titre']; ?>" title="<?php echo $data['titre']; ?>" />
+									<?php if ($venduloue=="Vendu" || $venduloue=="Loué") { //Lou&eacute;?>
+									<div class="banniere-venduloue" ><?php echo $venduloue; ?></div>
+									<?php } ?>
+									<div class="label"><a href="javascript: void(0)" title="Belle opportunité"><i class="flaticon-construction"></i></a></div>
+								</div>
+							</a>
+						</div>
+						
+						<?php } ?>
+					</div>
+				</div>
+			</div>
+
+		
+		<?php } else { ?>
 
 		<!--  Biens à la une première ligne-->
 			<div class="section liste-biens pt-5 pb-2">
@@ -117,8 +180,7 @@
 							</div>
 							<div class="zone-titre-liste">
 								<p class="description">
-									<?php echo CleanCut($data['descrlight'],90); ?><br />
-									<? if ($data['peb']>0){?><img src="img-PEB/img/peb_<?=peblettre($data['peb'])?>.png" style="width:68px" /><?php } ?>
+									<?php echo CleanCut($data['descrlight'],100); ?><br />
 								</p>
 							</div>
 							<a href="<?php echo $data['type']; ?>-nord-tourcoing-<?php echo $data['localite']; ?>--<?php echo $data['ID']; ?>--fiche">
@@ -160,8 +222,7 @@
 							</div>
 							<div class="zone-titre-liste">
 								<p class="description">
-									<?php echo CleanCut($data['descrlight'],90); ?><br />
-									<? if ($data['peb']>0){?><img src="img-PEB/img/peb_<?=peblettre($data['peb'])?>.png" style="width:68px" /><?php } ?>
+									<?php echo CleanCut($data['descrlight'],100); ?><br />
 								</p>
 							</div>
 							<a href="<?php echo $data['type']; ?>-nord-tourcoing-<?php echo $data['localite']; ?>--<?php echo $data['ID']; ?>--fiche">
@@ -178,6 +239,7 @@
 						<?php } ?>
 					</div>
 				</div>
-			</div>       				
+			</div> 
+		<?php } ?>      				
 				
 	</div>
