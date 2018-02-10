@@ -107,6 +107,7 @@ while (list($key, $val) = each($_COOKIE)) {$$key=$val;}
 		          <ul class="dropdown-menu">
 		            <li <?php  if (strpos($url,'referencement.php') !== false) { echo 'class="active"'; } ?>><a href="referencement.php">Référencement</a></li>
 		            <li <?php  if (strpos($url,'contact.php') !== false) { echo 'class="active"'; } ?>><a href="contact.php">Contacts du site</a></li>
+		            <li <?php  if (strpos($url,'alertemail.php') !== false) { echo 'class="active"'; } ?>><a href="alertemail.php">Alertes prospects</a></li>
 		            <li role="separator" class="divider"></li>
 		            <li <?php  if (strpos($url,'divers.php') !== false) { echo 'class="active"'; } ?>><a href="divers.php">Paramètres</a></li>
 		            <li <?php  if (strpos($url,'import_evosys.php') !== false) { echo 'class="active"'; } ?>><a href="cron/import_evosys.php">Synchronisation des biens</a></li>
