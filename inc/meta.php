@@ -24,36 +24,14 @@
 	 
 // OPEN GRAPH
 $ogimg='http://'.$_SERVER[HTTP_HOST].dirname($_SERVER["PHP_SELF"]).'/apple-touch-icon.png';
-$ogtitre='Immobilière des Arcades, vente et location de biens immobilier à Tourcoing et Lys les Lannoy.';
+$ogtitre='Immobilière des Arcades, vente et location de biens immobilier à Tourcoing et Lys-lez-Lannoy.';
 $ogdescr='Depuis 2 générations, l’agence IMA de Tourcoing compte parmi les plus actives agences immobilières tourquennoise. Ceci, grâce en partie à son équipe expérimentée et  pro-active dans les démarches d’achats/ventes de votre maison, appartement, villa ou immeuble de rapport. ';
 
 
   // METAS SPECIAUX PAGES
 
   
-   // Projets neufs
-  if ($id=='71' )
-  {	
-	$titre="Découvrez nos projets immobiliers neufs en Wallonie";
-	
-	$description="Jorion&Desmet vous propose une sélection de projets neufs à Tournai, Mouscron et Mons";
-	$keywords=motcle($titre).",".motcle($description);
-  	$ogimg='http://'.$_SERVER[HTTP_HOST].dirname($_SERVER["PHP_SELF"]).'/images/pages-immobilier-tourcoing-lys-les-lannoy/'.$id.'.jpg';
-	$ogtitre=$titre;
-	$ogdescr=$description;
-  } 
   
- // Locations
-  if ($id=='72' )
-  {	
-	$titre="Locations immobilière à Tournai, Mouscron ou Mons";
-	
-	$description="Jorion&Desmet vous propose une sélection de biens à louer, pour tous vos budgets";
-	$keywords=motcle($titre).",".motcle($description);
-  	$ogimg='http://'.$_SERVER[HTTP_HOST].dirname($_SERVER["PHP_SELF"]).'/images/pages-immobilier-tourcoing-lys-les-lannoy/'.$id.'.jpg';
-	$ogtitre=$titre;
-	$ogdescr=$description;
-  } 
   
   // Actualités
   if ($pg=='detail-actu' )
