@@ -107,11 +107,12 @@ if ($_POST['submit'] ) {
 							<div class="row">
 								<div class="col-md-12 mb-3">
 									<select name="type">
-									<?php $req = mysqli_query($link,"SELECT DISTINCT typesimple FROM ".$table_prefix."_biens WHERE 1 AND typesimple<>'' ORDER BY typesimple ASC"); 
-										  	while ($data = mysqli_fetch_array($req)) { 
-										?>
-											<option value="<?php echo $data['typesimple']; ?>"><?php echo $data['typesimple']; ?></option>
-										<?php } ?>
+									
+										<option value="Maison">Maison</option>
+										<option value="Appartement">Appartement</option>
+										<option value="Immeuble">Immeuble</option>
+										<option value="Commerce">Commerce</option>
+										<option value="Terrain">Terrain</option>
 									</select>
 								</div>
 							</div>
