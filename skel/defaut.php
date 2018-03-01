@@ -43,7 +43,7 @@ session_start(); ?>
 		
 	</head>
 
-	<body>
+	<body onselectstart="return false" oncontextmenu="return false" ondragstart="return false" onMouseOver="window.status='Attention : Le clic droit n\'est pas autorisé sur ce site'; return true;" >
 		<!--<div class="noo-spinner">
 			<div class="spinner">
 				<div class="child double-bounce1"></div>
