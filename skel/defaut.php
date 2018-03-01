@@ -88,10 +88,13 @@ session_start(); ?>
 									<a href="biens-immobiliers-nord-tourcoing--67--resultat">Acheter</a>
 									<ul class="sub-menu">
 										<li class="<?php if ($id=="178") { echo 'active'; } else { echo ''; } ?>">
-											<a href="maisons-tourcoing-lys-lez-lannoy--178--resultat">Agence Tourcoing</a>
+											<a href="maisons-tourcoing-et-environ--178--resultat">Tourcoing et ses environs</a>
 										</li>
 										<li class="<?php if ($id=="179") { echo 'active'; } else { echo ''; } ?>">
-											<a href="maisons-tourcoing-lys-lez-lannoy--179--resultat">Agence Lys-lez-Lannoy</a>
+											<a href="maisons-lys-lez-lannoy--179--resultat">Lys-les-Lannoy et ses environs</a>
+										</li>
+										<li class="<?php if ($id=="67") { echo 'active'; } else { echo ''; } ?>">
+											<a href="biens-immobiliers-nord-tourcoing--67--resultat">Toutes les villes</a>
 										</li>
 									</ul>
 									<span class="menu-toggle">
