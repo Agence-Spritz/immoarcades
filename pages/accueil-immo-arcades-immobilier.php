@@ -81,7 +81,17 @@
 					</div>
 					<div class="col-sm-6 col-lg-offset-1 col-lg-6 images-edito">
 						<div class="text-center">
-							<img src="<?php echo './images/carte.png'; ?>" alt="<?php echo $data['titre']; ?>" title="<?php echo $data['titre']; ?>" />
+							<img class="mb-3" style="max-width: 500px;" src="<?php echo './images/carte.png'; ?>" usemap="#Map" alt="<?php echo $data['titre']; ?>" title="<?php echo $data['titre']; ?>" />
+							
+								<map name="Map" id="Map">
+								    <area alt="" title="" href="maisons-tourcoing-et-environ--178--resultat" shape="poly" coords="168,2,115,75,95,73,53,47,4,73,52,179,103,204,141,251,141,289,87,321,214,376,249,333,282,307,332,295,364,259,348,228,355,208,328,170,296,126,252,44,245,22" />
+								    <area alt="" title="" href="maisons-lys-lez-lannoy--179--resultat" shape="poly" coords="368,260,335,297,284,310,251,334,215,378,171,417,173,469,200,475,214,496,265,511,288,499,378,546,452,531,466,506,448,440,497,408,476,358,487,353,487,323,455,288,365,260" />
+								   
+								</map>
+
+							<a class="btn btn-alt-white btn-border" href="biens-immobiliers-nord-tourcoing--67--resultat">
+								Toutes les villes&nbsp;&nbsp;<i class="btn-icon typcn typcn-arrow-right"></i>
+							</a>
 						</div>
 					</div>
 				</div>
