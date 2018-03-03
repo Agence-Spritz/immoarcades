@@ -119,15 +119,16 @@ google.maps.event.addDomListener(window, 'load', initialize);
 					<div class="container">
 						<div class="row">
 							<div class="col-md-8 col-lg-8">
-								<div id="rev_slider_6" class="rev_slider fullscreenbanner">
+								<div id="rev_slider_5" class="rev_slider fullscreenbanner">
 									<ul>	
+										<a class="bouton_playpause" id="bouton_pause" href="javascript: void(0);" onclick="pause()"><i class="fa fa-pause-circle"></i></a><a class="bouton_playpause" id="bouton_play" href="javascript: void(0);" onclick="play()"><i class="fa fa-play-circle"></i></a>
 										<?php for ($i = 0; $i <= 20; $i++) { 
 											if ($i<10){ $i="0".$i;}
 											if ($data['PHOTO_'.$i]!='') {
 										?>
 										    <!-- SLIDE  -->
 											<li data-transition="random" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300" data-rotate="0" data-saveperformance="off"  data-title="Slide">
-						
+												
 												<img src="<?php echo $data['PHOTO_'.$i]; ?>" alt="<?php echo $titre; ?>" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" />
 						
 											</li>
@@ -229,7 +230,15 @@ google.maps.event.addDomListener(window, 'load', initialize);
 						</div>
 						<div class="row">
 							<div class="col-lg-12">
-								<p><?php echo $description; ?></p>
+								<p><?php echo $description; ?>
+								<?php if($honoraires=='vendeur') {
+									echo "<br /><strong>Honoraires à charge du vendeur</strong>";
+								} else {
+									echo "<br /><strong>Honoraires à charge de l’acquéreur</strong> ";
+									echo "(".number_format($prixnet, 0, ',', ' '). "&euro; honoraires exclus - Honoraires de " .round(100-($prixnet*100)/$prix,2)."% TTC à charge de l’acquéreur)";
+								}
+								?>
+								</p>
 							</div>
 						</div>
 						
@@ -244,25 +253,25 @@ google.maps.event.addDomListener(window, 'load', initialize);
 								<div class="tags mb-2">
 									<div class="entry-tags tagcloud">
 										<?php if($surface) { ?>
-											<a href="#"> <?php echo number_format($surface, 0, ',', ' '); ?>m<sup>2</sup></a> 
+											<a href="#"> <i class="flaticon-home-6"></i><?php echo number_format($surface, 0, ',', ' '); ?>m<sup>2</sup></a> 
 										<?php } ?>
 										
 										<?php if($nb_pieces) { ?>
-											<a href="#"> <?php echo $nb_pieces; ?> pièces</a> 
+											<a href="#"> <i class="flaticon-plans"></i><?php echo $nb_pieces; ?> pièces</a> 
 										<?php } ?>
 										
 										<?php if($nb_chambres) { ?>
-											<a href="#"> <?php echo $nb_chambres; ?> chambres</a>
+											<a href="#"> <i class="flaticon-rest"></i><?php echo $nb_chambres; ?> chambres</a>
 										<?php } ?>
 										
 										<?php if($surface_terrain) { ?>
-											<a href="#"> <?php echo number_format($surface_terrain, 0, ',', ' '); ?>m<sup>2</sup></a>
+											<a href="#"> <i class="flaticon-nature-2"></i><?php echo number_format($surface_terrain, 0, ',', ' '); ?>m<sup>2</sup></a>
 										<?php } ?>
 										<?php if($nb_garages) { ?>
-											<a href="#"> <?php echo $nb_garages; ?> garages</a>
+											<a href="#"> <i class="flaticon-vehicle"></i><?php echo $nb_garages; ?> garages</a>
 										<?php } ?>
 										<?php if($annee) { ?>
-											<a href="#"> <?php echo $annee; ?></a>
+											<a href="#"> <i class="flaticon-construction-15"></i><?php echo $annee; ?></a>
 										<?php } ?>
 									</div>
 								</div>
@@ -279,7 +288,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 									<li role="presentation" class="active"><a href="#caracteristiques" aria-controls="caracteristiques" role="tab" data-toggle="tab">Caractéristiques principales</a></li>
 									<li role="presentation" ><a href="#gaz" aria-controls="gaz" role="tab" data-toggle="tab">Energie GES</a></li>
 								    <li role="presentation"><a href="#peb" aria-controls="peb" role="tab" data-toggle="tab">Indice énergétique DPE</a></li>
-								    <li role="presentation"><a href="#honoraires" aria-controls="honoraires" role="tab" data-toggle="tab">Honoraires</a></li>
+								    <?php if($masquer_adresse==0) { ?><li role="presentation"><a href="#honoraires" aria-controls="honoraires" role="tab" data-toggle="tab">Emplacement</a></li><?php } ?>
 								    
 								</ul>
 							  
@@ -364,26 +373,14 @@ google.maps.event.addDomListener(window, 'load', initialize);
 											<?php } ?>
 											<div id="dpe"></div>
 									</div>
+									<?php if($masquer_adresse==0) { ?>
 									<div role="tabpanel" class="tab-pane fade" id="honoraires">
-										<?php if($honoraires=='vendeur') {
-											echo "<strong>À charge du vendeur</strong>";
-										} else {
-											echo "<strong>À charge de l’acquéreur</strong> <br /><br />";
-											echo number_format($prixnet, 0, ',', ' '). "&euro; honoraires exclus - Honoraires de " .round(100-($prixnet*100)/$prix,2)."% TTC à charge de l’acquéreur";
-										}
-										?>
+										<div id="map-canvas"></div>
 									</div>
-									
+									<?php } ?>
 								</div>
 							</div>
 							
-						</div>
-						
-						<!-- Plan -->
-						<div class="row">
-							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 mb-2">
-								<?php if($masquer_adresse==0) { ?><div id="map-canvas"></div><?php } ?>
-							</div>
 						</div>
 						
 						<!-- Biens relatifs -->
@@ -463,6 +460,31 @@ google.maps.event.addDomListener(window, 'load', initialize);
 	
 </div>
 
+
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script>
+$(document).ready(function(){
+     $("#bouton_play").hide(); 	
+});	
+
+	function pause() {
+        var revapi = jQuery('#rev_slider_5');
+		revapi.revpause();
+		$("#bouton_pause").hide();
+		$("#bouton_play").show();
+	}
+	
+	function play() {
+        var revapi = jQuery('#rev_slider_5');
+		revapi.revnext();
+		
+		$("#bouton_play").hide();
+		$("#bouton_pause").show();
+	}
+
+</script>
+
+
  <script src="js/dpeges/dpeges.js"></script>
 <script type="text/javascript">
   var dpe = new DpeGes();
@@ -481,7 +503,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
     
 
 <!-- BOUTON COMPARER --> 
-<script type="text/javascript" src="js/jquery.min.js"></script>
+
 <script>
 	/*Message ajouter ou supprimer + cookie update*/
 	$('.AddMaselection').click(function(){
