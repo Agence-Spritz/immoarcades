@@ -1432,6 +1432,12 @@ ul.breadcrumbs li:last-child:after {
     background: #1f1f1f;
     color: #fff;
 }
+
+.tagcloud [class^="flaticon-"]:before {
+	margin-left: 0;
+	margin-right: 10px;
+}
+
 .widget_color ul li {
     padding-top: 10px;
     padding-bottom: 10px;
@@ -5665,4 +5671,18 @@ div.progresswrap {
 	margin-left: 0;
 	margin-right: 10px;
 	color: #d90102;
+}
+
+.bouton_playpause {
+	position: absolute;
+	top: 40%;
+	left: 50%;
+	margin-left: -25px;
+	z-index: 1000;
+}
+
+.fa-play-circle:before, .fa-pause-circle:before {
+	margin-left: 0;
+	font-size: 50px;
+	color: #fff;
 }
