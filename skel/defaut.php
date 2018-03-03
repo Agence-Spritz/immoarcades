@@ -235,4 +235,5 @@ session_start(); ?>
 		<script type="text/javascript" src="js/extensions/revolution.extension.parallax.min.js"></script>
 
 	</body>
+	
 </html>
