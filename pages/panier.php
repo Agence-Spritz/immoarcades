@@ -73,15 +73,29 @@
 										<?php echo CleanCut($data['descrlight'],100); ?><br />
 									</p>
 								</div>
-								<a href="<?php echo $data['type']; ?>-nord-tourcoing-<?php echo $data['localite']; ?>--<?php echo $data['ID']; ?>--fiche">
-									<div style="position: relative;" class="visuel-bien mt-2 mb-3">
-										<img src="<?php echo $data['PHOTO_01']; ?>" alt="<?php echo $data['titre']; ?>" title="<?php echo $data['titre']; ?>" />
-										<?php if ($venduloue=="Vendu" || $venduloue=="Loué") { //Lou&eacute;?>
-										<div class="banniere-venduloue" ><?php echo $venduloue; ?></div>
-										<?php } ?>
-										<div class="label"><a href="javascript: void(0)" title="Belle opportunité"><i class="flaticon-construction"></i></a></div>
-									</div>
-								</a>
+								<div class="mt-2 mb-3">
+									<a href="<?php echo $data['type']; ?>-nord-tourcoing-<?php echo $data['localite']; ?>--<?php echo $data['ID']; ?>--fiche">
+										<div style="position: relative;" class="visuel-bien ">
+											<img src="<?php echo $data['PHOTO_01']; ?>" alt="<?php echo $data['titre']; ?>" title="<?php echo $data['titre']; ?>" />
+											<?php if ($venduloue=="Vendu" || $venduloue=="Loué") { //Lou&eacute;?>
+											<div class="banniere-venduloue" ><?php echo $venduloue; ?></div>
+											<?php } ?>
+											<div class="label"><a href="javascript: void(0)" title="Belle opportunité"><i class="flaticon-construction"></i></a></div>
+										</div>
+									</a>
+									<?php
+								
+								// Compteur de MaSelection 
+								$xpldSelection=explode("-",$_COOKIE['immo-selection']);
+								$NbrSelection=count($xpldSelection)-1;
+								
+									$msgSelection='<i class="fa fa-close" style="color: #fe0000;"></i> Supprimer de ma liste de sélections';
+									$selectID="NO";
+								
+								?>
+								<a href="javascript: void(0);" id="<?php echo $data['ID']; ?>" onClick="DelMaselection(this.id);"><div class="DelMaselection"><i class="fa fa-close" style="color:#fe0000"></i> Supprimer de ma sélection</div></a>
+								
+								</div>
 							</div>
 							
 							<?php } ?>
@@ -98,8 +112,17 @@
 				</div>
 			</div>
 
-	
-	
-	
-	
 </div>
+<!-- BOUTON COMPARER --> 
+<script>
+	
+	function DelMaselection(id)
+            {
+                $.post('./panier-biens/inc/MaSelectionCookie.php',{addselection:'<i class="flaticon-shopping-cart"></i> Ajouter à ma liste de sélections', selectID:'NO-'+id, NbrSelection:<?=$NbrSelection?>},
+				function(){
+					$('.DelMaselection').html(''),
+					window.location.reload()
+				});
+            }
+  
+</script>
