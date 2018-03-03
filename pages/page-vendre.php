@@ -17,8 +17,10 @@ if ($_POST['submit'] ) {
 	$email= clean_form(trim($_POST['email']));
 	$tel= clean_form($_POST['tel']);		
 	$adresse= clean_form($_POST['adresse']);	
+/*
 	$code= clean_form($_POST['cp']);				
 	$ville= clean_form($_POST['ville']);
+*/
 	$dispos = 	clean_form($_POST['dispos']);
 	
 	
@@ -42,8 +44,8 @@ if ($_POST['submit'] ) {
 		$body .= "<strong>Tel :</strong> " . (($tel)?($tel):("-")) ."<br />";
 		$body .= "<strong>Coordonnées du bien à estimer</strong>";
 		$body .= "<strong>Adresse</strong> : " . (($adresse)?($adresse):("-"))."<br />";
-		$body .= "<strong>Code Postal</strong> : " . (($code)?($code):("-"))."<br />";
-		$body .= "<strong>Ville</strong> : " . (($ville)?($ville):("-"))."<br />";
+		//$body .= "<strong>Code Postal</strong> : " . (($code)?($code):("-"))."<br />";
+		//$body .= "<strong>Ville</strong> : " . (($ville)?($ville):("-"))."<br />";
 		
 		$body .= "<strong>Disponibilités du contact</strong> : " .(($dispos)?($dispos):("-"))."<br />" ;
 		
@@ -102,7 +104,7 @@ if ($_POST['submit'] ) {
 
 	<!-- Corps de la page
 	================================================== -->
-	<div class="section pt-8 pb-8">
+	<div class="section pt-8">
 		<div class="container">
 			<div class="row">
 				
@@ -132,6 +134,7 @@ if ($_POST['submit'] ) {
 				<?php } ?>
 				<div style="clear: both;"></div>
 			
+<!--
 				<div class="col-sm-12 col-lg-12 col-md-12">		
 					<h3 class="heading wg-title">Un service sur mesure en 5 étapes</h3>
 			        <div class="wizard">
@@ -209,9 +212,95 @@ if ($_POST['submit'] ) {
 			            </form>
 			        </div>
 				</div>
+-->
 		   	</div>
 		</div>
 
+	</div>
+	
+	<div class="section  pb-10">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3">
+					<div class="mb-6">
+						<h3 class="heading wg-title">Un service sur mesure en 5 étapes</h3>
+					</div>
+				</div>
+				<div class="col-md-9">
+					<div class="mb-6">
+						<h2 class="sub-heading text-right">
+							<span class="f1">Etapes d'une mise en vente</span> 
+						</h2>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12 p-0">
+					<div class="team-carousel" data-auto-play="true" data-desktop="4" data-laptop="4" data-tablet="2" data-mobile="1">
+						<div class="team-item text-center">
+							<div class="team-media">
+								<a href="team-detail.html">
+									<img class="img-circle" src="images/vendre-etape1.jpg" alt="" />
+								</a>
+							</div>
+							<h5><a href="team-detail.html">Rencontre</a></h5>
+							<div class="position extra-font italic">Vos souhaits</div>
+							<div class="description">
+								Définition de vos souhaits et mise en valeur de votre bien.
+							</div>
+						</div>
+						<div class="team-item text-center">
+							<div class="team-media">
+								<a href="team-detail.html">
+									<img class="img-circle" src="images/vendre-etape2.jpg" alt="" />
+								</a>
+							</div>
+							<h5><a href="team-detail.html">Mise en vente</a></h5>
+							<div class="position extra-font italic">Photos, Vidéos, Pubs</div>
+							<div class="description">
+								Préparation des différents médias de diffusion et de publicité.
+							</div>
+						</div>
+						<div class="team-item text-center">
+							<div class="team-media">
+								<a href="team-detail.html">
+									<img class="img-circle" src="images/vendre-etape3.jpg" alt="" />
+								</a>
+							</div>
+							<h5><a href="team-detail.html">Suivi de la vente</a></h5>
+							<div class="position extra-font italic">Analyse et compte rendu</div>
+							<div class="description">
+								Parce qu'il est indispensable que nos clients soient tenus informés.
+							</div>
+						</div>
+						<div class="team-item text-center">
+							<div class="team-media">
+								<a href="team-detail.html">
+									<img class="img-circle" src="images/vendre-etape4.jpg" alt="" />
+								</a>
+							</div>
+							<h5><a href="team-detail.html">C'est vendu</a></h5>
+							<div class="position extra-font italic">Rédaction des contrats</div>
+							<div class="description">
+								Prise en charge totale jusqu’à la conclusion de la vente. 
+							</div>
+						</div>
+						<div class="team-item text-center">
+							<div class="team-media">
+								<a href="team-detail.html">
+									<img class="img-circle" src="images/vendre-etape5.jpg" alt="" />
+								</a>
+							</div>
+							<h5><a href="team-detail.html">Cheers</a></h5>
+							<div class="position extra-font italic">.Santé ! </div>
+							<div class="description">
+								Il est temps de sceller notre collaboration.
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	
 	<div class="section bg-light">
@@ -252,17 +341,10 @@ if ($_POST['submit'] ) {
 							</div>
 							<div class="row">
 								<div class="col-md-12 mb-3">
-									<textarea name="adresse" cols="40" rows="2" value="" placeholder="Adresse du bien à visiter*" required></textarea>
+									<textarea name="adresse" cols="40" rows="2" value="" placeholder="Adresse complète du bien à visiter*" required></textarea>
 								</div>
 							</div>
-							<div class="row">
-								<div class="col-md-6 mb-3">
-									<input type="text" name="cp" value="" placeholder="Code postal du bien à visiter*" required />
-								</div>
-								<div class="col-md-6 mb-3">
-									<input type="text" name="ville" value="" placeholder="Ville du bien à visiter*" required />
-								</div>
-							</div>
+							
 							<div class="row">
 								<div class="col-md-12 mb-3">
 									<textarea name="dispos" cols="40" rows="2" value="" placeholder="Vos disponibilités*" required></textarea>
