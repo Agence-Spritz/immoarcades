@@ -974,7 +974,7 @@ function RevolutionInitSidebar() {
 		sliderType:"standard",
 		sliderLayout:"auto",
 		dottedOverlay:"none",
-		delay:9000,
+		delay:2000,
 		navigation: {
 			keyboardNavigation:"off",
 			keyboard_direction: "horizontal",
@@ -983,7 +983,7 @@ function RevolutionInitSidebar() {
 			onHoverStop:"off",
 			arrows: {
 				style:"nito-agency-03-0244",
-				enable:true,
+				enable:false,
 				hide_onmobile:false,
 				hide_onleave:true,
 				hide_delay:200,
