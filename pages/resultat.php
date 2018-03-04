@@ -157,6 +157,14 @@
 							<?php if($textep) {?>
 								<p><?php echo $textep; ?></p>
 							<?php } ?>
+						
+							<ul class="breadcrumbs">
+								<li><a href="<?php echo $defaultpg; ?>.php">Accueil</a></li>
+								<?php if ($id=="178" || $id=="179") { ?>
+								<li><a href="biens-immobiliers-nord-tourcoing--67--resultat">Acheter</a></li>
+								<?php } ?>
+								<li><?php echo $titrep; ?></li>
+							</ul>
 						</div>
 					</div>
 				</div>
@@ -400,7 +408,7 @@
 			<div class="row">
 				
 				<div class="col-md-12 col-lg-12">
-					<div class="blog-list">
+					<div class="blog-list" >
 						
 						<?php // Requête générale pour lister les biens
 							
@@ -447,108 +455,135 @@
 										} else {
 											$url_fiche = "#";
 										}
+										
+										
+										$type_bien =  clean_form($data['type']); 
+										
+										if($type_bien=="Maison") {
+											$icone_bien = '<i class="flaticon-construction-9"></i>';
+										} else if ($type_bien=="Ferme") {
+											$icone_bien = '<i class="flaticon-construction-7"></i>';
+										} else if ($type_bien=="Commerce") {
+											$icone_bien = '<i class="flaticon-interview"></i>';
+										} else if ($type_bien=="Penthouse") {
+											$icone_bien = '<i class="flaticon-construction-11"></i>';
+										} else if ($type_bien=="Appartement") {
+											$icone_bien = '<i class="flaticon-buildings-1"></i>';
+										} else if ($type_bien=="Terrain") {
+											$icone_bien = '<i class="flaticon-nature"></i>';
+										} else if ($type_bien=="Villa") {
+											$icone_bien = '<i class="flaticon-nature-1"></i>';
+										} else {
+											$icone_bien = NULL;
+										}
+										
 							?>
 							
+															
 										<div class="entry-blog list resultats">
+											
 											<div style="position: relative;" class="blog-item bg-white">
 												
-												<!-- Zone de survol
-														================================================== -->
-												<?php // On affiche la zone de survol que si on a au moins 1 autre photo
-													if($data['PHOTO_02']!="") { ?>
-														<div class="survol-photo">
-															
-															<a href="<?php echo $url_fiche; ?>" title="En savoir plus" > 
-																<img style="float: left;" src="<?php echo $data['PHOTO_01']; ?>" alt="<?php echo $data['localite']; ?>" title="<?php echo $data['titre']; ?>" />
-															</a>
-															
-															<?php if($data['PHOTO_02']!="") { ?>
-																<a href="<?php echo $url_fiche; ?>" title="En savoir plus" > 
-																	<img style="float: left;" src="<?php echo $data['PHOTO_02']; ?>" alt="<?php echo $data['localite']; ?>" title="<?php echo $data['titre']; ?>" />
-																</a>
-															<?php } ?>
-															
-															<?php if($data['PHOTO_03']!="") { ?>
-																<a href="<?php echo $url_fiche; ?>" title="En savoir plus" > 
-																	<img style="float: left;" src="<?php echo $data['PHOTO_03']; ?>" alt="<?php echo $data['localite']; ?>" title="<?php echo $data['titre']; ?>" />
-																</a>
-															<?php } ?>
+												<div class="zone-survol">
+												
+													<!-- Zone de survol
+															================================================== -->
+													<?php // On affiche la zone de survol que si on a au moins 1 autre photo
+														if($data['PHOTO_02']!="") { ?>
+															<div class="survol-photo">
 																
-																<?php if ($venduloue=="") { ?>
-																<a href="<?php echo $url_fiche; ?>" title="En savoir plus" class="carre-plus"> 
-																	<i class="flaticon-search"></i>
+																<a id="action_toogle" href="<?php echo $url_fiche; ?>" title="En savoir plus" > 
+																	<img style="float: left;" src="<?php echo $data['PHOTO_01']; ?>" alt="<?php echo $data['localite']; ?>" title="<?php echo $data['titre']; ?>" />
 																</a>
+																
+																<?php if($data['PHOTO_02']!="") { ?>
+																	<a href="<?php echo $url_fiche; ?>" title="En savoir plus" > 
+																		<img style="float: left;" src="<?php echo $data['PHOTO_02']; ?>" alt="<?php echo $data['localite']; ?>" title="<?php echo $data['titre']; ?>" />
+																	</a>
 																<?php } ?>
 																
-														</div>
-												<?php } ?>
-												
-												<div class="col-md-4 col-lg-4">
-													<div class="entry-media">
-															<img class="photo-principale" src="<?php echo $data['PHOTO_01']; ?>" alt="<?php echo $data['localite']; ?>" title="<?php echo $data['titre']; ?>" />
-
-															<?php if ($venduloue=="") { ?>
-															<a href="<?php echo $url_fiche; ?>" class="nectar-love right" title="En savoir plus"> 
-																<i class="fa fa-plus"></i>
-															</a>
-															<?php } elseif ($venduloue=="Vendu" || $venduloue=="Loué") { //Lou&eacute;?>
-																<div class="banniere-venduloue" ><?php echo $venduloue; ?></div>
-															<?php } else { ?>
-																<div class="banniere-venduloue" style="background-color:RGBA(47,54,63,0.8)"><?php echo $venduloue; ?></div>
-															<?php } ?>
-													</div>
-												</div>
-												<div class="col-md-8 col-lg-8">
+																<?php if($data['PHOTO_03']!="") { ?>
+																	<a href="<?php echo $url_fiche; ?>" title="En savoir plus" > 
+																		<img style="float: left;" src="<?php echo $data['PHOTO_03']; ?>" alt="<?php echo $data['localite']; ?>" title="<?php echo $data['titre']; ?>" />
+																	</a>
+																<?php } ?>
+																	
+																	<?php if ($venduloue=="") { ?>
+																	<a href="<?php echo $url_fiche; ?>" title="En savoir plus" class="carre-plus"> 
+																		<i class="flaticon-search"></i>
+																	</a>
+																	<?php } ?>
+																	
+															</div>
+													<?php } ?>
 													
-													<!-- Corps de la fiche
-														================================================== -->
-													<div  class="entry-content pl-0 pr-0">
-														
-														<div class="entry-header">
-															<div class="mb-2">
-																<h3 class="heading wg-title"><?php echo $data['type']; ?> à <?php echo $data['localite']; ?></h3>
-															</div>
+													<div class="col-md-4 col-lg-4">
+														<div class="entry-media">
+																<img class="photo-principale" src="<?php echo $data['PHOTO_01']; ?>" alt="<?php echo $data['localite']; ?>" title="<?php echo $data['titre']; ?>" />
+	
+																<?php if ($venduloue=="") { ?>
+																<a href="<?php echo $url_fiche; ?>" class="nectar-love right" title="En savoir plus"> 
+																	<i class="fa fa-plus"></i>
+																</a>
+																<?php } elseif ($venduloue=="Vendu" || $venduloue=="Loué") { //Lou&eacute;?>
+																	<div class="banniere-venduloue" ><?php echo $venduloue; ?></div>
+																<?php } else { ?>
+																	<div class="banniere-venduloue" style="background-color:RGBA(47,54,63,0.8)"><?php echo $venduloue; ?></div>
+																<?php } ?>
 														</div>
-														<div style="position: relative;" class="content">
-															<div class="description">
-																<p><?php echo $data['titre']; ?></p>
+													</div>
+													<div class="col-md-8 col-lg-8">
+														
+														<!-- Corps de la fiche
+															================================================== -->
+														<div  class="entry-content pl-0 pr-0">
+															
+															<div class="entry-header">
+																<div class="mb-2">
+																	<h3 class="heading wg-title"><?php echo $data['type']; ?> à <?php echo $data['localite'].''.$icone_bien; ?> </h3>
+																</div>
+															</div>
+															<div style="position: relative;" class="content">
+																<div class="description">
+																	<p><?php echo $data['titre']; ?></p>
+																</div>
+																
+																<div class="zone-pictos">
+																	<ul>
+																	<?php if (($data['qsurfhab']!='')&&($data['qsurfhab']!='0')) { ?>
+																		<li><i class="flaticon-home-6"></i> Surface habitable : <?php echo number_format($data['qsurfhab'], 0, ',', ' '); ?>m<sup>2</sup></li>
+																	<?php } ?>
+	                                                                <?php if ($data['cat']=="T" && $data['qsurfterrain']!='' && $data['qsurfterrain']!='0') { ?>
+																		<li><i class="flaticon-nature-2"></i> Surface terrain :  <?php echo number_format($data['qsurfterrain'], 0, ',', ' '); ?>m<sup>2</sup></li>
+																	<?php } ?>
+																	<?php if ($data['chambre']!='') { ?>
+																		<li><i class="flaticon-rest"></i> Nbr de chambres : <?php echo $data['chambre']; ?></li>
+																	<?php } ?>
+																	<?php if ($data['qgarages']!='') { ?>
+																		<li><i class="flaticon-vehicle"></i> Garage(s) :  <?php echo $data['qgarages']; ?></li>
+																	<?php } ?>
+	                                                                <?php if($data['sdb']>0) { ?>
+	                                                                    <li><i class="flaticon-bathtub"></i> Salle(s) de bain : <?php echo $data['sdb']; ?></li>
+	                                                                <?php } ?>
+																	</ul>
+																</div>
 															</div>
 															
-															<div class="zone-pictos">
-																<ul>
-																<?php if (($data['qsurfhab']!='')&&($data['qsurfhab']!='0')) { ?>
-																	<li>Surface habitable : <?php echo number_format($data['qsurfhab'], 0, ',', ' '); ?>m<sup>2</sup></li>
-																<?php } ?>
-                                                                <?php if ($data['cat']=="T" && $data['qsurfterrain']!='' && $data['qsurfterrain']!='0') { ?>
-																	<li>Surface terrain :  <?php echo number_format($data['qsurfterrain'], 0, ',', ' '); ?>m<sup>2</sup></li>
-																<?php } ?>
-																<?php if ($data['chambre']!='') { ?>
-																	<li>Nbr de chambres : <?php echo $data['chambre']; ?></li>
-																<?php } ?>
-																<?php if ($data['qgarages']!='') { ?>
-																	<li>Garage(s) :  <?php echo $data['qgarages']; ?></li>
-																<?php } ?>
-                                                                <?php if($data['sdb']>0) { ?>
-                                                                    <li>Salle(s) de bain : <?php echo $data['sdb']; ?></li>
-                                                                <?php } ?>
-																</ul>
-															</div>
+	                                                        <?php if (!$venduloue) { ?>
+		                                                        <div class="prix extra-font">
+			                                                        <span class="f2">
+																	<?php if ($data['cacherprix']!=1){?>
+																		<?php echo number_format($data['prix'], 0, ',', ' ').'<sup>€</sup>'; ?>
+		                                                            <?php } else {echo "Prix sur demande";} ?>
+		                                                            </span>
+																</div>
+	                                                        <?php } ?>
+	                                 
 														</div>
-														
-                                                        <?php if (!$venduloue) { ?>
-	                                                        <div class="prix extra-font">
-		                                                        <span class="f2">
-																<?php if ($data['cacherprix']!=1){?>
-																	<?php echo number_format($data['prix'], 0, ',', ' ').'<sup>€</sup>'; ?>
-	                                                            <?php } else {echo "Prix sur demande";} ?>
-	                                                            </span>
-															</div>
-                                                        <?php } ?>
-                                 
 													</div>
+													<div style="clear: both;"></div>
 												</div>
-												<div style="clear: both;"></div>
-												
+												<div id="action_toogle" class="croix_close"><a  href="javascript: void(0);"><i class="fa fa-times"></i></a></div>
 											</div>
 										</div>
 							
