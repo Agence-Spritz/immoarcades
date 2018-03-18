@@ -67,24 +67,39 @@ $erreur = 0;
 // 3 RECUPERATION DES VALEURS
 
 	foreach ($xml->bien as $bien) {
+		
 		$n++;
-	
+		
 		// On crée nos variables
 		$ref = $bien->reference;
 		$venduloue = NULL;
 		$mandat = $bien->num_mandat;
-		$nom_agence = $bien->nom_agence;
-		$ville_agence = $bien->ville_agence;
+		$nom_agence = preg_replace("/'/","`",stripslashes($bien->nom_agence));
+		$ville_agence = preg_replace("/'/","`",stripslashes($bien->ville_agence));
+		// On créé un num pour l'agence
+		if($ville_agence=='Tourcoing') {
+			// Tourcoing : 1
+			$agence = 1;
+		} else {
+			// Lys les Lannoy : 2
+			$agence = 2;
+		}
 		$nannee = NULL;
 		$pays = $bien->nom_pays;
 		$codepostal = $bien->code_postal;
-		$localite = $bien->ville;
-		$quartier = $bien->proximite;
-		$titre = $bien->type_bien;
-		$descrlight = $bien->description_internet;
+		$localite=preg_replace("/'/","`",stripslashes($bien->ville));
+		$quartier = preg_replace("/'/","`",stripslashes($bien->proximite));
+		$titre=preg_replace("/'/","`",stripslashes($bien->type_bien));
+		$descrlight=preg_replace("/'/","`",stripslashes($bien->description_internet));
 		$type_transaction = $bien->type_transaction;
+		if($type_transaction=='vente' || $type_transaction=='Vente') {
+			$cat = "V";
+		} else {
+			$cat = NULL;
+		}
+		
 		$surfjardin = $bien->surface_jardin;
-		if($surfterrain >=1) {
+		if($surfjardin >=1) {
 			$jardin = 1;
 		} else {
 			$jardin = 0;
@@ -92,8 +107,9 @@ $erreur = 0;
 		$surfhab = $bien->surface_habitable;
 		$terrasse = $bien->terrasse;
 		$cetat = NULL;
-		$type = $bien->type_bien;
+		$type = preg_replace("/'/","`",stripslashes($bien->type_bien));
 		$dbu=date("Y-m-d");
+		$dmod=date("Y-m-d");
 		$prix = $bien->prix;
 		$prix_fai = $bien->fai;
 		$cacherprix = 0;
@@ -111,7 +127,7 @@ $erreur = 0;
 		$cave = $bien->nb_cave;
 		$ascenseur = $bien->ascenseur;
 		$balcon = $bien->balcon;
-		$chauffage = $bien->type_chauffage;
+		$chauffage = preg_replace("/'/","`",stripslashes($bien->type_chauffage));
 		$type_cuisine = $bien->type_cuisine;
 		$dispoquand = NULL;
 		$virtuel = $bien->url_vv;
@@ -120,22 +136,25 @@ $erreur = 0;
 		$bilan_energie = $bien->bilan_energie;
 		$bilan_ges = $bien->bilan_ges;
 		$composition = NULL;
-		$nouveaute = NULL;
+		
+		$nouveaute = 1;
+		
 	
 		// On crée les variables des images
 		$p=0;
 		$set_image = $bien->images;
+		$image_path = base_url().'kaio';
 		
 		foreach ($set_image->image as $image) {
 			$compteur = sprintf("%02d", $p);
 			
-			${'PHOTO_' . $compteur} = $image;
+			${'PHOTO_' . $compteur} = $image_path.'/'.$image;
 			$p++;
 		
 		}
 		
 // 3 ON REMPLIT LA TABLE
-		if ($n>1) {
+		if ($n>0) {
 			
 			mysqli_query($link,"INSERT INTO ".$table_prefix."_biens ( 
 			`ID`,
@@ -144,6 +163,7 @@ $erreur = 0;
 			`mandat`,
 			`nom_agence`,
 			`ville_agence`,
+			`agence`,
 			`nannee`,
 			`pays`,
 			`codepostal`,
@@ -152,6 +172,7 @@ $erreur = 0;
 			`titre`,
 			`descrlight`,
 			`type_transaction`,
+			`cat`,
 			`surfjardin`,
 			`jardin`,
 			`surfhab`,
@@ -159,6 +180,7 @@ $erreur = 0;
 			`cetat`,
 			`type`,
 			`dbu`,
+			`dmod`,
 			`PHOTO_01`,
 			`PHOTO_02`,
 			`PHOTO_03`,
@@ -214,6 +236,7 @@ $erreur = 0;
 			'".$mandat."',
 			'".$nom_agence."',
 			'".$ville_agence."',
+			'".$agence."',
 			'".$nannee."',
 			'".$pays."',
 			'".$codepostal."',
@@ -222,6 +245,7 @@ $erreur = 0;
 			'".$titre."',
 			'".$descrlight."',
 			'".$type_transaction."',
+			'".$cat."',
 			'".$surfjardin."',
 			'".$jardin."',
 			'".$surfhab."',
@@ -229,6 +253,7 @@ $erreur = 0;
 			'".$cetat."',
 			'".$type."',
 			'".$dbu."',
+			'".$dmod."',
 			'".$PHOTO_01."',
 			'".$PHOTO_02."',
 			'".$PHOTO_03."',
@@ -278,6 +303,10 @@ $erreur = 0;
 			'".$nouveaute."'
 			)
 			");	
+			
+			
+			
+			echo $n." : Enregistrement du bien réf.: ".$ref."<br />";
 			
 			$erreur = 0;
 			$message = "<div class='alert alert-success' role='alert'>Félicitations, tous les enregistrements ont été réalisés avec succès</div>";
