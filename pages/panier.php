@@ -52,7 +52,7 @@
 						?>
 		
 						
-							<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE id IN ($ids) ORDER BY dmod DESC LIMIT 0,6"); 
+							<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE ID IN ($ids) ORDER BY dmod DESC LIMIT 0,6"); 
 							  	while ($data = mysqli_fetch_array($req)) { 
 									$venduloue = $data['venduloue'];
 							?>

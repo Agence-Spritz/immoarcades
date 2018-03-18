@@ -2,62 +2,66 @@
 		$req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE ID='$id'"); 
 		$data = mysqli_fetch_array($req);
 		
+		$ref = $data['ref'];
 		$venduloue = $data['venduloue'];
 		$titre = $data['titre'];
 		$localite = $data['localite'];
-		$region = $data['cregion'];
+		$annee = $data['nannee'];
 		$quartier = $data['quartier'];
-		$typesimple = $data['typesimple'];
+		$etat = $data['cetat'];
 		$type = $data['type'];
-		$type = str_replace(' ', '', $type);
-		$prix = $data['prix'];
-		$prixnet = $data['prixnet'];
-		$honoraires = $data['honoraires'];
+		$nb_pieces = $data['qpieces'];
+		$prix = $data['prix_fai'];
+		$prixnet = $data['prix'];
+		$honoraires = 'acquereur';
 		$cacherprix = $data['cacherprix'];
 		$description = $data['descrlight'];
 		$composition = $data['composition'];
 		// On remplace les doubles sauts de ligne
 		$composition = str_replace('<br><br>', '<br>', $composition); 
-		$surface = $data['qsurfhab'];
-		$nb_chambres = $data['chambre'];
+		$surface = $data['surfhab'];
+		$nb_chambres = $data['qchambres'];
 		$nb_garages = $data['qgarages'];
-		$nb_sdb = $data['sdb'];
-		$surface_terrain = $data['qsurfterrain'];
-		$surface_terrasse = $data['qsurfterrasse'];
-		$annee = $data['nannee'];
-		$ref = $data['ref'];
-		$style = $data['stylemaison'];
-		$etat = $data['cetat'];
-		$type_chauffage = $data['chaufdescrip'];
-		$gaz = $data['gaz'];
-		$elec_chiffre = $data['elecchiffre'];
-		$facade = $data['facade'];
+		$nb_parking = $data['qparking'];
+		$nb_sdb = $data['qsdb'];
+		$nb_wc = $data['qwc'];
+		$surface_jardin = $data['surfjardin'];
+		$type_chauffage = $data['chauffage'];
+		$type_cuisine = $data['type_cuisine'];
+		$terrasse = $data['terrasse'];
 		$jardin = $data['jardin'];
 		$etage = $data['etage'];
+		$nb_etage = $data['nb_etage'];
 		$ascenseur = $data['ascenseur'];
-		$cour = $data['cour'];
+		$balcon = $data['balcon'];
 		$cave = $data['cave'];
 		
-		if($data['peb']!="") {
-			$PEB = $data['peb'];
+		
+		if($data['dep']!="" && $data['dep']!="0") {
+			$PEB = $data['dep'];
 		} else {
-			$PEB = 'N.C.';
+			$PEB = $data['bilan_energie'];
 		}
 		
-		if($data['ges']!="") {
+		if($data['ges']!="" && $data['ges']!="0") {
 			$GES = $data['ges'];
 		} else {
-			$GES = 'N.C.';
+			$GES = $data['bilan_ges'];
 		}
 		
 		
 		$masquer_adresse = $data['masquer_adresse'];
 		
-		if($masquer_adresse!=1 && $data['adresse']!="") {
-			$adresse = $data['adresse'];
+		if($masquer_adresse!=1 && $data['longitude']!="" && $data['latitude']!="") {
+			$longitude = $data['longitude'];
+			$latitude = $data['latitude'];
+		
+			$adresse = $longitude.", ".$latitude;
+			
 		} else {
 			$adresse = $data['localite'];
 		}	
+		
 			
 			
 ?>
@@ -141,7 +145,13 @@ google.maps.event.addDomListener(window, 'load', initialize);
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
 								<h5 class="wg-title"><?php echo $localite; ?></h5>
-								<h3 class="entry-title fw-bolder"><?php echo $titre; ?></h3>
+								<h3 class="entry-title fw-bolder">
+									<?php echo $data['titre']; 
+										if($data['qpieces']!='' && $data['qpieces']!='0') {
+											echo ' '.$data['qpieces'].' pièces';
+										}
+									?>
+								</h3>
 								
 								<ul class="entry-meta single-meta">
 									<li class="extra-font dark"><i><?php if ($cacherprix!=1){ echo "<h3 style=' display: inline;'>".number_format($data['prix'], 0, ',', ' ').'<sup>€</sup></h3>'; } else {echo "<h3>Prix sur demande</h3>";} ?></i>
@@ -252,25 +262,25 @@ google.maps.event.addDomListener(window, 'load', initialize);
 							<div class="col-lg-12">
 								<div class="tags mb-2">
 									<div class="entry-tags tagcloud">
-										<?php if($surface) { ?>
+										<?php if($surface>0) { ?>
 											<a href="#"> <i class="flaticon-home-6"></i><?php echo number_format($surface, 0, ',', ' '); ?>m<sup>2</sup></a> 
 										<?php } ?>
 										
-										<?php if($nb_pieces) { ?>
+										<?php if($nb_pieces>0) { ?>
 											<a href="#"> <i class="flaticon-plans"></i><?php echo $nb_pieces; ?> pièces</a> 
 										<?php } ?>
 										
-										<?php if($nb_chambres) { ?>
+										<?php if($nb_chambres>0) { ?>
 											<a href="#"> <i class="flaticon-rest"></i><?php echo $nb_chambres; ?> chambres</a>
 										<?php } ?>
 										
-										<?php if($surface_terrain) { ?>
-											<a href="#"> <i class="flaticon-nature-2"></i><?php echo number_format($surface_terrain, 0, ',', ' '); ?>m<sup>2</sup></a>
+										<?php if($jardin==1) { ?>
+											<a href="#"> <i class="flaticon-nature-2"></i> Jardin</a>
 										<?php } ?>
-										<?php if($nb_garages) { ?>
-											<a href="#"> <i class="flaticon-vehicle"></i><?php echo $nb_garages; ?> garages</a>
+										<?php if($nb_garages>0) { ?>
+											<a href="#"> <i class="flaticon-vehicle"></i><?php echo $nb_garages; ?> garage(s)</a>
 										<?php } ?>
-										<?php if($annee) { ?>
+										<?php if($annee>0) { ?>
 											<a href="#"> <i class="flaticon-construction-15"></i><?php echo $annee; ?></a>
 										<?php } ?>
 									</div>
@@ -303,10 +313,6 @@ google.maps.event.addDomListener(window, 'load', initialize);
 										  		<li>Localité : <?php echo $localite; ?></li>
 										  	<?php } ?>
 										  	
-										  	<?php if($region) { ?>
-										  		<li>Région : <?php echo $region; ?></li>
-										  	<?php } ?>
-										  	
 										  	<?php if($quartier) { ?>
 										  		<li>Quartier : <?php echo $quartier; ?></li>
 										  	<?php } ?>
@@ -315,48 +321,73 @@ google.maps.event.addDomListener(window, 'load', initialize);
 										  		<li>Etat : <?php echo $etat; ?></li>
 										  	<?php } ?>
 										  	
-										  	<?php if($annee) { ?>
+										  	<?php if($annee>0) { ?>
 										  		<li>Année de construction : <?php echo $annee; ?></li>
 										  	<?php } ?>
 										  	
-										  	<?php if($nb_chambres) { ?>
+										  	<?php if($nb_pieces>0) { ?>
+										  		<li>Nombre de pièces(s) : <?php echo $nb_pieces; ?></li>
+										  	<?php } ?>
+										  	
+										  	<?php if($nb_chambres>0) { ?>
 										  		<li>Nombre de chambre(s) : <?php echo $nb_chambres; ?></li>
 										  	<?php } ?>
 										  	
-										  	<?php if($nb_garages) { ?>
+										  	<?php if($nb_garages>0) { ?>
 										  		<li>Nombre de garage(s) : <?php echo $nb_garages; ?></li>
 										  	<?php } ?>
 										  	
-										  	<?php if($facade) { ?>
-										  		<li>Nombre de façade(s) : <?php echo $facade; ?></li>
+										  	<?php if($nb_parking>0) { ?>
+										  		<li>Nombre de parking(s) : <?php echo $nb_parking; ?></li>
 										  	<?php } ?>
 										  	
-										  	<?php if($chassis) { ?>
-										  		<li>Chassis : <?php echo $chassis; ?></li>
+										  	<?php if($nb_sdb>0) { ?>
+										  		<li>Nombre de salles de bain : <?php echo $nb_sdb; ?></li>
+										  	<?php } ?>
+										  	
+										  	<?php if($nb_wc>0) { ?>
+										  		<li>Nombre de WC : <?php echo nb_wc; ?></li>
+										  	<?php } ?>
+										  	
+										  	<?php if($type_cuisine) { ?>
+										  		<li>Type de cuisine : <?php echo $type_cuisine; ?></li>
 										  	<?php } ?>
 										  	
 										  	<?php if($type_chauffage) { ?>
 										  		<li>Type de chauffage : <?php echo $type_chauffage; ?></li>
 										  	<?php } ?>
 										  	
-										  	<?php if($surface) { ?>
-										  		<li>Surface totale : <?php echo number_format($surface, 0, ',', ' '); ?>m<sup>2</sup></li>
+										  	<?php if($surface>0) { ?>
+										  		<li>Surface habitable : <?php echo number_format($surface, 0, ',', ' '); ?>m<sup>2</sup></li>
 										  	<?php } ?>
 										  	
-										  	<?php if($surface_jardin) { ?>
-										  		<li>Surface du jardin : <?php echo number_format($surface_jardin, 0, ',', ' '); ?>m<sup>2</sup></li>
+										  	<?php if($surface_jardin>0) { ?>
+										  		<li>Surface du terrain : <?php echo number_format($surface_jardin, 0, ',', ' '); ?>m<sup>2</sup></li>
 										  	<?php } ?>
 										  	
-										  	<?php if($surface_sejour) { ?>
-										  		<li>Surface du séjour : <?php echo number_format($surface_sejour, 0, ',', ' '); ?>m<sup>2</sup></li>
+										  	
+										  	<?php if($terrasse>0) { ?>
+										  		<li>Terrasse</li>
 										  	<?php } ?>
 										  	
-										  	<?php if($surface_terrain) { ?>
-										  		<li>Surface du terrain : <?php echo number_format($surface_terrain, 0, ',', ' '); ?>m<sup>2</sup></li>
+										  	<?php if($jardin==1) { ?>
+										  		<li>Jardin</li>
 										  	<?php } ?>
 										  	
-										  	<?php if($surface_terrasse) { ?>
-										  		<li>Surface de la terrasse : <?php echo number_format($surface_terrasse, 0, ',', ' '); ?>m<sup>2</sup></li>
+										  	<?php if($ascenseur>0) { ?>
+										  		<li>Ascenseur</li>
+										  	<?php } ?>
+										  	
+										  	<?php if($balcon>0) { ?>
+										  		<li>Balcon</li>
+										  	<?php } ?>
+										  	
+										  	<?php if($cave>0) { ?>
+										  		<li>Cave</li>
+										  	<?php } ?>
+										  	
+										  	<?php if($etage>0) { ?>
+										  		<li>Etage : <?php echo $etage." / ".$nb_etage; ?></li>
 										  	<?php } ?>
 										  	
 								  		</ul>
@@ -392,7 +423,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 							$prix_recherche_min = $prix - ($prix*$taux_fourchette);
 							$prix_recherche_max = $prix + ($prix*$taux_fourchette);
 							
-							$req_2 = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE (venduloue is null or venduloue = '') AND type ='".$type."' AND ID <> ".$id." AND prix > ".$prix_recherche_min." AND prix < ".$prix_recherche_max." LIMIT 0,4 "); 
+							$req_2 = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE (venduloue is null or venduloue = '') AND type ='".$type."' AND ID <> ".$id." AND prix > ".$prix_recherche_min." AND prix < ".$prix_recherche_max." LIMIT 0,3 "); 
 							
 						
 						// On vérifie qu'il y ait des résultats
@@ -419,7 +450,13 @@ google.maps.event.addDomListener(window, 'load', initialize);
 											<div class="overlay-inner">
 												<div class="entry-header">
 													<h3 class="entry-title">
-														<a href="<?php echo $data_2['type']; ?>-nord-tourcoing-<?php echo $data['localite']; ?>--<?php echo $data_2['ID']; ?>--fiche"><?php echo $data_2['titre']; ?></a>
+														<a href="<?php echo $data_2['type']; ?>-nord-tourcoing-<?php echo $data['localite']; ?>--<?php echo $data_2['ID']; ?>--fiche">
+															<?php echo $data_2['titre']; 
+																		if($data_2['qpieces']!='' && $data_2['qpieces']!='0') {
+																			echo ' '.$data_2['qpieces'].' pièces';
+																		}
+																	?>
+																	</a>
 													</h3>
 													<ul class="entry-meta extra-font italic">
 														<li><a href="#"><?php echo $data_2['type']; ?></a></li>
@@ -489,8 +526,8 @@ $(document).ready(function(){
 <script type="text/javascript">
   var dpe = new DpeGes();
   dpe.dpe({
+	domId: 'dpe',
     value: '<?php echo $PEB; ?>',
-    domId: 'dpe',
     width: 350,
   });
   var ges = new DpeGes();

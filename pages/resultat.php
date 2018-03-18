@@ -22,6 +22,7 @@
 			} else if($id=='67') {
 			
 				$fond = "section-bg-generique";
+				$add_agence = "";
 			} 
 		
 	} 
@@ -42,7 +43,7 @@
 				$type = array();
 				$type = $_POST['type'];
 				$type = implode(',', $type);
-				$add_type = "AND typesimple IN ('$type')";
+				$add_type = "AND type IN ('$type')";
 			} else {
 				$type = "";
 			}
@@ -66,7 +67,7 @@
 			//argument de surface
 			if ($_POST['surface_min']) {
 				$surface_min = $_POST['surface_min'];
-				$add_surface_min = "AND qsurfhab >= '$surface_min'";
+				$add_surface_min = "AND surfhab >= '$surface_min'";
 
 			} else {
 				$surface_min = "";
@@ -102,7 +103,7 @@
 			//argument de terme clé
 			if ($_POST['recherche_terme']) {
 				$recherche_terme = $_POST['recherche_terme'];
-				$add_terme = "AND (titre LIKE '%$recherche_terme%' OR descrlight LIKE '%$recherche_terme%' OR composition LIKE '%$recherche_terme%' OR type LIKE '%$recherche_terme%' OR typesimple LIKE '%$recherche_terme%' OR localite LIKE '%$recherche_terme%' OR codepostal LIKE '%$recherche_terme%' OR ref LIKE '%$recherche_terme%')";
+				$add_terme = "AND (titre LIKE '%$recherche_terme%' OR descrlight LIKE '%$recherche_terme%' OR composition LIKE '%$recherche_terme%' OR type LIKE '%$recherche_terme%' OR localite LIKE '%$recherche_terme%' OR codepostal LIKE '%$recherche_terme%' OR ref LIKE '%$recherche_terme%')";
 			} else {
 				$recherche_terme = "";
 			}
@@ -116,7 +117,7 @@
                 $search_keyword=addslashes($_POST['recherche_generale']);
                 $motcle = explode(" ",$search_keyword,4); $nb_de_mot=count($motcle);
                 // REQUETE RUBRIQUE
-                for ($a=0; $a<$nb_de_mot; $a++) {$requete.=" OR (codepostal LIKE '%$motcle[$a]%' OR localite LIKE '%$motcle[$a]%' OR titre LIKE '%$motcle[$a]%' OR type LIKE '%$motcle[$a]%' OR typesimple LIKE '%$motcle[$a]%' OR ref LIKE '%$motcle[$a]%' OR quartier LIKE '%$motcle[$a]%' OR descrlight LIKE '%$motcle[$a]%' OR prix LIKE '%$motcle[$a]%')";}
+                for ($a=0; $a<$nb_de_mot; $a++) {$requete.=" OR (codepostal LIKE '%$motcle[$a]%' OR localite LIKE '%$motcle[$a]%' OR titre LIKE '%$motcle[$a]%' OR type LIKE '%$motcle[$a]%' OR ref LIKE '%$motcle[$a]%' OR quartier LIKE '%$motcle[$a]%' OR descrlight LIKE '%$motcle[$a]%' OR prix LIKE '%$motcle[$a]%')";}
                 $requete=substr($requete,3,1000);
         
                 $add_recherche = (" AND ".$requete);
@@ -342,23 +343,23 @@
 								<div class="col-xs-12 col-md-6 col-lg-6 mb-1">
 									<label>Recherche par type</label>
 									<div class="form-check form-check-inline">
-									  <input class="form-check-input" name="type[]" type="checkbox" id="maison" value="maison" <?php if(isset($_POST['type']) && in_array("maison", $_POST['type'])) {echo "checked";} ?>>
+									  <input class="form-check-input" name="type[]" type="checkbox" id="maison" value="Maison" <?php if(isset($_POST['type']) && in_array("Maison", $_POST['type'])) {echo "checked";} ?>>
 									  <label class="form-check-label" for="maison">Maison</label>
 									</div>
 									<div class="form-check form-check-inline">
-									  <input class="form-check-input" name="type[]" type="checkbox" id="appartement" value="appartement" <?php if(isset($_POST['type']) && in_array("appartement", $_POST['type'])) {echo "checked";} ?>>
+									  <input class="form-check-input" name="type[]" type="checkbox" id="appartement" value="Appartement" <?php if(isset($_POST['type']) && in_array("Appartement", $_POST['type'])) {echo "checked";} ?>>
 									  <label class="form-check-label" for="appartement">Appartement</label>
 									</div>
 									<div class="form-check form-check-inline">
-									  <input class="form-check-input" name="type[]" type="checkbox" id="terrain" value="terrain" <?php if(isset($_POST['type']) && in_array("terrain", $_POST['type'])) {echo "checked";} ?>>
+									  <input class="form-check-input" name="type[]" type="checkbox" id="terrain" value="Terrain" <?php if(isset($_POST['type']) && in_array("Terrain", $_POST['type'])) {echo "checked";} ?>>
 									  <label class="form-check-label" for="terrain">Terrain</label>
 									</div>
 									<div class="form-check form-check-inline">
-									  <input class="form-check-input" name="type[]" type="checkbox" id="immeuble" value="immeuble" <?php if(isset($_POST['type']) && in_array("immeuble", $_POST['type'])) {echo "checked";} ?>>
+									  <input class="form-check-input" name="type[]" type="checkbox" id="immeuble" value="Immeuble" <?php if(isset($_POST['type']) && in_array("Immeuble", $_POST['type'])) {echo "checked";} ?>>
 									  <label class="form-check-label" for="immeuble">Immeuble de rapport</label>
 									</div>
 									<div class="form-check form-check-inline">
-									  <input class="form-check-input" name="type[]" type="checkbox" id="autre" value="autre" <?php if(isset($_POST['type']) && in_array("autre", $_POST['type'])) {echo "checked";} ?>>
+									  <input class="form-check-input" name="type[]" type="checkbox" id="autre" value="Autre" <?php if(isset($_POST['type']) && in_array("Autre", $_POST['type'])) {echo "checked";} ?>>
 									  <label class="form-check-label" for="autre">Autre</label>
 									</div>
 								</div>
@@ -415,7 +416,7 @@
 							// On met dans une variable le nombre de biens qu'on veut par page
 							$nombreDeBiensParPage = 10;
 							// On récupère le nombre total de biens
-							$req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$add_type." ".$add_codepostal." ".$add_localite." ".$add_surface_min." ".$add_prix." ".$add_terme." ".$add_recherche.""); 
+							$req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$add_type." ".$add_agence." ".$add_codepostal." ".$add_localite." ".$add_surface_min." ".$add_prix." ".$add_terme." ".$add_recherche.""); 
 							
 								// Calcule le nbr de biens retournés par la requête
 								$nb_biens = mysqli_num_rows($req);
@@ -451,7 +452,7 @@
 								  	
 										// Détermination des variables
 										if ($venduloue=="") {
-											$url_fiche = slugify($data['typesimple']).'-'.slugify($data['localite']).'--maison-luxe-tournai-mouscron--'.$data['ID'].'--fiche';
+											$url_fiche = slugify($data['type']).'-'.slugify($data['localite']).'--maison-luxe-tournai-mouscron--'.$data['ID'].'--fiche';
 										} else {
 											$url_fiche = "#";
 										}
@@ -545,25 +546,33 @@
 															</div>
 															<div style="position: relative;" class="content">
 																<div class="description">
-																	<p><?php echo $data['titre']; ?></p>
+																	<p><?php echo $data['titre']; 
+																		if($data['qpieces']!='' && $data['qpieces']!='0') {
+																			echo ' '.$data['qpieces'].' pièces';
+																		}
+																	?>
+																	</p>
 																</div>
 																
 																<div class="zone-pictos">
 																	<ul>
-																	<?php if (($data['qsurfhab']!='')&&($data['qsurfhab']!='0')) { ?>
-																		<li><i class="flaticon-home-6"></i> Surface habitable : <?php echo number_format($data['qsurfhab'], 0, ',', ' '); ?>m<sup>2</sup></li>
+																	<?php if (($data['surfhab']!='')&&($data['surfhab']!='0')) { ?>
+																		<li><i class="flaticon-home-6"></i> Surface habitable : <?php echo number_format($data['surfhab'], 0, ',', ' '); ?>m<sup>2</sup></li>
 																	<?php } ?>
-	                                                                <?php if ($data['cat']=="T" && $data['qsurfterrain']!='' && $data['qsurfterrain']!='0') { ?>
-																		<li><i class="flaticon-nature-2"></i> Surface terrain :  <?php echo number_format($data['qsurfterrain'], 0, ',', ' '); ?>m<sup>2</sup></li>
+	                                                                <?php if ($data['jardin']=='1') { ?>
+																		<li><i class="flaticon-nature-2"></i> Jardin</li>
 																	<?php } ?>
-																	<?php if ($data['chambre']!='') { ?>
-																		<li><i class="flaticon-rest"></i> Nbr de chambres : <?php echo $data['chambre']; ?></li>
+																	<?php if ($data['qchambres']!='' && $data['qchambres']!='0') { ?>
+																		<li><i class="flaticon-rest"></i> Nbr de chambres : <?php echo $data['qchambres']; ?></li>
 																	<?php } ?>
-																	<?php if ($data['qgarages']!='') { ?>
+																	<?php if ($data['qgarages']!='' && $data['qgarages']!='0') { ?>
 																		<li><i class="flaticon-vehicle"></i> Garage(s) :  <?php echo $data['qgarages']; ?></li>
 																	<?php } ?>
-	                                                                <?php if($data['sdb']>0) { ?>
-	                                                                    <li><i class="flaticon-bathtub"></i> Salle(s) de bain : <?php echo $data['sdb']; ?></li>
+																	<?php if ($data['qparking']!='' && $data['qparking']!='0') { ?>
+																		<li><i class="flaticon-vehicle"></i> Parking(s) :  <?php echo $data['qparking']; ?></li>
+																	<?php } ?>
+	                                                                <?php if($data['qsdb']!='' && $data['qsdb']!='0') { ?>
+	                                                                    <li><i class="flaticon-bathtub"></i> Salle(s) de bain : <?php echo $data['qsdb']; ?></li>
 	                                                                <?php } ?>
 																	</ul>
 																</div>

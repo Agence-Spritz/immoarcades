@@ -100,6 +100,8 @@
 		
 		<?php if($_COOKIE['immo-selection']) { 
 			
+			echo $_COOKIE['immo-selection'];
+		
 			// On créé la liste des ID contenus dans le cookie
 			$list_cookie = explode('-', $_COOKIE['immo-selection']);
 			
@@ -121,7 +123,7 @@
 							</h2>
 						</div>
 						
-						<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE id IN ($ids) ORDER BY dmod DESC LIMIT 0,6");
+						<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE ID IN ($ids) ORDER BY dmod DESC LIMIT 0,6");
 						  	while ($data = mysqli_fetch_array($req)) { 
 								$venduloue = $data['venduloue'];
 						?>
