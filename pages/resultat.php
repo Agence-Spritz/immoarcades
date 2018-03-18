@@ -421,6 +421,7 @@
 								// Calcule le nbr de biens retournés par la requête
 								$nb_biens = mysqli_num_rows($req);
 								
+								
 									// On calcule le nombre de pages à créer
 									$nombreDePages  = ceil($nb_biens / $nombreDeBiensParPage);
 									
@@ -437,8 +438,9 @@
 									// On calcule le numéro du premier bien qu'on prend pour le LIMIT de MySQL
 									$premierBienAafficher = ($page - 1) * $nombreDeBiensParPage;
 									 
-									$req1 = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$add_type." ".$add_codepostal." ".$add_localite." ".$add_surface_min." ".$add_prix." ".$add_terme." ".$add_recherche." ORDER BY dmod DESC LIMIT " . $premierBienAafficher . ", " . $nombreDeBiensParPage);
+									$req1 = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$add_type." ".$add_agence." ".$add_codepostal." ".$add_localite." ".$add_surface_min." ".$add_prix." ".$add_terme." ".$add_recherche." ORDER BY dmod DESC LIMIT " . $premierBienAafficher . ", " . $nombreDeBiensParPage);
 										
+									echo "SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$add_type." ".$add_agence." ".$add_codepostal." ".$add_localite." ".$add_surface_min." ".$add_prix." ".$add_terme." ".$add_recherche." ORDER BY dmod DESC LIMIT " . $premierBienAafficher . ", " . $nombreDeBiensParPage;	
 						?>
 				
 							<?php if ($nb_biens=='0') { ?>
@@ -616,11 +618,12 @@
 									
 									<li class="page-item <?php if($_GET['page']==$i) { echo "active"; } ?>"><a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
 								<?php }
+									
 						    ?>
 						    
-						    <?php if ( (isset($_GET['page']))&&($_GET['page']!=6) ) { ?>
+						    <?php if ( ((isset($_GET['page'])) || ($nb_biens>$nombreDeBiensParPage)) && ($_GET['page']<$nombreDePages)  ) { ?>
 						    <li class="page-item">
-						      <a class="page-link" href="<?php echo "?page="; echo $_GET['page']+1; ?>" aria-label="Next">
+						      <a class="page-link" href="<?php echo "?page="; echo $page+1; ?>" aria-label="Next">
 						        <span aria-hidden="true">&raquo;</span>
 						        <span class="sr-only">Suivant</span>
 						      </a>
