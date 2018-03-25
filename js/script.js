@@ -983,7 +983,7 @@ function RevolutionInitSidebar() {
 			onHoverStop:"off",
 			arrows: {
 				style:"nito-agency-03-0244",
-				enable:false,
+				enable:true,
 				hide_onmobile:false,
 				hide_onleave:true,
 				hide_delay:200,
