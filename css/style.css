@@ -185,7 +185,7 @@ sup {
 	
 	.survol-photo .carre-plus {
 	background-color: #ffffff;
-	color: #3e4b5b;
+	color: #8F8F8F;
 	position: absolute;
 	top: 0;
 	bottom: 0;
@@ -205,10 +205,11 @@ sup {
 	.carre-plus [class^="flaticon-"]:before {
 		margin-left: 0;
 		font-size: 30px;
+		
 	}
 	
 	.survol-photo .carre-plus:hover {
-		color: #d90102;
+		color: #1F1F1F;
 	}
 	
 	
@@ -266,7 +267,8 @@ text-align: left;
 .zone-pictos li [class^="flaticon-"]:before {
 	margin-left: 0;
 	margin-right: 10px;
-	color: #d90102;
+	color: #1F1F1F;
+	font-size: 30px;
 }
 
 .zone-recherche {
@@ -343,7 +345,7 @@ text-align: left;
   display: inline-block;
    /* same as padding-left set on li */
   width: 1.3em; /* same as padding-left set on li */
- 	color: #d90102;
+ 	color: #1F1F1F;
 }
 
 
@@ -849,6 +851,19 @@ color: #FFF;
 .entry-header {
 	margin-bottom: 20px;
 }
+
+.entry-header.icone-bien [class^="flaticon-"]:before {
+	
+	font-size: 34px;
+	
+}
+
+.entry-header.icone-bien img {
+	margin-left: 15px;
+	max-height: 34px;
+	
+}
+
 .entry-header .entry-meta {
     margin-top: 2px;
 }
@@ -960,7 +975,7 @@ color: #FFF;
     display: block;
     margin-bottom: 50px;
     padding-bottom: 50px;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid #8F8F8F;
 	clear: both;
 }
 .entry-socials-share-list li {
@@ -1443,18 +1458,19 @@ ul.breadcrumbs li:last-child:after {
     padding: 10px 20px;
     margin: 5px 6px 5px 0;
     display: inline-block;
-    color: #d90102;
-    background: #f5f5f5;
+    background: #1f1f1f;
+    color: #fff;
     letter-spacing: .75px;
 }
 .tagcloud a:hover {
-    background: #1f1f1f;
-    color: #fff;
+    color: #1f1f1f;
+    background: #f5f5f5;
 }
 
 .tagcloud [class^="flaticon-"]:before {
 	margin-left: 0;
 	margin-right: 10px;
+	font-size: 24px;
 }
 
 .widget_color ul li {
@@ -5686,6 +5702,10 @@ div.progresswrap {
 	width: 100%;
 }
 
+.selection {
+	font-size: 14px;
+}
+
 .selection [class^="flaticon-"]:before {
 	margin-left: 0;
 	margin-right: 10px;
@@ -5694,10 +5714,15 @@ div.progresswrap {
 
 .bouton_playpause {
 	position: absolute;
-	top: 40%;
+	top: 46%;
 	left: 50%;
 	margin-left: -25px;
 	z-index: 1000;
+	
+}
+
+.bouton_playpause .fa-pause-circle:before {
+	color: rgba(0,0,0,0.7);
 }
 
 .fa-play-circle:before, .fa-pause-circle:before {
