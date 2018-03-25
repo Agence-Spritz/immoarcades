@@ -89,11 +89,11 @@
 								$xpldSelection=explode("-",$_COOKIE['immo-selection']);
 								$NbrSelection=count($xpldSelection)-1;
 								
-									$msgSelection='<i class="fa fa-close" style="color: #fe0000;"></i> Supprimer de ma liste de sélections';
+									$msgSelection='<div style="margin-top: 25px;" class="btn btn-alt btn-border fullwidth"><i class="fa fa-close" style="color: #fe0000;"></i> Supprimer de ma liste de sélections</div>';
 									$selectID="NO";
 								
 								?>
-								<a href="javascript: void(0);" id="<?php echo $data['ID']; ?>" onClick="DelMaselection(this.id);"><div class="DelMaselection"><i class="fa fa-close" style="color:#fe0000"></i> Supprimer de ma sélection</div></a>
+								<a style="margin-top: 25px;" class="btn btn-alt btn-border fullwidth" href="javascript: void(0);" id="<?php echo $data['ID']; ?>" onClick="DelMaselection(this.id);"><div class="DelMaselection"><i class="fa fa-close" style="color:#fe0000"></i> Supprimer de ma sélection</div></a>
 								
 								</div>
 							</div>
@@ -118,7 +118,7 @@
 	
 	function DelMaselection(id)
             {
-                $.post('./panier-biens/inc/MaSelectionCookie.php',{addselection:'<i class="flaticon-shopping-cart"></i> Ajouter à ma liste de sélections', selectID:'NO-'+id, NbrSelection:<?=$NbrSelection?>},
+                $.post('./panier-biens/inc/MaSelectionCookie.php',{addselection:'<div style="margin-top: 25px;" class="btn btn-alt btn-border fullwidth"><i class="flaticon-shopping-cart"></i> Ajouter à ma liste de sélections</div>', selectID:'NO-'+id, NbrSelection:<?=$NbrSelection?>},
 				function(){
 					$('.DelMaselection').html(''),
 					window.location.reload()

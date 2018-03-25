@@ -131,7 +131,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 											if ($data['PHOTO_'.$i]!='') {
 										?>
 										    <!-- SLIDE  -->
-											<li data-transition="random" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300" data-rotate="0" data-saveperformance="off"  data-title="Slide">
+											<li data-transition="slide-boxes" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300" data-rotate="0" data-saveperformance="off"  data-title="Slide">
 												
 												<img src="<?php echo $data['PHOTO_'.$i]; ?>" alt="<?php echo $titre; ?>" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" />
 						
@@ -200,10 +200,10 @@ google.maps.event.addDomListener(window, 'load', initialize);
 								
 								// DEFINIT "Ajouter" ou "Supprimer" au chargement de la page
 								if (!stristr($_COOKIE['immo-selection'],$id )){
-									$msgSelection='<i class="flaticon-shopping-cart"></i> Ajouter à ma liste de sélections';
+									$msgSelection='<div class="btn btn-alt btn-border fullwidth"><i class="flaticon-shopping-cart"></i> Ajouter à ma liste de sélections</div>';
 									$selectID="OK";
 								} else {
-									$msgSelection='<i class="fa fa-close" style="color: #fe0000;"></i> Supprimer de ma liste de sélections';
+									$msgSelection='<div class="btn btn-alt btn-border fullwidth"><i class="fa fa-close" style="color: #fe0000;"></i> Supprimer de ma liste de sélections</div>';
 									$selectID="NO";
 								}
 								?>
@@ -255,7 +255,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 						<!-- Les plus -->
 						<div class="row">
 							<div class="col-sm-12">
-								<h5 style="color: #d90102" class="wg-title mt-3 mb-2">Les plus</h5>
+								<h5  class="wg-title mt-3 mb-2">Les plus</h5>
 							</div>
 						</div>
 						<div class="row">
@@ -544,7 +544,7 @@ $(document).ready(function(){
 <script>
 	/*Message ajouter ou supprimer + cookie update*/
 	$('.AddMaselection').click(function(){
-		$.post('./panier-biens/inc/MaSelectionCookie.php',{addselection:'<i class="fa fa-close" style="color:#fe0000"></i> Supprimer de ma liste de sélections', selectID:'OK-<?=$id?>', NbrSelection:<?=$NbrSelection?>},
+		$.post('./panier-biens/inc/MaSelectionCookie.php',{addselection:'<div class="btn btn-alt btn-border fullwidth"><i class="fa fa-close" style="color:#fe0000"></i> Supprimer de ma liste de sélections</div>', selectID:'OK-<?=$id?>', NbrSelection:<?=$NbrSelection?>},
 		function(data){
 			$('.DelMaselection').html(data),
 			$('.AddMaselection').html('')
@@ -553,7 +553,7 @@ $(document).ready(function(){
 	})
                                     
 	$('.DelMaselection').click(function(){
-		$.post('./panier-biens/inc/MaSelectionCookie.php',{addselection:'<i class="flaticon-shopping-cart"></i> Ajouter à ma liste de sélections', selectID:'NO-<?=$id?>', NbrSelection:<?=$NbrSelection?>},
+		$.post('./panier-biens/inc/MaSelectionCookie.php',{addselection:'<div class="btn btn-alt btn-border fullwidth"><i class="flaticon-shopping-cart"></i> Ajouter à ma liste de sélections</div>', selectID:'NO-<?=$id?>', NbrSelection:<?=$NbrSelection?>},
 		function(data){
 			$('.AddMaselection').html(data),
 			$('.DelMaselection').html(''),

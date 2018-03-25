@@ -464,18 +464,14 @@
 										
 										if($type_bien=="Maison") {
 											$icone_bien = '<i class="flaticon-construction-9"></i>';
-										} else if ($type_bien=="Ferme") {
-											$icone_bien = '<i class="flaticon-construction-7"></i>';
-										} else if ($type_bien=="Commerce") {
-											$icone_bien = '<i class="flaticon-interview"></i>';
-										} else if ($type_bien=="Penthouse") {
-											$icone_bien = '<i class="flaticon-construction-11"></i>';
+										} else if ($type_bien=="Immeuble") {
+											$icone_bien = '<img src="images/immeuble.png" title="Immeuble" alt="Immeuble" />';
+										} else if ($type_bien=="Garage") {
+											$icone_bien = '<img src="images/Garage.png" title="Garage" alt="Garage" />';
 										} else if ($type_bien=="Appartement") {
-											$icone_bien = '<i class="flaticon-buildings-1"></i>';
+											$icone_bien = '<img src="images/Appartement.png" title="Appartement" alt="Appartement" />';
 										} else if ($type_bien=="Terrain") {
-											$icone_bien = '<i class="flaticon-nature"></i>';
-										} else if ($type_bien=="Villa") {
-											$icone_bien = '<i class="flaticon-nature-1"></i>';
+											$icone_bien = '<img src="images/Terrain.png" title="Terrain" alt="Terrain" />';
 										} else {
 											$icone_bien = NULL;
 										}
@@ -541,7 +537,7 @@
 															================================================== -->
 														<div  class="entry-content pl-0 pr-0">
 															
-															<div class="entry-header">
+															<div class="entry-header icone-bien">
 																<div class="mb-2">
 																	<h3 class="heading wg-title"><?php echo $data['type']; ?> à <?php echo $data['localite'].''.$icone_bien; ?> </h3>
 																</div>
@@ -559,22 +555,22 @@
 																<div class="zone-pictos">
 																	<ul>
 																	<?php if (($data['surfhab']!='')&&($data['surfhab']!='0')) { ?>
-																		<li><i class="flaticon-home-6"></i> Surface habitable : <?php echo number_format($data['surfhab'], 0, ',', ' '); ?>m<sup>2</sup></li>
+																		<li><i class="flaticon-home-6"></i> <!-- Surface habitable :  --><?php echo number_format($data['surfhab'], 0, ',', ' '); ?>m<sup>2</sup></li>
 																	<?php } ?>
 	                                                                <?php if ($data['jardin']=='1') { ?>
 																		<li><i class="flaticon-nature-2"></i> Jardin</li>
 																	<?php } ?>
 																	<?php if ($data['qchambres']!='' && $data['qchambres']!='0') { ?>
-																		<li><i class="flaticon-rest"></i> Nbr de chambres : <?php echo $data['qchambres']; ?></li>
+																		<li><i class="flaticon-rest"></i> <!-- Nbr de chambres :  --><?php echo $data['qchambres']; ?></li>
 																	<?php } ?>
 																	<?php if ($data['qgarages']!='' && $data['qgarages']!='0') { ?>
-																		<li><i class="flaticon-vehicle"></i> Garage(s) :  <?php echo $data['qgarages']; ?></li>
+																		<li><i class="flaticon-vehicle"></i> <!-- Garage(s) :   --><?php echo $data['qgarages']; ?></li>
 																	<?php } ?>
 																	<?php if ($data['qparking']!='' && $data['qparking']!='0') { ?>
-																		<li><i class="flaticon-vehicle"></i> Parking(s) :  <?php echo $data['qparking']; ?></li>
+																		<li><i class="flaticon-vehicle"></i> <!-- Parking(s) :   --><?php echo $data['qparking']; ?></li>
 																	<?php } ?>
 	                                                                <?php if($data['qsdb']!='' && $data['qsdb']!='0') { ?>
-	                                                                    <li><i class="flaticon-bathtub"></i> Salle(s) de bain : <?php echo $data['qsdb']; ?></li>
+	                                                                    <li><i class="flaticon-bathtub"></i> <!-- Salle(s) de bain :  --><?php echo $data['qsdb']; ?></li>
 	                                                                <?php } ?>
 																	</ul>
 																</div>
