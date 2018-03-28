@@ -522,7 +522,7 @@ $(document).ready(function(){
 		$("#bouton_play").hide();
 		$("#bouton_pause").show();
 	}
-
+	
 </script>
 
 
