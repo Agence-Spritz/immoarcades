@@ -3,6 +3,8 @@
 	
 	// On initialise la variable agence
 	$agence = NULL;
+	
+	$resum_recherche = NULL;
 	$add_agence = "AND agence = '$agence'";
 	
 	if ($id=='178' || $id=='179' || $id=='67'){
@@ -24,8 +26,13 @@
 				$fond = "section-bg-generique";
 				$add_agence = "";
 			} 
+			
+			// dans ce cas, on passe uniquement l'argument de l'agence dans la requête
+			$resum_recherche = $add_agence;
 		
 	} 
+	
+	
 	?>
 	
 	<?php 	
@@ -124,9 +131,16 @@
             } else {
 	            $add_recherche = "";
             }
+            
+            $resum_recherche = $add_type.$add_agence.$add_codepostal.$add_localite.$add_surface_min.$add_prix.$add_terme.$add_recherche;
+            
 
-		}
-		
+		} else if($_GET['search']) {
+			
+			// Si la recherche a été passée en get, c'est que l'on est dans le cadre d'une pagination.
+			$resum_recherche = $_GET['search'];
+		} 	
+	
 		//Enlever les commentaires pour afficher les valeurs postées
 
 /*
@@ -295,8 +309,8 @@
 								<label>Recherche par zone géographique</label>
 								<select name="agence">
 									<option value="" selected=selected>toute zone</option>
-									<option value="1" <?php if(isset($_POST['agence']) && $_POST['agence']==1) {echo "selected";} ?>>autour de Tourcoing</option>
-									<option value="2" <?php if(isset($_POST['agence']) && $_POST['agence']==2) {echo "selected";} ?>>autour de Lys-lez-lannoy</option>
+									<option value="1" <?php if(((isset($_POST['agence']) && $_POST['agence']==1)) || ($agence==1)) {echo "selected";} ?>>autour de Tourcoing</option>
+									<option value="2" <?php if(((isset($_POST['agence']) && $_POST['agence']==2)) || ($agence==2)) {echo "selected";} ?>>autour de Lys-lez-lannoy</option>
 								</select>
 							</div>
 							
@@ -416,7 +430,7 @@
 							// On met dans une variable le nombre de biens qu'on veut par page
 							$nombreDeBiensParPage = 10;
 							// On récupère le nombre total de biens
-							$req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$add_type." ".$add_agence." ".$add_codepostal." ".$add_localite." ".$add_surface_min." ".$add_prix." ".$add_terme." ".$add_recherche.""); 
+							$req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$resum_recherche.""); 
 							
 								// Calcule le nbr de biens retournés par la requête
 								$nb_biens = mysqli_num_rows($req);
@@ -438,7 +452,7 @@
 									// On calcule le numéro du premier bien qu'on prend pour le LIMIT de MySQL
 									$premierBienAafficher = ($page - 1) * $nombreDeBiensParPage;
 									 
-									$req1 = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$add_type." ".$add_agence." ".$add_codepostal." ".$add_localite." ".$add_surface_min." ".$add_prix." ".$add_terme." ".$add_recherche." ORDER BY dmod DESC LIMIT " . $premierBienAafficher . ", " . $nombreDeBiensParPage);
+									$req1 = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$resum_recherche." ORDER BY dmod DESC LIMIT " . $premierBienAafficher . ", " . $nombreDeBiensParPage);
 										
 									//echo "SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$add_type." ".$add_agence." ".$add_codepostal." ".$add_localite." ".$add_surface_min." ".$add_prix." ".$add_terme." ".$add_recherche." ORDER BY dmod DESC LIMIT " . $premierBienAafficher . ", " . $nombreDeBiensParPage;	
 						?>
@@ -602,7 +616,7 @@
 						  <ul class="pagination">
 							<?php if ( (isset($_GET['page']))&&($_GET['page']!=1) ) { ?>
 						    <li class="page-item">
-						      <a class="page-link" href="<?php echo "?page="; echo $_GET['page']-1; ?>" aria-label="Previous">
+						      <a class="page-link" href="<?php echo "?page="; echo $_GET['page']-1; echo "&search=".$resum_recherche; ?>" aria-label="Previous">
 						        <span aria-hidden="true">&laquo;</span>
 						        <span class="sr-only">Précédent</span>
 						      </a>
@@ -612,14 +626,14 @@
 							    for ($i = 1 ; $i <= $nombreDePages ; $i++)
 								{ ?>
 									
-									<li class="page-item <?php if($_GET['page']==$i) { echo "active"; } ?>"><a class="page-link" href="?page=<?php echo $i; ?>"><?php echo $i; ?></a></li>
+									<li class="page-item <?php if($_GET['page']==$i) { echo "active"; } ?>"><a class="page-link" href="?page=<?php echo $i; echo "&search=".$resum_recherche; ?>"><?php echo $i; ?></a></li>
 								<?php }
 									
 						    ?>
 						    
 						    <?php if ( ((isset($_GET['page'])) || ($nb_biens>$nombreDeBiensParPage)) && ($_GET['page']<$nombreDePages)  ) { ?>
 						    <li class="page-item">
-						      <a class="page-link" href="<?php echo "?page="; echo $page+1; ?>" aria-label="Next">
+						      <a class="page-link" href="<?php echo "?page="; echo $page+1; echo "&search=".$resum_recherche; ?>" aria-label="Next">
 						        <span aria-hidden="true">&raquo;</span>
 						        <span class="sr-only">Suivant</span>
 						      </a>
