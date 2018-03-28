@@ -124,18 +124,22 @@ google.maps.event.addDomListener(window, 'load', initialize);
 						<div class="row">
 							<div class="col-md-8 col-lg-8">
 								<div id="rev_slider_5" class="rev_slider fullscreenbanner">
+									<a class="bouton_playpause" id="bouton_pause" href="javascript: void(0);" onclick="pause()"><i class="fa fa-pause-circle"></i></a><a class="bouton_playpause" id="bouton_play" href="javascript: void(0);" onclick="play()"><i class="fa fa-play-circle"></i></a>
 									<ul>	
-										<a class="bouton_playpause" id="bouton_pause" href="javascript: void(0);" onclick="pause()"><i class="fa fa-pause-circle"></i></a><a class="bouton_playpause" id="bouton_play" href="javascript: void(0);" onclick="play()"><i class="fa fa-play-circle"></i></a>
 										<?php for ($i = 0; $i <= 20; $i++) { 
-											if ($i<10){ $i="0".$i;}
-											if ($data['PHOTO_'.$i]!='') {
+											$compteur = sprintf("%02d", $i);
+											
+											if ($data['PHOTO_'.$compteur]!='') {
+												
 										?>
 										    <!-- SLIDE  -->
+
 											<li data-transition="slide-boxes" data-slotamount="default" data-hideafterloop="0" data-hideslideonmobile="off" data-easein="default" data-easeout="default" data-masterspeed="300" data-rotate="0" data-saveperformance="off"  data-title="Slide">
 												
-												<img src="<?php echo $data['PHOTO_'.$i]; ?>" alt="<?php echo $titre; ?>" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" />
+												<img src="<?php echo $data['PHOTO_'.$compteur]; ?>" alt="<?php echo $titre; ?>" data-bgposition="center center" data-bgfit="cover" data-bgrepeat="no-repeat" class="rev-slidebg" />
 						
 											</li>
+
 										
 										<?php  } 
 										} ?>
