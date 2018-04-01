@@ -562,10 +562,10 @@
 								
 								<div class="row">
 									<div class="col-md-6 mb-3">
-										<input type="text" name="prenom" value="<?php print (stripslashes($nom));?>" placeholder="Prénom" />
+										<input type="text" name="nom" required value="<?php print (stripslashes($nom));?>" placeholder="Nom*" />
 									</div>
 									<div class="col-md-6 mb-3">
-										<input type="text" name="nom" required value="<?php print (stripslashes($prenom));?>" placeholder="Nom*" />
+										<input type="text" name="prenom"  value="<?php print (stripslashes($prenom));?>" placeholder="Prénom" />
 									</div>
 									<div class="col-md-6 mb-3">
 										<input type="text" name="tel" required value="<?php print (stripslashes($tel));?>" placeholder="Téléphone*" />
