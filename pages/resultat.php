@@ -7,6 +7,9 @@
 	$resum_recherche = NULL;
 	$add_agence = "AND agence = '$agence'";
 	
+	// on force le type de transaction sur V
+	$add_transaction = "AND cat = 'V'";
+	
 	if ($id=='178' || $id=='179' || $id=='67'){
 		// On adapte le titre en fonction de l'agence sélectionnée dans le menu
 		
@@ -28,7 +31,7 @@
 			} 
 			
 			// dans ce cas, on passe uniquement l'argument de l'agence dans la requête
-			$resum_recherche = $add_agence;
+			$resum_recherche = $add_transaction.$add_agence;
 		
 	} 
 	
@@ -132,7 +135,7 @@
 	            $add_recherche = "";
             }
             
-            $resum_recherche = $add_type.$add_agence.$add_codepostal.$add_localite.$add_surface_min.$add_prix.$add_terme.$add_recherche;
+            $resum_recherche = $add_transaction.$add_type.$add_agence.$add_codepostal.$add_localite.$add_surface_min.$add_prix.$add_terme.$add_recherche;
             
 
 		} else if($_GET['search']) {
@@ -152,6 +155,7 @@
 				echo $add_prix.'<br />';
 				echo $add_terme.'<br />';
 				echo $add_recherche. '<br />';
+				echo $resum_recherche. '<br />';
 */
 ?>
 
@@ -198,7 +202,7 @@
 					</h2>
 				</div>
 				
-				<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE nouveaute IS NOT NULL ORDER BY dmod DESC LIMIT 0,3"); 
+				<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE nouveaute <> 0 ORDER BY dmod DESC LIMIT 0,3"); 
 				  	while ($data = mysqli_fetch_array($req)) { 
 						$venduloue = $data['venduloue'];
 				?>
@@ -562,7 +566,9 @@
 																		if($data['qpieces']!='' && $data['qpieces']!='0') {
 																			echo ' '.$data['qpieces'].' pièces';
 																		}
-																	?>
+																	
+																	echo "<br />";
+																	echo ucfirst(strtolower($data['accroche']));?>
 																	</p>
 																</div>
 																
