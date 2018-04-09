@@ -94,6 +94,8 @@ $erreur = 0;
 		$type_transaction = $bien->type_transaction;
 		if($type_transaction=='vente' || $type_transaction=='Vente') {
 			$cat = "V";
+		} else if($type_transaction=='location' || $type_transaction=='Location') {
+			$cat = "L";
 		} else {
 			$cat = NULL;
 		}
