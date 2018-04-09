@@ -176,7 +176,7 @@
 							</h2>
 						</div>
 						
-						<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE cat='V' AND nouveaute IS NOT NULL ORDER BY dmod DESC LIMIT 0,3"); 
+						<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE cat='V' AND nouveaute <> 0 ORDER BY dmod DESC LIMIT 0,3"); 
 						  	while ($data = mysqli_fetch_array($req)) { 
 								$venduloue = $data['venduloue'];
 						?>
@@ -218,7 +218,7 @@
 				<div class="container">
 					<div class="row">
 						
-						<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE cat='V' AND nouveaute IS NOT NULL ORDER BY dmod DESC LIMIT 3,3"); 
+						<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE cat='V' AND nouveaute <> 0 ORDER BY dmod DESC LIMIT 3,3"); 
 						  	while ($data = mysqli_fetch_array($req)) { 
 								$venduloue = $data['venduloue'];
 						?>
