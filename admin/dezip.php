@@ -84,7 +84,7 @@ $erreur = 0;
 			// Lys les Lannoy : 2
 			$agence = 2;
 		}
-		$nannee = NULL;
+		
 		$pays = $bien->nom_pays;
 		$codepostal = $bien->code_postal;
 		$localite=preg_replace("/'/","`",stripslashes($bien->ville));
@@ -98,14 +98,7 @@ $erreur = 0;
 			$cat = NULL;
 		}
 		
-		$surfjardin = $bien->surface_jardin;
-		if($surfjardin >=1) {
-			$jardin = 1;
-		} else {
-			$jardin = 0;
-		}
 		$surfhab = $bien->surface_habitable;
-		$terrasse = $bien->terrasse;
 		$cetat = NULL;
 		$type = preg_replace("/'/","`",stripslashes($bien->type_bien));
 		$dbu=date("Y-m-d");
@@ -113,8 +106,6 @@ $erreur = 0;
 		$prix = $bien->prix;
 		$prix_fai = $bien->fai;
 		$cacherprix = 0;
-		$qgarages = $bien->nb_parking_interieur;
-		$qparking = $bien->nb_parking_exterieur;
 		$qpieces = $bien->nb_piece;
 		$qchambres = $bien->nb_chambre;
 		$qsdb = $bien->nb_sdb;
@@ -127,7 +118,6 @@ $erreur = 0;
 		$cave = $bien->nb_cave;
 		$ascenseur = $bien->ascenseur;
 		$balcon = $bien->balcon;
-		$chauffage = preg_replace("/'/","`",stripslashes($bien->type_chauffage));
 		$type_cuisine = $bien->type_cuisine;
 		$dispoquand = NULL;
 		$virtuel = $bien->url_vv;
@@ -137,7 +127,40 @@ $erreur = 0;
 		$bilan_ges = $bien->bilan_ges;
 		$composition = NULL;
 		
-		$nouveaute = 1;
+		// Nouveau champs
+		$nouveaute = $bien->coup_coeur;
+		$nannee = $bien->annee_construction;
+		
+		$accroche = $bien->accroche;
+		$facade = $bien->facade;
+		$chauffage = preg_replace("/'/","`",stripslashes($bien->chauffage));
+		$mode_chauffage = preg_replace("/'/","`",stripslashes($bien->mode_chauffage));
+		$exclusivite = $bien->exclusivite;
+		$charges = $bien->charges;
+		$prix_vendeur = $bien->prix_vendeur;
+		$a_la_charge_de = $bien->a_la_charge_de;
+		$taxe_fonciere = $bien->taxe_fonciere;
+		
+		// prestations principales
+		$cour = NULL;
+		$surfcour = NULL;
+		$terrasse = NULL;
+		$surfterrasse = NULL;
+		
+		$surfjardin = $bien->surface_jardin;
+		if($surfjardin >=1) {
+			$jardin = 1;
+		} else {
+			$jardin = 0;
+		}
+		
+		//$jardin = 0;
+		//$surfjardin = NULL;
+		$garage = NULL;
+		$qgarages = $bien->nb_parking_interieur;
+		$parking = NULL;
+		$qparking = $bien->nb_parking_exterieur;
+		
 		
 		// On récupére les photos
 		$set_image = $bien->images;
@@ -303,13 +326,18 @@ $erreur = 0;
 			`quartier`,
 			`titre`,
 			`descrlight`,
+			`accroche`,
 			`type_transaction`,
 			`cat`,
 			`surfjardin`,
 			`jardin`,
 			`surfhab`,
 			`terrasse`,
+			`surfterrasse`,
+			`cour`,
+			`surfcour`,
 			`cetat`,
+			`facade`,
 			`type`,
 			`dbu`,
 			`dmod`,
@@ -335,8 +363,14 @@ $erreur = 0;
 			`PHOTO_20`,
 			`prix`,
 			`prix_fai`,
+			`charges`,
+			`prix_vendeur`,
+			`a_la_charge_de`,
+			`taxe_fonciere`,
 			`cacherprix`,
+			`garage`,
 			`qgarages`,
+			`parking`,
 			`qparking`,
 			`qpieces`,
 			`qchambres`,
@@ -351,6 +385,7 @@ $erreur = 0;
 			`ascenseur`,
 			`balcon`,
 			`chauffage`,
+			`mode_chauffage`,
 			`type_cuisine`,
 			`dispoquand`,
 			`virtuel`,
@@ -359,7 +394,8 @@ $erreur = 0;
 			`bilan_energie`,
 			`bilan_ges`,
 			`composition`,
-			`nouveaute`
+			`nouveaute`,
+			`exclusivite`
 			) 
 			VALUES (
 			'',
@@ -376,13 +412,18 @@ $erreur = 0;
 			'".$quartier."',
 			'".$titre."',
 			'".$descrlight."',
+			'".$accroche."',
 			'".$type_transaction."',
 			'".$cat."',
 			'".$surfjardin."',
 			'".$jardin."',
 			'".$surfhab."',
 			'".$terrasse."',
+			'".$surfterrasse."',
+			'".$cour."',
+			'".$surfcour."',
 			'".$cetat."',
+			'".$facade."',
 			'".$type."',
 			'".$dbu."',
 			'".$dmod."',
@@ -408,8 +449,14 @@ $erreur = 0;
 			'".$photo_20."',
 			'".$prix."',
 			'".$prix_fai."',
+			'".$charges."',
+			'".$prix_vendeur."',
+			'".$a_la_charge_de."',
+			'".$taxe_fonciere."',
 			'".$cacherprix."',
+			'".$garage."',
 			'".$qgarages."',
+			'".$parking."',
 			'".$qparking."',
 			'".$qpieces."',
 			'".$qchambres."',
@@ -424,6 +471,7 @@ $erreur = 0;
 			'".$ascenseur."',
 			'".$balcon."',
 			'".$chauffage."',
+			'".$mode_chauffage."',
 			'".$type_cuisine."',
 			'".$dispoquand."',
 			'".$virtuel."',
@@ -432,13 +480,11 @@ $erreur = 0;
 			'".$bilan_energie."',
 			'".$bilan_ges."',
 			'".$composition."',
-			'".$nouveaute."'
+			'".$nouveaute."',
+			'".$exclusivite."'
 			)
 			");	
-			
-			
-			
-						
+				
 			
 			echo $n." : Enregistrement du bien réf.: ".$ref."<br />";
 			
