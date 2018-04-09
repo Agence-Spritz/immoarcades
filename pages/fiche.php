@@ -6,14 +6,13 @@
 		$venduloue = $data['venduloue'];
 		$titre = $data['titre'];
 		$localite = $data['localite'];
-		$annee = $data['nannee'];
+		
 		$quartier = $data['quartier'];
 		$etat = $data['cetat'];
 		$type = $data['type'];
 		$nb_pieces = $data['qpieces'];
 		$prix = $data['prix_fai'];
-		$prixnet = $data['prix'];
-		$honoraires = 'acquereur';
+		
 		$cacherprix = $data['cacherprix'];
 		$description = $data['descrlight'];
 		$composition = $data['composition'];
@@ -26,7 +25,7 @@
 		$nb_sdb = $data['qsdb'];
 		$nb_wc = $data['qwc'];
 		$surface_jardin = $data['surfjardin'];
-		$type_chauffage = $data['chauffage'];
+		
 		$type_cuisine = $data['type_cuisine'];
 		$terrasse = $data['terrasse'];
 		$jardin = $data['jardin'];
@@ -35,6 +34,25 @@
 		$ascenseur = $data['ascenseur'];
 		$balcon = $data['balcon'];
 		$cave = $data['cave'];
+		
+		
+		
+		
+		// nouveau champs
+		
+		$annee = $data['nannee'];
+		$facade = $data['facade'];
+		$chauffage = $data['chauffage'];
+		$type_chauffage = $data['mode_chauffage'];
+		$exclusivite = $data['exclusivite'];
+		$charges = $data['charges'];
+		$prixnet = $data['prix_vendeur'];
+		$a_la_charge_de = $data['a_la_charge_de'];
+		$taxe_fonciere = $data['taxe_fonciere'];
+		$cour = $data['cour'];
+		$surfcour = $data['surfcour'];
+		$surfterrasse = $data['surfterrasse'];
+		
 		
 		
 		if($data['dep']!="" && $data['dep']!="0") {
@@ -148,7 +166,11 @@ google.maps.event.addDomListener(window, 'load', initialize);
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-								<h5 class="wg-title"><?php echo $localite; ?></h5>
+								<h5 class="wg-title"><?php echo $localite; ?>
+								<?php if($exclusivite==1) {?>
+									<span style="display: inline-block; color: #d90102"> - Exclusivité !</span>
+								<?php } ?>
+								</h5>
 								<h3 class="entry-title fw-bolder">
 									<?php echo $data['titre']; 
 										if($data['qpieces']!='' && $data['qpieces']!='0') {
@@ -245,12 +267,22 @@ google.maps.event.addDomListener(window, 'load', initialize);
 						<div class="row">
 							<div class="col-lg-12">
 								<p><?php echo $description; ?>
-								<?php if($honoraires=='vendeur') {
-									echo "<br /><strong>Honoraires à charge du vendeur</strong>";
+								<?php if($a_la_charge_de=='Vendeur') {
+									echo "<br /><br /><strong>Honoraires à charge du vendeur</strong><br />";
 								} else {
-									echo "<br /><strong>Honoraires à charge de l’acquéreur</strong> ";
-									echo "(".number_format($prixnet, 0, ',', ' '). "&euro; honoraires exclus - Honoraires de " .round(100-($prixnet*100)/$prix,2)."% TTC à charge de l’acquéreur)";
+									echo "<br /><br /><strong>Honoraires à charge de l’acquéreur</strong> ";
+									echo "(".number_format($prixnet, 0, ',', ' '). "&euro; honoraires exclus - Honoraires de " .round(100-($prixnet*100)/$prix,2)."% TTC à charge de l’acquéreur)<br />";
 								}
+								?>
+								
+								<?php if($charges>0) {
+									echo "Charges : ". number_format($charges, 0, ',', ' '). "<sup>€</sup>  - " ;
+								} 
+								?>
+								
+								<?php if($taxe_fonciere>0) {
+									echo "Taxe foncière : ". number_format($taxe_fonciere, 0, ',', ' '). "<sup>€</sup>" ;
+								} 
 								?>
 								</p>
 							</div>
@@ -325,6 +357,10 @@ google.maps.event.addDomListener(window, 'load', initialize);
 										  		<li>Etat : <?php echo $etat; ?></li>
 										  	<?php } ?>
 										  	
+										  	<?php if($facade) { ?>
+										  		<li>Facade : <?php echo $$facade; ?></li>
+										  	<?php } ?>
+										  	
 										  	<?php if($annee>0) { ?>
 										  		<li>Année de construction : <?php echo $annee; ?></li>
 										  	<?php } ?>
@@ -357,25 +393,40 @@ google.maps.event.addDomListener(window, 'load', initialize);
 										  		<li>Type de cuisine : <?php echo $type_cuisine; ?></li>
 										  	<?php } ?>
 										  	
+										  	<?php if($chauffage) { ?>
+										  		<li>Chauffage : <?php echo $chauffage; ?></li>
+										  	<?php } ?>
+										  	
 										  	<?php if($type_chauffage) { ?>
-										  		<li>Type de chauffage : <?php echo $type_chauffage; ?></li>
+										  		<li>Mode de chauffage : <?php echo $type_chauffage; ?></li>
 										  	<?php } ?>
 										  	
 										  	<?php if($surface>0) { ?>
 										  		<li>Surface habitable : <?php echo number_format($surface, 0, ',', ' '); ?>m<sup>2</sup></li>
 										  	<?php } ?>
 										  	
-										  	<?php if($surface_jardin>0) { ?>
-										  		<li>Surface du terrain : <?php echo number_format($surface_jardin, 0, ',', ' '); ?>m<sup>2</sup></li>
+										  	<?php if($cour>0) { ?>
+										  		<li>Cour</li>
 										  	<?php } ?>
 										  	
+										  	<?php if($surfcour>0) { ?>
+										  		<li>Surface cour : <?php echo number_format($surfcour, 0, ',', ' '); ?>m<sup>2</sup></li>
+										  	<?php } ?>
 										  	
 										  	<?php if($terrasse>0) { ?>
 										  		<li>Terrasse</li>
 										  	<?php } ?>
 										  	
+										  	<?php if($surfterrasse>0) { ?>
+										  		<li>Surface terrasse : <?php echo number_format($surfterrasse, 0, ',', ' '); ?>m<sup>2</sup></li>
+										  	<?php } ?>
+										  	
 										  	<?php if($jardin==1) { ?>
 										  		<li>Jardin</li>
+										  	<?php } ?>
+										  	
+										  	<?php if($surface_jardin>0) { ?>
+										  		<li>Surface du jardin : <?php echo number_format($surface_jardin, 0, ',', ' '); ?>m<sup>2</sup></li>
 										  	<?php } ?>
 										  	
 										  	<?php if($ascenseur>0) { ?>
