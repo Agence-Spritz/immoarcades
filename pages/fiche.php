@@ -20,22 +20,14 @@
 		$composition = str_replace('<br><br>', '<br>', $composition); 
 		$surface = $data['surfhab'];
 		$nb_chambres = $data['qchambres'];
-		$nb_garages = $data['qgarages'];
-		$nb_parking = $data['qparking'];
 		$nb_sdb = $data['qsdb'];
 		$nb_wc = $data['qwc'];
-		$surface_jardin = $data['surfjardin'];
-		
 		$type_cuisine = $data['type_cuisine'];
-		$terrasse = $data['terrasse'];
-		$jardin = $data['jardin'];
 		$etage = $data['etage'];
 		$nb_etage = $data['nb_etage'];
 		$ascenseur = $data['ascenseur'];
 		$balcon = $data['balcon'];
 		$cave = $data['cave'];
-		
-		
 		
 		
 		// nouveau champs
@@ -49,10 +41,16 @@
 		$prixnet = $data['prix_vendeur'];
 		$a_la_charge_de = $data['a_la_charge_de'];
 		$taxe_fonciere = $data['taxe_fonciere'];
+		$jardin = $data['jardin'];
+		$surface_jardin = $data['surfjardin'];
+		$terrasse = $data['terrasse'];
+		$surface_terrasse = $data['surfterrasse'];
 		$cour = $data['cour'];
-		$surfcour = $data['surfcour'];
-		$surfterrasse = $data['surfterrasse'];
-		
+		$surface_cour = $data['surfcour'];
+		$garage = $data['garage'];
+		$nb_garages = $data['qgarages'];
+		$parking = $data['parking'];
+		$nb_parking = $data['qparking'];
 		
 		
 		if($data['dep']!="" && $data['dep']!="0") {
@@ -313,8 +311,17 @@ google.maps.event.addDomListener(window, 'load', initialize);
 										<?php if($jardin==1) { ?>
 											<a href="#"> <i class="flaticon-nature-2"></i> Jardin</a>
 										<?php } ?>
-										<?php if($nb_garages>0) { ?>
-											<a href="#"> <i class="flaticon-vehicle"></i><?php echo $nb_garages; ?> garage(s)</a>
+										<?php if($garage==1) { ?>
+											<a href="#"> <i class="flaticon-vehicle"></i> Garage</a>
+										<?php } ?>
+										<?php if($parking==1) { ?>
+											<a href="#"> <i class="flaticon-parking"></i> Parking</a>
+										<?php } ?>
+										<?php if($cour==1) { ?>
+											<a href="#"> <i class="flaticon-construction-8"></i> Cour</a>
+										<?php } ?>
+										<?php if($terrasse==1) { ?>
+											<a href="#"> <i class="flaticon-nature"></i> Terrasse (cours aérée-jardinet)</a>
 										<?php } ?>
 										<?php if($annee>0) { ?>
 											<a href="#"> <i class="flaticon-construction-15"></i><?php echo $annee; ?></a>
@@ -405,24 +412,12 @@ google.maps.event.addDomListener(window, 'load', initialize);
 										  		<li>Surface habitable : <?php echo number_format($surface, 0, ',', ' '); ?>m<sup>2</sup></li>
 										  	<?php } ?>
 										  	
-										  	<?php if($cour>0) { ?>
-										  		<li>Cour</li>
-										  	<?php } ?>
-										  	
 										  	<?php if($surfcour>0) { ?>
 										  		<li>Surface cour : <?php echo number_format($surfcour, 0, ',', ' '); ?>m<sup>2</sup></li>
 										  	<?php } ?>
 										  	
-										  	<?php if($terrasse>0) { ?>
-										  		<li>Terrasse</li>
-										  	<?php } ?>
-										  	
 										  	<?php if($surfterrasse>0) { ?>
-										  		<li>Surface terrasse : <?php echo number_format($surfterrasse, 0, ',', ' '); ?>m<sup>2</sup></li>
-										  	<?php } ?>
-										  	
-										  	<?php if($jardin==1) { ?>
-										  		<li>Jardin</li>
+										  		<li>Surface terrasse (cours aérée-jardinet) : <?php echo number_format($surfterrasse, 0, ',', ' '); ?>m<sup>2</sup></li>
 										  	<?php } ?>
 										  	
 										  	<?php if($surface_jardin>0) { ?>
