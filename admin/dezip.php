@@ -144,26 +144,33 @@ $erreur = 0;
 		$taxe_fonciere = $bien->taxe_fonciere;
 		
 		// prestations principales
+		
+		// Valeur par defaut des prestations principales
+		$jardin = NULL;
+		$surfjardin = NULL;
 		$cour = NULL;
 		$surfcour = NULL;
 		$terrasse = NULL;
 		$surfterrasse = NULL;
-		
-		$surfjardin = $bien->surface_jardin;
-		if($surfjardin >=1) {
-			$jardin = 1;
-		} else {
-			$jardin = 0;
-		}
-		
-		//$jardin = 0;
-		//$surfjardin = NULL;
 		$garage = NULL;
-		$qgarages = $bien->nb_parking_interieur;
+		$qgarages = NULL;
 		$parking = NULL;
-		$qparking = $bien->nb_parking_exterieur;
+		$qparking = NULL;
+		
+		$dataDetail = $bien->prestations_principales; 
+		 
+		foreach($dataDetail->prestation_principale as $prestation) {
+	        $typechamps=$prestation->type;
+	        if ($typechamps=="Jardin") { $jardin = 1; $surfjardin=$prestation->valeur;} 
+	        if ($typechamps=="Garage") { $garage = 1; $qgarages=$prestation->valeur;} 
+	        if ($typechamps=="Parking") { $parking = 1; $qparking=$prestation->valeur;} 
+	        if ($typechamps=="Cour") { $cour = 1; $surfcour=$prestation->valeur;} 
+	        if ($typechamps=="Terrasse (cours aérée-jardinet)") { $terrasse = 1; $surfterrasse=$prestation->valeur;} 
+	        
+	    }
 		
 		
+
 		// On récupére les photos
 		$set_image = $bien->images;
 		$image_path = base_url().'kaio';
@@ -287,27 +294,7 @@ $erreur = 0;
 		} else {
 			$photo_20 = NULL;
 		}
-		
-		
 	
-		// On crée les variables des images
-		//$p=1;
-	
-		
-/*
-		foreach ($set_image->image as $image) {
-			//$compteur = sprintf("%02d", $p);
-
-			$liste_colonnes .= "`PHOTO_".$p."`,";
-			
-			$liste_photos .= "'".${"PHOTO_".$p} = $image_path."/".$image."',";
-			
-			
-			$p++;
-		}
-*/
-		
-		
 		
 		
 // 3 ON REMPLIT LA TABLE
