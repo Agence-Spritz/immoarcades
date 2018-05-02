@@ -245,8 +245,7 @@ if ($_POST['submit'] ) {
 							</div>
 							<h5><a href="team-detail.html">Rencontre</a></h5>
 							<div class="position extra-font italic">Vos souhaits</div>
-							<div class="description">
-								Définition de vos souhaits et mise en valeur de votre bien.
+							<div class="description">présentation de votre projet, estimation au plus juste de votre bien, information et conseils pour le valoriser
 							</div>
 						</div>
 						<div class="team-item text-center">
@@ -258,7 +257,7 @@ if ($_POST['submit'] ) {
 							<h5><a href="team-detail.html">Mise en vente</a></h5>
 							<div class="position extra-font italic">Photos, Vidéos, Pubs</div>
 							<div class="description">
-								Préparation des différents médias de diffusion et de publicité.
+								préparation et explications sur les différents médias de diffusion et la communication, choix des photos, rédaction des annonces publicitaires, choix des différents contrats de vente - stratégie
 							</div>
 						</div>
 						<div class="team-item text-center">
@@ -267,10 +266,10 @@ if ($_POST['submit'] ) {
 									<img class="img-circle" src="images/vendre-etape3.jpg" alt="" />
 								</a>
 							</div>
-							<h5><a href="team-detail.html">Suivi de la vente</a></h5>
+							<h5><a href="team-detail.html">Suivi et échanges</a></h5>
 							<div class="position extra-font italic">Analyse et compte rendu</div>
 							<div class="description">
-								Parce qu'il est indispensable que nos clients soient tenus informés.
+								connaissance précise de votre bien, soucis des détails, analyse des besoins des acquéreurs pour visites ciblées au maximum, compte rendus de visites et ressentis, mise au point suite aux réactions ajustement prix de marché
 							</div>
 						</div>
 						<div class="team-item text-center">
@@ -279,10 +278,10 @@ if ($_POST['submit'] ) {
 									<img class="img-circle" src="images/vendre-etape4.jpg" alt="" />
 								</a>
 							</div>
-							<h5><a href="team-detail.html">C'est vendu</a></h5>
+							<h5><a href="team-detail.html">Vente</a></h5>
 							<div class="position extra-font italic">Rédaction des contrats</div>
 							<div class="description">
-								Prise en charge totale jusqu’à la conclusion de la vente. 
+								Etude de financement précise, Rédaction des contrats et des formalités administratives, Transmission au notaire chargé de l'acte authentique
 							</div>
 						</div>
 						<div class="team-item text-center">
@@ -291,10 +290,10 @@ if ($_POST['submit'] ) {
 									<img class="img-circle" src="images/vendre-etape5.jpg" alt="" />
 								</a>
 							</div>
-							<h5><a href="team-detail.html">Cheers</a></h5>
-							<div class="position extra-font italic">.Santé ! </div>
+							<h5><a href="team-detail.html">Acte notarié</a></h5>
+							<div class="position extra-font italic">Santé ! </div>
 							<div class="description">
-								Il est temps de sceller notre collaboration.
+								Accompagnement et présence jusqu'à la remise des clés
 							</div>
 						</div>
 					</div>
