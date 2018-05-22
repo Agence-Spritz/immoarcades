@@ -59,7 +59,8 @@
 							
 							<div class="col-sm-4 entry-media" style="<?php if ($n==4){ echo 'clear:both';} ?>">
 								<div class="mb-2">
-									<h3 class="heading wg-title"><?php echo $data['localite']; ?></h3>
+									<h3 class="heading wg-title heading-ref"><?php echo $data['localite']; ?></h3>
+									<span class="ref_sous_heading"><?php echo "Réf. ".$data['ref']; ?></span>
 									<h2 class="extra-font">
 										<span class="f2">
 										<?php if ($data['cacherprix']!=1){?>
