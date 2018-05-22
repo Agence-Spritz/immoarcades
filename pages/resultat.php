@@ -8,7 +8,7 @@
 	$add_agence = "AND agence = '$agence'";
 	
 	// on force le type de transaction sur V
-	$add_transaction = "AND cat = 'V'";
+	$add_transaction = "AND cat = 'V' ";
 	
 	if ($id=='178' || $id=='179' || $id=='67'){
 		// On adapte le titre en fonction de l'agence sélectionnée dans le menu
@@ -39,7 +39,7 @@
 	?>
 	
 	<?php 	
-		// On va adapter la requête en fonction des elements postés lors de la recherche
+		// Cas de la recherche en POST (formulaire)
 		if ($_POST['submit']=='Rechercher') {
 			
 			// recherche sur l'agence
@@ -52,7 +52,7 @@
 			if ($_POST['type']) {
 				$type = array();
 				$type = $_POST['type'];
-				$type = implode(',', $type);
+				$type = implode("','", $type);
 				$add_type = "AND type IN ('$type')";
 			} else {
 				$type = "";
@@ -113,24 +113,32 @@
 			//argument de terme clé
 			if ($_POST['recherche_terme']) {
 				$recherche_terme = $_POST['recherche_terme'];
-				$add_terme = "AND (titre LIKE '%$recherche_terme%' OR descrlight LIKE '%$recherche_terme%' OR composition LIKE '%$recherche_terme%' OR type LIKE '%$recherche_terme%' OR localite LIKE '%$recherche_terme%' OR codepostal LIKE '%$recherche_terme%' OR ref LIKE '%$recherche_terme%')";
+				$add_terme = "AND (titre LIKE '%$recherche_terme%' OR descrlight LIKE '%$recherche_terme%' OR composition LIKE '%$recherche_terme%' OR type LIKE '%$recherche_terme%' OR localite LIKE '%$recherche_terme%' OR codepostal LIKE '%$recherche_terme%' OR ref LIKE '%$recherche_terme%' OR accroche LIKE '%$recherche_terme%')";
 			} else {
 				$recherche_terme = "";
 			}
 			
 			
-			
+			// Cas de la recherche générale (header)
 			 /*MOTS CLES*/
 			if ($_POST['recherche_generale'])     
             {    
 	              
-                $search_keyword=addslashes($_POST['recherche_generale']);
-                $motcle = explode(" ",$search_keyword,4); $nb_de_mot=count($motcle);
+                $search_keyword=$_POST['recherche_generale'];
+                
+				$search_keyword=str_replace(",",";", $search_keyword);
+				
+				
+                $motcle = explode(";",$search_keyword,4); $nb_de_mot=count($motcle);
+                
+                $nb_de_mot=count($motcle);
                 // REQUETE RUBRIQUE
-                for ($a=0; $a<$nb_de_mot; $a++) {$requete.=" OR (codepostal LIKE '%$motcle[$a]%' OR localite LIKE '%$motcle[$a]%' OR titre LIKE '%$motcle[$a]%' OR type LIKE '%$motcle[$a]%' OR ref LIKE '%$motcle[$a]%' OR quartier LIKE '%$motcle[$a]%' OR descrlight LIKE '%$motcle[$a]%' OR prix LIKE '%$motcle[$a]%')";}
+                for ($a=0; $a<$nb_de_mot; $a++) {$requete.=" OR (codepostal LIKE '%$motcle[$a]%' OR localite LIKE '%$motcle[$a]%' OR titre LIKE '%$motcle[$a]%' OR type LIKE '%$motcle[$a]%' OR ref LIKE '%$motcle[$a]%' OR quartier LIKE '%$motcle[$a]%' OR descrlight LIKE '%$motcle[$a]%' OR prix LIKE '%$motcle[$a]%' OR accroche LIKE '%$motcle[$a]%')";}
                 $requete=substr($requete,3,1000);
-        
                 $add_recherche = (" AND ".$requete);
+                // on le transforme en string de manière à pouvoir etre passé en url
+                $string_termes = implode("','", $motcle);
+                
             } else {
 	            $add_recherche = "";
             }
@@ -138,10 +146,113 @@
             $resum_recherche = $add_transaction.$add_type.$add_agence.$add_codepostal.$add_localite.$add_surface_min.$add_prix.$add_terme.$add_recherche;
             
 
-		} else if($_GET['search']) {
+		} 
+		
+		
+		// Cas de la pagination, les éléments sont récupéres en GET
+		if ($_GET['page']) {
 			
-			// Si la recherche a été passée en get, c'est que l'on est dans le cadre d'une pagination.
-			$resum_recherche = $_GET['search'];
+			// recherche sur l'agence
+			if ($_GET['agence']) {
+				$agence = $_GET['agence'];
+				$add_agence = "AND agence = '$agence'";
+			} 
+			
+			//argument de type
+			if ($_GET['type']) {
+				
+				$type = $_GET['type'];
+				$add_type = "AND type IN ('$type')";
+				
+			} else {
+				$type = "";
+			}
+			
+			//argument de Code postal
+			if ($_GET['codepostal']) {
+				$codepostal = $_GET['codepostal'];
+				$add_codepostal = "AND codepostal = '$codepostal'";
+			} else {
+				$codepostal = "";
+			}
+			
+			//argument de localite
+			if ($_GET['localite']) {
+				$localite = $_GET['localite'];
+				$add_localite = "AND localite = '$localite'";
+			} else {
+				$localite = "";
+			}
+			
+			//argument de surface
+			if ($_GET['surface_min']) {
+				$surface_min = $_GET['surface_min'];
+				$add_surface_min = "AND surfhab >= '$surface_min'";
+
+			} else {
+				$surface_min = "";
+			}
+			
+			//argument de prix
+			if ($_GET['prix_mini'] || $_GET['prix_maxi']) {
+				
+				// On va déterminer les prix min et max de la BDD
+				$req = mysqli_query($link,"SELECT MAX(prix) as max, MIN(prix) as min FROM ".$table_prefix."_biens"); 
+			  	$data = mysqli_fetch_array($req);
+
+				
+				if($_GET['prix_mini']!="") {
+					$prix_min = $_GET['prix_mini'];	
+				} else {
+					$prix_min = $data['min'];
+				}
+				
+				if($_GET['prix_maxi']!="") {
+					$prix_max = $_GET['prix_maxi'];	
+				} else {
+					$prix_max = $data['max'];
+				}
+				
+				$add_prix = "AND prix BETWEEN '$prix_min' AND '$prix_max'";
+				
+			} else {
+				$prix_min = "";
+				$prix_max = "";
+			}
+			
+			//argument de terme clé
+			if ($_GET['recherche_terme']) {
+				$recherche_terme = $_GET['recherche_terme'];
+				$add_terme = "AND (titre LIKE '%$recherche_terme%' OR descrlight LIKE '%$recherche_terme%' OR composition LIKE '%$recherche_terme%' OR type LIKE '%$recherche_terme%' OR localite LIKE '%$recherche_terme%' OR codepostal LIKE '%$recherche_terme%' OR ref LIKE '%$recherche_terme%' OR accroche LIKE '%$recherche_terme%')";
+			} else {
+				$recherche_terme = "";
+			}
+			
+			//argument de terme clé
+			if ($_GET['motcle']) {
+				
+				$search_keyword=$_GET['motcle'];
+				$search_keyword=str_replace("','","|", $search_keyword);
+				$search_keyword=str_replace(",|",";", $search_keyword);
+				$search_keyword=str_replace("|",";", $search_keyword);
+				
+                $motcle = explode(";",$search_keyword,4); $nb_de_mot=count($motcle);
+                $string_termes = $motcle[0];
+			
+				
+				// REQUETE RUBRIQUE
+                for ($a=0; $a<$nb_de_mot; $a++) {$requete.=" OR (codepostal LIKE '%$motcle[$a]%' OR localite LIKE '%$motcle[$a]%' OR titre LIKE '%$motcle[$a]%' OR type LIKE '%$motcle[$a]%' OR ref LIKE '%$motcle[$a]%' OR quartier LIKE '%$motcle[$a]%' OR descrlight LIKE '%$motcle[$a]%' OR prix LIKE '%$motcle[$a]%' OR accroche LIKE '%$motcle[$a]%')";}
+                $requete=substr($requete,3,1000);
+                $add_recherche = (" AND ".$requete);
+                
+                } else {
+				$motcle = "";
+			}
+			
+            
+            $resum_recherche = $add_transaction.$add_type.$add_agence.$add_codepostal.$add_localite.$add_surface_min.$add_prix.$add_terme.$add_recherche;
+            
+
 		} 	
 	
 		//Enlever les commentaires pour afficher les valeurs postées
@@ -155,7 +266,8 @@
 				echo $add_prix.'<br />';
 				echo $add_terme.'<br />';
 				echo $add_recherche. '<br />';
-				echo $resum_recherche. '<br />';
+				
+				
 */
 ?>
 
@@ -191,6 +303,7 @@
 		</div>
 	</div>
 	
+	<?php if(!$_POST['submit']=='Rechercher' && !isset($_GET['search']) && !isset($_GET['page'])) {?>
 	<!--  Biens à la une première ligne-->
 	<div class="section liste-biens pt-4 mobile-hide">
 		<div class="container">
@@ -202,14 +315,15 @@
 					</h2>
 				</div>
 				
-				<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE nouveaute <> 0 ORDER BY dmod DESC LIMIT 0,3"); 
+				<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE nouveaute <> 0 ORDER BY RAND() LIMIT 0,3"); 
 				  	while ($data = mysqli_fetch_array($req)) { 
 						$venduloue = $data['venduloue'];
 				?>
 				
 				<div class="col-sm-4 entry-media" style="<?php if ($n==4){ echo 'clear:both';} ?>">
 					<div class="mb-2">
-						<h3 class="heading wg-title"><?php echo $data['localite']; ?></h3>
+						<h3 class="heading wg-title heading-ref"><?php echo $data['localite']; ?></h3>
+						<span class="ref_sous_heading"><?php echo "Réf. ".$data['ref']; ?></span>
 						<h2 class="extra-font">
 							<span class="f2">
 							<?php if ($data['cacherprix']!=1){?>
@@ -238,7 +352,7 @@
 			</div>
 		</div>
 	</div>
-
+	<?php } else {echo "<div style='margin-top: 45px;  '></div>";} ?>
 
 	<!-- Zone de filtres
 	================================================== -->	
@@ -251,75 +365,12 @@
 					<div class="zone-recherche">
 						<form id="recherche_generale" method="POST" action="">
 							
-							<div class="col-xs-12 col-md-6 col-lg-6 mb-2">
-							<h4 class="heading wg-title"><i class="flaticon-house-search"></i>Que recherchez-vous ?</h4>
-							</div>
-							
-							<div class="col-xs-12 col-md-6 col-lg-6 mb-2 text-right lien_recherche">
-								<a id="lien_recherche" href="javascript: void(0);">Recherche avancée</a>
-							</div>
-							
-							<div class="col-xs-12 col-md-12 col-lg-12 mb-2">
-								<input type="text" name="recherche_terme" placeholder="tapez ici un mot clé" value="<?php if ($_POST['recherche_terme']) { echo $recherche_terme; } else if ($_POST['recherche_generale']) { echo $_POST['recherche_generale']; } ?>" />
-							</div>
-							
-							<div class="col-xs-12 col-md-12 col-lg-12">
-							<label>Recherche par prix</label>
-							</div>
-							
-							<div class="col-xs-12 col-md-6 col-lg-6 mb-2">
-								<select name="prix_mini">
-									<option value="">-- prix mini --</option>
-									<option value="0" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==0) {echo "selected";} ?>>0</option>
-									<option value="25000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==25000) {echo "selected";} ?>>25 000</option>
-									<option value="50000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==50000) {echo "selected";} ?>>50 000</option>
-									<option value="75000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==75000) {echo "selected";} ?>>75 000</option>
-									<option value="100000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==100000) {echo "selected";} ?>>100 000</option>
-									<option value="125000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==125000) {echo "selected";} ?>>125 000</option>
-									<option value="150000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==150000) {echo "selected";} ?>>150 000</option>
-									<option value="175000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==175000) {echo "selected";} ?>>175 000</option>
-									<option value="200000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==200000) {echo "selected";} ?>>200 000</option>
-									<option value="250000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==250000) {echo "selected";} ?>>250 000</option>
-									<option value="300000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==300000) {echo "selected";} ?>>300 000</option>
-									<option value="350000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==350000) {echo "selected";} ?>>350 000</option>
-									<option value="400000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==400000) {echo "selected";} ?>>400 000</option>
-									<option value="500000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==500000) {echo "selected";} ?>>500 000</option>
-									<option value="1000000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==1000000) {echo "selected";} ?>>1 000 000</option>
-								</select>
-							</div>
-							
-							<div class="col-xs-12 col-md-6 col-lg-6 mb-2">
-								<select name="prix_maxi">
-									<option value="">-- prix maxi --</option>
-									<option value="25000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==25000) {echo "selected";} ?>>25 000</option>
-									<option value="50000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==50000) {echo "selected";} ?>>50 000</option>
-									<option value="75000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==75000) {echo "selected";} ?>>75 000</option>
-									<option value="100000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==100000) {echo "selected";} ?>>100 000</option>
-									<option value="125000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==125000) {echo "selected";} ?>>125 000</option>
-									<option value="150000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==150000) {echo "selected";} ?>>150 000</option>
-									<option value="175000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==175000) {echo "selected";} ?>>175 000</option>
-									<option value="200000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==200000) {echo "selected";} ?>>200 000</option>
-									<option value="250000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==250000) {echo "selected";} ?>>250 000</option>
-									<option value="300000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==300000) {echo "selected";} ?>>300 000</option>
-									<option value="350000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==350000) {echo "selected";} ?>>350 000</option>
-									<option value="400000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==400000) {echo "selected";} ?>>400 000</option>
-									<option value="500000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==500000) {echo "selected";} ?>>500 000</option>
-									<option value="1000000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==1000000) {echo "selected";} ?>>1 000 000</option>
-								</select>
-							</div>
-							<div class="clearfix"></div>
-							
-							<div id="recherche_simple" class="col-xs-12 col-md-6 col-lg-6 mb-1">
-								<label>Recherche par zone géographique</label>
-								<select name="agence">
-									<option value="" selected=selected>toute zone</option>
-									<option value="1" <?php if(((isset($_POST['agence']) && $_POST['agence']==1)) || ($agence==1)) {echo "selected";} ?>>autour de Tourcoing</option>
-									<option value="2" <?php if(((isset($_POST['agence']) && $_POST['agence']==2)) || ($agence==2)) {echo "selected";} ?>>autour de Lys-lez-lannoy</option>
-								</select>
-							</div>
-							
-							<div id="recherche_avancee">
-								<div class="col-xs-12 col-md-6 col-lg-6 mb-2">
+								<div class="col-xs-12 col-md-4 col-lg-4 mb-2">
+									<label>Que recherchez-vous ?</label>
+									<input type="text" name="recherche_terme" placeholder="tapez ici un mot clé" value="<?php if ($_POST['recherche_terme']) { echo $recherche_terme; } else if ($_POST['recherche_generale']) { echo $_POST['recherche_generale']; } ?><?php if ($_GET['recherche_terme']) { echo $_GET['recherche_terme']; } else if ($_GET['motcle']) { $select_mot = explode("','",$_GET['motcle']); echo $select_mot[0]; } ?>" />
+								</div>
+								
+								<div class="col-xs-12 col-md-4 col-lg-4 mb-2">
 									<label>Code Postal</label>
 									<input type='text'
 									       placeholder='Tapez un code postal'
@@ -327,7 +378,7 @@
 									       data-min-length='1'
 									       list='code_postal'
 									       name='codepostal'
-									       value='<?php if(isset($_POST['codepostal'])) {echo $_POST['codepostal'];} ?>'>
+									       value='<?php if(isset($_POST['codepostal'])) {echo $_POST['codepostal'];} else if(isset($_GET['codepostal'])) {echo $_GET['codepostal'];} ?>'>
 									
 									<datalist id="code_postal">
 									    <?php $req = mysqli_query($link,"SELECT DISTINCT codepostal FROM ".$table_prefix."_biens WHERE 1 AND codepostal<>'' ORDER BY codepostal ASC"); 
@@ -339,7 +390,7 @@
 									</datalist>
 								</div>
 							
-								<div class="col-xs-12 col-md-6 col-lg-6 mb-2 ">
+								<div class="col-xs-12 col-md-4 col-lg-4 mb-2 ">
 									<label>Ville</label>
 									<input type='text'
 									       placeholder='Entrez la ville de votre choix'
@@ -347,7 +398,7 @@
 									       data-min-length='1'
 									       list='localite'
 									       name='localite'
-									       value='<?php if(isset($_POST['localite'])) {echo $_POST['localite'];} ?>'>
+									       value='<?php if(isset($_POST['localite'])) {echo $_POST['localite'];} else if(isset($_GET['localite'])) {echo $_GET['localite'];} ?>'>
 									
 									<datalist id="localite">
 									    <?php $req = mysqli_query($link,"SELECT DISTINCT localite FROM ".$table_prefix."_biens WHERE 1 AND localite<>'' ORDER BY localite ASC"); 
@@ -358,58 +409,117 @@
 									    
 									</datalist>
 								</div>
-								<div class="col-xs-12 col-md-6 col-lg-6 mb-1">
+							
+							
+							<div class="col-xs-12 col-md-4 col-lg-4 mb-2">
+								<label>Prix mini</label>
+								<select name="prix_mini">
+									<option value="">-- prix mini --</option>
+									<option value="0" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==0) {echo "selected";} else if(isset($_GET['prix_mini']) && $_GET['prix_mini']==0) {echo "selected";} ?>>0</option>
+									<option value="25000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==25000) {echo "selected";} else if(isset($_GET['prix_mini']) && $_GET['prix_mini']==25000) {echo "selected";} ?>>25 000</option>
+									<option value="50000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==50000) {echo "selected";} else if(isset($_GET['prix_mini']) && $_GET['prix_mini']==50000) {echo "selected";} ?>>50 000</option>
+									<option value="75000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==75000) {echo "selected";} else if(isset($_GET['prix_mini']) && $_GET['prix_mini']==75000) {echo "selected";} ?>>75 000</option>
+									<option value="100000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==100000) {echo "selected";} else if(isset($_GET['prix_mini']) && $_GET['prix_mini']==100000) {echo "selected";} ?>>100 000</option>
+									<option value="125000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==125000) {echo "selected";} else if(isset($_GET['prix_mini']) && $_GET['prix_mini']==125000) {echo "selected";} ?>>125 000</option>
+									<option value="150000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==150000) {echo "selected";} else if(isset($_GET['prix_mini']) && $_GET['prix_mini']==150000) {echo "selected";} ?>>150 000</option>
+									<option value="175000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==175000) {echo "selected";} else if(isset($_GET['prix_mini']) && $_GET['prix_mini']==175000) {echo "selected";} ?>>175 000</option>
+									<option value="200000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==200000) {echo "selected";} else if(isset($_GET['prix_mini']) && $_GET['prix_mini']==200000) {echo "selected";} ?>>200 000</option>
+									<option value="250000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==250000) {echo "selected";} else if(isset($_GET['prix_mini']) && $_GET['prix_mini']==250000) {echo "selected";} ?>>250 000</option>
+									<option value="300000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==300000) {echo "selected";} else if(isset($_GET['prix_mini']) && $_GET['prix_mini']==300000) {echo "selected";} ?>>300 000</option>
+									<option value="350000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==350000) {echo "selected";} else if(isset($_GET['prix_mini']) && $_GET['prix_mini']==350000) {echo "selected";} ?>>350 000</option>
+									<option value="400000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==400000) {echo "selected";} else if(isset($_GET['prix_mini']) && $_GET['prix_mini']==400000) {echo "selected";} ?>>400 000</option>
+									<option value="500000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==500000) {echo "selected";} else if(isset($_GET['prix_mini']) && $_GET['prix_mini']==500000) {echo "selected";} ?>>500 000</option>
+									<option value="1000000" <?php if(isset($_POST['prix_mini']) && $_POST['prix_mini']==1000000) {echo "selected";} else if(isset($_GET['prix_mini']) && $_GET['prix_mini']==1000000) {echo "selected";} ?>>1 000 000</option>
+								</select>
+							</div>
+							
+							<div class="col-xs-12 col-md-4 col-lg-4 mb-2">
+								<label>Prix maxi</label>
+								<select name="prix_maxi">
+									<option value="">-- prix maxi --</option>
+									<option value="25000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==25000) {echo "selected";} else if(isset($_GET['prix_maxi']) && $_GET['prix_maxi']==25000) {echo "selected";} ?>>25 000</option>
+									<option value="50000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==50000) {echo "selected";} else if(isset($_GET['prix_maxi']) && $_GET['prix_maxi']==50000) {echo "selected";} ?>>50 000</option>
+									<option value="75000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==75000) {echo "selected";} else if(isset($_GET['prix_maxi']) && $_GET['prix_maxi']==75000) {echo "selected";} ?>>75 000</option>
+									<option value="100000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==100000) {echo "selected";} else if(isset($_GET['prix_maxi']) && $_GET['prix_maxi']==100000) {echo "selected";} ?>>100 000</option>
+									<option value="125000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==125000) {echo "selected";} else if(isset($_GET['prix_maxi']) && $_GET['prix_maxi']==125000) {echo "selected";} ?>>125 000</option>
+									<option value="150000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==150000) {echo "selected";} else if(isset($_GET['prix_maxi']) && $_GET['prix_maxi']==150000) {echo "selected";} ?>>150 000</option>
+									<option value="175000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==175000) {echo "selected";} else if(isset($_GET['prix_maxi']) && $_GET['prix_maxi']==175000) {echo "selected";} ?>>175 000</option>
+									<option value="200000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==200000) {echo "selected";} else if(isset($_GET['prix_maxi']) && $_GET['prix_maxi']==200000) {echo "selected";} ?>>200 000</option>
+									<option value="250000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==250000) {echo "selected";} else if(isset($_GET['prix_maxi']) && $_GET['prix_maxi']==250000) {echo "selected";} ?>>250 000</option>
+									<option value="300000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==300000) {echo "selected";} else if(isset($_GET['prix_maxi']) && $_GET['prix_maxi']==300000) {echo "selected";} ?>>300 000</option>
+									<option value="350000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==350000) {echo "selected";} else if(isset($_GET['prix_maxi']) && $_GET['prix_maxi']==350000) {echo "selected";} ?>>350 000</option>
+									<option value="400000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==400000) {echo "selected";} else if(isset($_GET['prix_maxi']) && $_GET['prix_maxi']==400000) {echo "selected";} ?>>400 000</option>
+									<option value="500000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==500000) {echo "selected";} else if(isset($_GET['prix_maxi']) && $_GET['prix_maxi']==500000) {echo "selected";} ?>>500 000</option>
+									<option value="1000000" <?php if(isset($_POST['prix_maxi']) && $_POST['prix_maxi']==1000000) {echo "selected";} else if(isset($_GET['prix_maxi']) && $_GET['prix_maxi']==1000000) {echo "selected";} ?>>1 000 000</option>
+								</select>
+							</div>
+							
+							<div class="col-xs-12 col-md-4 col-lg-4 mb-1">
+								<label>Surface minimale</label>
+								<input type='text'
+								       placeholder='en m2'
+								       class='flexdatalist'
+								       data-min-length='1'
+								       list='surface_min'
+								       name='surface_min'
+								       value='<?php if(isset($_POST['surface_min'])) {echo $_POST['surface_min'];} else if(isset($_GET['surface_min'])) {echo $_GET['surface_min'];} ?>'>
+								
+								<datalist id="surface_min">
+										<option value="20" >20</option>
+										<option value="30" >30</option>
+										<option value="50" >50</option>
+										<option value="75" >75</option>
+										<option value="100" >100</option>
+										<option value="130" >130</option>
+										<option value="150" >150</option>
+										<option value="200" >200</option>
+										<option value="300" >300</option>
+								</datalist>
+							</div>
+							<div class="clearfix"></div>
+							
+							<div class="col-xs-12 col-md-12 col-lg-12 mb-2 recherche_type">
 									<label>Recherche par type</label>
+									<?php $res_type = str_replace("','", "|",$_GET['type']); $res_type = explode("|", $res_type);
+										
+									?>
 									<div class="form-check form-check-inline">
-									  <input class="form-check-input" name="type[]" type="checkbox" id="maison" value="Maison" <?php if(isset($_POST['type']) && in_array("Maison", $_POST['type'])) {echo "checked";} ?>>
+									  <input class="form-check-input" name="type[]" type="checkbox" id="maison" value="Maison" <?php if(isset($_POST['type']) && in_array("Maison", $_POST['type'])) {echo "checked";} else if(isset($_GET['type'])  && in_array("Maison", $res_type)) {echo "checked";} ?>>
 									  <label class="form-check-label" for="maison">Maison</label>
 									</div>
 									<div class="form-check form-check-inline">
-									  <input class="form-check-input" name="type[]" type="checkbox" id="appartement" value="Appartement" <?php if(isset($_POST['type']) && in_array("Appartement", $_POST['type'])) {echo "checked";} ?>>
+									  <input class="form-check-input" name="type[]" type="checkbox" id="appartement" value="Appartement" <?php if(isset($_POST['type']) && in_array("Appartement", $_POST['type'])) {echo "checked";} else if(isset($_GET['type'])&& in_array("Appartement", $res_type) ) {echo "checked";} ?>>
 									  <label class="form-check-label" for="appartement">Appartement</label>
 									</div>
 									<div class="form-check form-check-inline">
-									  <input class="form-check-input" name="type[]" type="checkbox" id="terrain" value="Terrain" <?php if(isset($_POST['type']) && in_array("Terrain", $_POST['type'])) {echo "checked";} ?>>
+									  <input class="form-check-input" name="type[]" type="checkbox" id="terrain" value="Terrain" <?php if(isset($_POST['type']) && in_array("Terrain", $_POST['type'])) {echo "checked";} else if(isset($_GET['type']) && in_array("Terrain", $res_type)) {echo "checked";} ?>>
 									  <label class="form-check-label" for="terrain">Terrain</label>
 									</div>
 									<div class="form-check form-check-inline">
-									  <input class="form-check-input" name="type[]" type="checkbox" id="immeuble" value="Immeuble" <?php if(isset($_POST['type']) && in_array("Immeuble", $_POST['type'])) {echo "checked";} ?>>
+									  <input class="form-check-input" name="type[]" type="checkbox" id="immeuble" value="Immeuble" <?php if(isset($_POST['type']) && in_array("Immeuble", $_POST['type'])) {echo "checked";} else if(isset($_GET['type'])&& in_array("Immeuble", $res_type) ) {echo "checked";} ?>>
 									  <label class="form-check-label" for="immeuble">Immeuble de rapport</label>
 									</div>
 									<div class="form-check form-check-inline">
-									  <input class="form-check-input" name="type[]" type="checkbox" id="autre" value="Autre" <?php if(isset($_POST['type']) && in_array("Autre", $_POST['type'])) {echo "checked";} ?>>
+									  <input class="form-check-input" name="type[]" type="checkbox" id="autre" value="Autre" <?php if(isset($_POST['type']) && in_array("Autre", $_POST['type'])) {echo "checked";} else if(isset($_GET['type']) && in_array("Autre", $res_type)) {echo "checked";} ?>>
 									  <label class="form-check-label" for="autre">Autre</label>
 									</div>
-								</div>
-								
+							</div>
+
+							
 								<div class="col-xs-12 col-md-6 col-lg-6 mb-1">
-									<label>Surface minimale</label>
-									<input type='text'
-									       placeholder='en m2'
-									       class='flexdatalist'
-									       data-min-length='1'
-									       list='surface_min'
-									       name='surface_min'
-									       value='<?php if(isset($_POST['surface_min'])) {echo $_POST['surface_min'];} ?>'>
-									
-									<datalist id="surface_min">
-											<option value="20" >20</option>
-											<option value="30" >30</option>
-											<option value="50" >50</option>
-											<option value="75" >75</option>
-											<option value="100" >100</option>
-											<option value="130" >130</option>
-											<option value="150" >150</option>
-											<option value="200" >200</option>
-											<option value="300" >300</option>
-									</datalist>
+								<label>Recherche par zone géographique</label>
+								<select name="agence">
+									<option value="" selected=selected>toute zone</option>
+									<option value="1" <?php if(((isset($_POST['agence']) && $_POST['agence']==1)) || ($agence==1)) {echo "selected";} else if(((isset($_GET['agence']) && $_GET['agence']==1)) || ($agence==1)) {echo "selected";} ?>>autour de Tourcoing</option>
+									<option value="2" <?php if(((isset($_POST['agence']) && $_POST['agence']==2)) || ($agence==2)) {echo "selected";} else if(((isset($_GET['agence']) && $_GET['agence']==2)) || ($agence==2)) {echo "selected";} ?>>autour de Lys-lez-lannoy</option>
+								</select>
 								</div>
 							
-							</div>
-							
-							<div class="col-xs-12 col-md-12 col-lg-12 mb-1">
+								<div class="col-xs-12 col-md-6 col-lg-6 mb-1">
 								<input style="margin-top: 25px;float: right;" type="submit" name="submit" value="Rechercher" id="recherche_generale" />
-							</div>
+								</div>
+							
+							
 							<div class="clearfix"></div>
 		
 						</form>
@@ -434,7 +544,7 @@
 							// On met dans une variable le nombre de biens qu'on veut par page
 							$nombreDeBiensParPage = 10;
 							// On récupère le nombre total de biens
-							$req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$resum_recherche.""); 
+							$req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$resum_recherche." ORDER BY dmod DESC");
 							
 								// Calcule le nbr de biens retournés par la requête
 								$nb_biens = mysqli_num_rows($req);
@@ -557,7 +667,8 @@
 															
 															<div class="entry-header icone-bien">
 																<div class="mb-2">
-																	<h3 class="heading wg-title"><?php echo $data['type']; ?> à <?php echo $data['localite'].''.$icone_bien; ?> </h3>
+																	<h3 class="heading wg-title heading-ref"><?php echo $data['type']; ?> à <?php echo $data['localite'].''.$icone_bien; ?> </h3>
+																	<span class="ref_sous_heading"><?php echo "Réf. ".$data['ref']; ?></span>
 																</div>
 															</div>
 															<div style="position: relative;" class="content">
@@ -586,9 +697,7 @@
 																	<?php if ($data['qgarages']!='' && $data['qgarages']!='0') { ?>
 																		<li><i class="flaticon-vehicle"></i> <!-- Garage(s) :   --><?php echo $data['qgarages']; ?></li>
 																	<?php } ?>
-																	<?php if ($data['qparking']!='' && $data['qparking']!='0') { ?>
-																		<li><i class="flaticon-vehicle"></i> <!-- Parking(s) :   --><?php echo $data['qparking']; ?></li>
-																	<?php } ?>
+
 	                                                                <?php if($data['qsdb']!='' && $data['qsdb']!='0') { ?>
 	                                                                    <li><i class="flaticon-bathtub"></i> <!-- Salle(s) de bain :  --><?php echo $data['qsdb']; ?></li>
 	                                                                <?php } ?>
@@ -622,7 +731,7 @@
 						  <ul class="pagination">
 							<?php if ( (isset($_GET['page']))&&($_GET['page']!=1) ) { ?>
 						    <li class="page-item">
-						      <a class="page-link" href="<?php echo "?page="; echo $_GET['page']-1; echo "&search=".$resum_recherche; ?>" aria-label="Previous">
+						      <a class="page-link" href="<?php echo "?page="; echo $_GET['page']-1; echo "&agence=".$agence."&type=".$type."&codepostal=".$codepostal."&localite=".$localite."&surface_min=".$surface_min."&prix_mini=".$prix_min."&prix_maxi=".$prix_max."&recherche_terme=".$recherche_terme."&motcle=".$string_termes; ?>" aria-label="Previous">
 						        <span aria-hidden="true">&laquo;</span>
 						        <span class="sr-only">Précédent</span>
 						      </a>
@@ -632,14 +741,14 @@
 							    for ($i = 1 ; $i <= $nombreDePages ; $i++)
 								{ ?>
 									
-									<li class="page-item <?php if($_GET['page']==$i) { echo "active"; } ?>"><a class="page-link" href="?page=<?php echo $i; echo "&search=".$resum_recherche; ?>"><?php echo $i; ?></a></li>
+									<li class="page-item <?php if($_GET['page']==$i) { echo "active"; } ?>"><a class="page-link" href="?page=<?php echo $i; echo "&agence=".$agence."&type=".$type."&codepostal=".$codepostal."&localite=".$localite."&surface_min=".$surface_min."&prix_mini=".$prix_min."&prix_maxi=".$prix_max."&recherche_terme=".$recherche_terme."&motcle=".$string_termes; ?>"><?php echo $i; ?></a></li>
 								<?php }
 									
 						    ?>
 						    
 						    <?php if ( ((isset($_GET['page'])) || ($nb_biens>$nombreDeBiensParPage)) && ($_GET['page']<$nombreDePages)  ) { ?>
 						    <li class="page-item">
-						      <a class="page-link" href="<?php echo "?page="; echo $page+1; echo "&search=".$resum_recherche; ?>" aria-label="Next">
+						      <a class="page-link" href="<?php echo "?page="; echo $page+1; echo "&agence=".$agence."&type=".$type."&codepostal=".$codepostal."&localite=".$localite."&surface_min=".$surface_min."&prix_mini=".$prix_min."&prix_maxi=".$prix_max."&recherche_terme=".$recherche_terme."&motcle=".$string_termes; ?>" aria-label="Next">
 						        <span aria-hidden="true">&raquo;</span>
 						        <span class="sr-only">Suivant</span>
 						      </a>
