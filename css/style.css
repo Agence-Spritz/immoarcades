@@ -132,10 +132,19 @@ sup {
 }
 
 
+
+img.photo-principale  {
+	max-height: 270px;
+	overflow: hidden;
+	width: auto !important;
+}
+
+
 .survol-photo {
   opacity:0;
 	width: 100%;
 	height: 100%;
+	max-height: 270px;
 	position: absolute;
 	left: 15px;
 	top: 0;
@@ -149,6 +158,8 @@ sup {
 
 .survol-photo img {
 	height: 100%;
+	max-height: 270px;
+	overflow: hidden;
 }
 
 .croix_close {
@@ -239,11 +250,12 @@ text-align: left;
 }
 
 .zone-pictos ul {
-    columns: 2 100px
+    
 }
 
 .zone-pictos li {
-
+float: left;
+margin-right: 30px;
 	font-size: 16px;
 	color: #1f1f1f;
 }
@@ -283,6 +295,15 @@ text-align: left;
 	color: #d90102;
 }
 
+.heading.wg-title.heading-ref {
+	margin-bottom: 5px; 
+}
+
+.ref_sous_heading {
+	font-size: 12px; 
+	color: #a0a0a0;
+}
+
 .zone-recherche .heading.wg-title:after {
 	content: none;
 }
@@ -303,6 +324,16 @@ text-align: left;
 
 .pagination {
 	margin-top: 0;
+}
+
+.recherche_type label {
+	width: 100%;
+	
+}
+
+.form-check-inline {
+	float: left;
+	margin-right: 30px;
 }
 
 /* Fiche bien
@@ -977,6 +1008,11 @@ color: #FFF;
     padding-bottom: 50px;
     border-bottom: 1px solid #8F8F8F;
 	clear: both;
+}
+
+.entry-blog.resultats:after {
+	margin-bottom: 25px;
+    padding-bottom: 25px;
 }
 .entry-socials-share-list li {
     padding: 0 15px;
