@@ -87,7 +87,7 @@
 						</div>
 						
 						<div class="text-center">
-							<img class="mb-3" style="max-width: 500px;" src="<?php echo './images/carte.png'; ?>" usemap="#Map" alt="<?php echo $data['titre']; ?>" title="<?php echo $data['titre']; ?>" />
+							<img class="mb-3" style="max-width: 100%;" src="<?php echo './images/carte.png'; ?>" usemap="#Map" alt="<?php echo $data['titre']; ?>" title="<?php echo $data['titre']; ?>" />
 							
 								<map name="Map" id="Map">
 								    <area alt="" title="" href="maisons-tourcoing-et-environ--178--resultat" shape="poly" coords="168,2,115,75,95,73,53,47,4,73,52,179,103,204,141,251,141,289,87,321,214,376,249,333,282,307,332,295,364,259,348,228,355,208,328,170,296,126,252,44,245,22" />
@@ -125,14 +125,16 @@
 							</h2>
 						</div>
 						
-						<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE ID IN ($ids) ORDER BY dmod DESC LIMIT 0,6");
+						<?php  $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE ID IN ($ids) ORDER BY dmod DESC LIMIT 0,6");
 						  	while ($data = mysqli_fetch_array($req)) { 
 								$venduloue = $data['venduloue'];
+								
 						?>
 						
 						<div class="col-sm-4 entry-media" style="<?php if ($n==4){ echo 'clear:both';} ?>">
 							<div class="mb-2">
-								<h3 class="heading wg-title"><?php echo $data['localite']; ?></h3>
+								<h3 class="heading wg-title heading-ref"><?php echo $data['localite']; ?></h3>
+								<span class="ref_sous_heading"><?php echo "Réf. ".$data['ref']; ?></span>
 								<h2 class="extra-font">
 									<span class="f2">
 									<?php if ($data['cacherprix']!=1){?>
@@ -176,39 +178,49 @@
 							</h2>
 						</div>
 						
-						<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE cat='V' AND nouveaute <> 0 ORDER BY dmod DESC LIMIT 0,3"); 
+						<?php // On va stocker les résultats dans un tableau
+							$selection_coupdecoeur = array();
+							
+							$req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE cat='V' AND nouveaute <> 0 ORDER BY RAND()"); 
 						  	while ($data = mysqli_fetch_array($req)) { 
 								$venduloue = $data['venduloue'];
-						?>
-						
-						<div class="col-sm-4 entry-media" style="<?php if ($n==4){ echo 'clear:both';} ?>">
-							<div class="mb-2">
-								<h3 class="heading wg-title"><?php echo $data['localite']; ?></h3>
-								<h2 class="extra-font">
-									<span class="f2">
-									<?php if ($data['cacherprix']!=1){?>
-										<?php echo number_format($data['prix'], 0, ',', ' ').'<sup>€</sup>'; ?>
-                                    <?php } else {echo "Prix sur demande";} ?>
-									</span>
-								</h2>
-							</div>
-							<div class="zone-titre-liste">
-								<p class="description">
-									<?php echo CleanCut($data['descrlight'],100); ?><br />
-								</p>
-							</div>
-							<a href="<?php echo $data['type']; ?>-nord-tourcoing-<?php echo $data['localite']; ?>--<?php echo $data['ID']; ?>--fiche">
-								<div style="position: relative;" class="visuel-bien mt-2 mb-3">
-									<img src="<?php echo $data['PHOTO_01']; ?>" alt="<?php echo $data['titre']; ?>" title="<?php echo $data['titre']; ?>" />
-									<?php if ($venduloue=="Vendu" || $venduloue=="Loué") { //Lou&eacute;?>
-									<div class="banniere-venduloue" ><?php echo $venduloue; ?></div>
-									<?php } ?>
-									<div class="label"><a href="javascript: void(0)" title="Belle opportunité"><i class="flaticon-construction"></i></a></div>
+								
+								$selection_coupdecoeur[] = $data;
+								
+							}
+							
+							foreach (array_slice($selection_coupdecoeur, 0, 3) as $item) :  ?>
+								
+								<div class="col-sm-4 entry-media" style="<?php if ($n==4){ echo 'clear:both';} ?>">
+									<div class="mb-2">
+										<h3 class="heading wg-title heading-ref"><?php echo $item['localite']; ?></h3>
+										<span class="ref_sous_heading"><?php echo "Réf. ".$item['ref']; ?></span>
+										<h2 class="extra-font">
+											<span class="f2">
+											<?php if ($item['cacherprix']!=1){?>
+												<?php echo number_format($item['prix'], 0, ',', ' ').'<sup>€</sup>'; ?>
+		                                    <?php } else {echo "Prix sur demande";} ?>
+											</span>
+										</h2>
+									</div>
+									<div class="zone-titre-liste">
+										<p class="description">
+											<?php echo CleanCut($item['descrlight'],100); ?><br />
+										</p>
+									</div>
+									<a href="<?php echo $item['type']; ?>-nord-tourcoing-<?php echo $item['localite']; ?>--<?php echo $item['ID']; ?>--fiche">
+										<div style="position: relative;" class="visuel-bien mt-2 mb-3">
+											<img src="<?php echo $item['PHOTO_01']; ?>" alt="<?php echo $item['titre']; ?>" title="<?php echo $item['titre']; ?>" />
+											<?php if ($venduloue=="Vendu" || $venduloue=="Loué") { //Lou&eacute;?>
+											<div class="banniere-venduloue" ><?php echo $venduloue; ?></div>
+											<?php } ?>
+											<div class="label"><a href="javascript: void(0)" title="Belle opportunité"><i class="flaticon-construction"></i></a></div>
+										</div>
+									</a>
 								</div>
-							</a>
-						</div>
 						
-						<?php } ?>
+						<?php endforeach; ?>
+						
 					</div>
 				</div>
 			</div>
@@ -218,39 +230,37 @@
 				<div class="container">
 					<div class="row">
 						
-						<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE cat='V' AND nouveaute <> 0 ORDER BY dmod DESC LIMIT 3,3"); 
-						  	while ($data = mysqli_fetch_array($req)) { 
-								$venduloue = $data['venduloue'];
-						?>
-						
-						<div class="col-sm-4 entry-media" style="<?php if ($n==4){ echo 'clear:both';} ?>">
-							<div class="mb-2">
-								<h3 class="heading wg-title"><?php echo $data['localite']; ?></h3>
-								<h2 class="extra-font">
-									<span class="f2">
-									<?php if ($data['cacherprix']!=1){?>
-										<?php echo number_format($data['prix'], 0, ',', ' ').'<sup>€</sup>'; ?>
-                                    <?php } else {echo "Prix sur demande";} ?>
-									</span>
-								</h2>
-							</div>
-							<div class="zone-titre-liste">
-								<p class="description">
-									<?php echo CleanCut($data['descrlight'],100); ?><br />
-								</p>
-							</div>
-							<a href="<?php echo $data['type']; ?>-nord-tourcoing-<?php echo $data['localite']; ?>--<?php echo $data['ID']; ?>--fiche">
-								<div style="position: relative;" class="visuel-bien mt-2 mb-3">
-									<img src="<?php echo $data['PHOTO_01']; ?>" alt="<?php echo $data['titre']; ?>" title="<?php echo $data['titre']; ?>" />
-									<?php if ($venduloue=="Vendu" || $venduloue=="Loué") { //Lou&eacute;?>
-									<div class="banniere-venduloue" ><?php echo $venduloue; ?></div>
-									<?php } ?>
-									<div class="label"><a href="javascript: void(0)" title="Belle opportunité"><i class="flaticon-construction"></i></a></div>
+						<?php foreach (array_slice($selection_coupdecoeur, 3, 6) as $item) :  ?>
+								
+								<div class="col-sm-4 entry-media" style="<?php if ($n==4){ echo 'clear:both';} ?>">
+									<div class="mb-2">
+										<h3 class="heading wg-title heading-ref"><?php echo $item['localite']; ?></h3>
+										<span class="ref_sous_heading"><?php echo "Réf. ".$item['ref']; ?></span>
+										<h2 class="extra-font">
+											<span class="f2">
+											<?php if ($item['cacherprix']!=1){?>
+												<?php echo number_format($item['prix'], 0, ',', ' ').'<sup>€</sup>'; ?>
+		                                    <?php } else {echo "Prix sur demande";} ?>
+											</span>
+										</h2>
+									</div>
+									<div class="zone-titre-liste">
+										<p class="description">
+											<?php echo CleanCut($item['descrlight'],100); ?><br />
+										</p>
+									</div>
+									<a href="<?php echo $item['type']; ?>-nord-tourcoing-<?php echo $item['localite']; ?>--<?php echo $item['ID']; ?>--fiche">
+										<div style="position: relative;" class="visuel-bien mt-2 mb-3">
+											<img src="<?php echo $item['PHOTO_01']; ?>" alt="<?php echo $item['titre']; ?>" title="<?php echo $item['titre']; ?>" />
+											<?php if ($venduloue=="Vendu" || $venduloue=="Loué") { //Lou&eacute;?>
+											<div class="banniere-venduloue" ><?php echo $venduloue; ?></div>
+											<?php } ?>
+											<div class="label"><a href="javascript: void(0)" title="Belle opportunité"><i class="flaticon-construction"></i></a></div>
+										</div>
+									</a>
 								</div>
-							</a>
-						</div>
 						
-						<?php } ?>
+						<?php endforeach; ?>
 					</div>
 				</div>
 			</div> 
