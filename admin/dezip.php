@@ -72,11 +72,13 @@ $erreur = 0;
 		
 		// On crée nos variables
 		$ref = $bien->reference;
+		$reftri=substr($ref,2,10);
 		$venduloue = NULL;
 		$mandat = $bien->num_mandat;
 		$nom_agence = preg_replace("/'/","`",stripslashes($bien->nom_agence));
 		$ville_agence = preg_replace("/'/","`",stripslashes($bien->ville_agence));
 		// On créé un num pour l'agence
+/*
 		if($ville_agence=='Tourcoing') {
 			// Tourcoing : 1
 			$agence = 1;
@@ -84,10 +86,21 @@ $erreur = 0;
 			// Lys les Lannoy : 2
 			$agence = 2;
 		}
+*/
 		
 		$pays = $bien->nom_pays;
 		$codepostal = $bien->code_postal;
 		$localite=preg_replace("/'/","`",stripslashes($bien->ville));
+		
+		// On définit des zones (champs agence)
+		if($localite == 'Wattrelos' || $localite == 'Leers' || $localite == 'Lys-lez-Lannoy' || $localite == 'Lannoy' || $localite == 'Toufflers' || $localite == 'Hem' || $localite == 'Sailly-lez-Lannoy') {
+			// Lys les Lannoy : 2
+			$agence = 2;
+		} else {
+			// Tourcoing : 1
+			$agence = 1;
+		}
+		
 		$quartier = preg_replace("/'/","`",stripslashes($bien->proximite));
 		$titre=preg_replace("/'/","`",stripslashes($bien->type_bien));
 		$descrlight=preg_replace("/'/","`",stripslashes($bien->description_internet));
@@ -303,6 +316,7 @@ $erreur = 0;
 			mysqli_query($link,"INSERT INTO ".$table_prefix."_biens ( 
 			`ID`,
 			`ref`,
+			`reftri`,
 			`venduloue`,
 			`mandat`,
 			`nom_agence`,
@@ -389,6 +403,7 @@ $erreur = 0;
 			VALUES (
 			'',
 			'".$ref."',
+			'".$reftri."',
 			'".$venduloue."',
 			'".$mandat."',
 			'".$nom_agence."',
@@ -475,7 +490,7 @@ $erreur = 0;
 			");	
 				
 			
-			echo $n." : Enregistrement du bien réf.: ".$ref."<br />";
+			echo $n." : Enregistrement du bien réf.: ".$ref." (".$reftri."<br />";
 			
 			$erreur = 0;
 			$message = "<div class='alert alert-success' role='alert'>Félicitations, tous les enregistrements ont été réalisés avec succès</div>";
