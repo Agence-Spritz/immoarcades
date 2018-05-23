@@ -315,7 +315,7 @@
 					</h2>
 				</div>
 				
-				<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE nouveaute <> 0 ORDER BY RAND() LIMIT 0,3"); 
+				<?php $req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE nouveaute <> 0 ".$add_agence." ORDER BY RAND() LIMIT 0,3"); 
 				  	while ($data = mysqli_fetch_array($req)) { 
 						$venduloue = $data['venduloue'];
 				?>
@@ -365,16 +365,16 @@
 					<div class="zone-recherche">
 						<form id="recherche_generale" method="POST" action="">
 							
-								<div class="col-xs-12 col-md-4 col-lg-4 mb-2">
+								<div class="col-xs-12 col-md-8 col-lg-8 mb-2">
 									<label>Que recherchez-vous ?</label>
 									<input type="text" name="recherche_terme" placeholder="tapez ici un mot clé" value="<?php if ($_POST['recherche_terme']) { echo $recherche_terme; } else if ($_POST['recherche_generale']) { echo $_POST['recherche_generale']; } ?><?php if ($_GET['recherche_terme']) { echo $_GET['recherche_terme']; } else if ($_GET['motcle']) { $select_mot = explode("','",$_GET['motcle']); echo $select_mot[0]; } ?>" />
 								</div>
 								
+<!--
 								<div class="col-xs-12 col-md-4 col-lg-4 mb-2">
 									<label>Code Postal</label>
 									<input type='text'
 									       placeholder='Tapez un code postal'
-									       class='flexdatalist'
 									       data-min-length='1'
 									       list='code_postal'
 									       name='codepostal'
@@ -389,25 +389,26 @@
 									    
 									</datalist>
 								</div>
+-->
 							
 								<div class="col-xs-12 col-md-4 col-lg-4 mb-2 ">
-									<label>Ville</label>
+									<label>Code postal - Ville</label>
 									<input type='text'
-									       placeholder='Entrez la ville de votre choix'
-									       class='flexdatalist'
+									       placeholder='Saisissez un code postal'
 									       data-min-length='1'
-									       list='localite'
-									       name='localite'
-									       value='<?php if(isset($_POST['localite'])) {echo $_POST['localite'];} else if(isset($_GET['localite'])) {echo $_GET['localite'];} ?>'>
+									       list='code_postal'
+									       name='codepostal'
+									       value='<?php if(isset($_POST['codepostal'])) {echo $_POST['codepostal'];} else if(isset($_GET['codepostal'])) {echo $_GET['codepostal'];} ?>'>
 									
-									<datalist id="localite">
-									    <?php $req = mysqli_query($link,"SELECT DISTINCT localite FROM ".$table_prefix."_biens WHERE 1 AND localite<>'' ORDER BY localite ASC"); 
+									<datalist id="code_postal">
+									    <?php $req = mysqli_query($link,"SELECT DISTINCT codepostal, localite FROM ".$table_prefix."_biens WHERE 1 AND codepostal<>'' ORDER BY codepostal ASC"); 
 										  	while ($data = mysqli_fetch_array($req)) { 
 										?>
-											<option value="<?php echo $data['localite']; ?>"><?php echo $data['localite']; ?></option>
+											<option data-id="1" value="<?php echo $data['codepostal']; ?>"><?php echo $data['codepostal']; ?> - <?php echo $data['localite']; ?></option>
 										<?php } ?>
 									    
 									</datalist>
+									
 								</div>
 							
 							
@@ -458,7 +459,6 @@
 								<label>Surface minimale</label>
 								<input type='text'
 								       placeholder='en m2'
-								       class='flexdatalist'
 								       data-min-length='1'
 								       list='surface_min'
 								       name='surface_min'
@@ -544,7 +544,7 @@
 							// On met dans une variable le nombre de biens qu'on veut par page
 							$nombreDeBiensParPage = 10;
 							// On récupère le nombre total de biens
-							$req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$resum_recherche." ORDER BY dmod DESC");
+							$req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$resum_recherche." ORDER BY reftri DESC");
 							
 								// Calcule le nbr de biens retournés par la requête
 								$nb_biens = mysqli_num_rows($req);
@@ -566,7 +566,7 @@
 									// On calcule le numéro du premier bien qu'on prend pour le LIMIT de MySQL
 									$premierBienAafficher = ($page - 1) * $nombreDeBiensParPage;
 									 
-									$req1 = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$resum_recherche." ORDER BY dmod DESC LIMIT " . $premierBienAafficher . ", " . $nombreDeBiensParPage);
+									$req1 = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$resum_recherche." ORDER BY reftri DESC LIMIT " . $premierBienAafficher . ", " . $nombreDeBiensParPage);
 										
 									//echo "SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$add_type." ".$add_agence." ".$add_codepostal." ".$add_localite." ".$add_surface_min." ".$add_prix." ".$add_terme." ".$add_recherche." ORDER BY dmod DESC LIMIT " . $premierBienAafficher . ", " . $nombreDeBiensParPage;	
 						?>
@@ -777,9 +777,6 @@ $( document ).ready(function() {
     	$('#recherche_simple,#recherche_avancee').toggle();
 	});
 	
-	$('.flexdatalist').flexdatalist({
-	     minLength: 1
-	});
 
 });
 </script>
