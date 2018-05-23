@@ -134,8 +134,18 @@ google.maps.event.addDomListener(window, 'load', initialize);
 	<!-- Corps de la page
 	================================================== -->
 	
+	<div class="section single-portfolio pt-5 pb-1">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+					<a class="btn btn-alt btn-border fullwidth" href="javascript:history.back(); ">Retour aux résultats</a>
+				</div>
+			</div>
+		</div>
+	</div>
 	
-	<div class="section single-portfolio pt-11 pb-9">
+	
+	<div class="section single-portfolio pt-4 pb-9">
 					<div class="container">
 						<div class="row">
 							<div class="col-md-8 col-lg-8">
@@ -299,10 +309,12 @@ google.maps.event.addDomListener(window, 'load', initialize);
 										<?php if($surface>0) { ?>
 											<a href="#"> <i class="flaticon-home-6"></i><?php echo number_format($surface, 0, ',', ' '); ?>m<sup>2</sup></a> 
 										<?php } ?>
+<!--
 										
 										<?php if($nb_pieces>0) { ?>
 											<a href="#"> <i class="flaticon-plans"></i><?php echo $nb_pieces; ?> pièces</a> 
 										<?php } ?>
+-->
 										
 										<?php if($nb_chambres>0) { ?>
 											<a href="#"> <i class="flaticon-rest"></i><?php echo $nb_chambres; ?> chambres</a>
@@ -372,9 +384,11 @@ google.maps.event.addDomListener(window, 'load', initialize);
 										  		<li>Année de construction : <?php echo $annee; ?></li>
 										  	<?php } ?>
 										  	
+<!--
 										  	<?php if($nb_pieces>0) { ?>
 										  		<li>Nombre de pièces(s) : <?php echo $nb_pieces; ?></li>
 										  	<?php } ?>
+-->
 										  	
 										  	<?php if($nb_chambres>0) { ?>
 										  		<li>Nombre de chambre(s) : <?php echo $nb_chambres; ?></li>
