@@ -209,7 +209,6 @@ session_start(); ?>
 
 		<script type="text/javascript" src="js/jquery.min.js"></script>
 		<script type="text/javascript" src="js/jquery-migrate.min.js"></script>
-		<script type="text/javascript" src="js/jquery-flexdatalist-2.2.1/jquery.flexdatalist.min.js"></script>
 		
 		<script type="text/javascript" src="js/bootstrap.min.js"></script>
 		<script type="text/javascript" src="js/jquery.singlePageNav.js"></script>
