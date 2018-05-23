@@ -1679,6 +1679,27 @@ table {
 	border-bottom: none;
 	border-top: none;
 }
+
+
+@media (min-width: 768px) {
+	
+	
+	.nav-extra-icon i.flaticon-technology-2 {
+		display: none !important;
+	}
+}
+
+@media (max-width: 768px) {
+	
+	
+	.navigation .main-navigation > ul li {
+		line-height: 1em !important;
+	}
+}
+
+
+
+
 @media (min-width: 1280px) {
 	.image-overlay {
 		margin-top: -90px;
@@ -1729,11 +1750,7 @@ table {
 		width: 100%;
 	}
 }
-@media (max-width: 992px) and (min-width: 768px) {
-	.image-overlay {
-		margin-top: 0px;
-	}
-}
+
 @media (min-width: 992px) {
 	.full-left, .full-right {
 		position: absolute;
