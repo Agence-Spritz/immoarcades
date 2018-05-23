@@ -291,7 +291,7 @@ if ($_POST['submit'] ) {
 								</a>
 							</div>
 							<h5><a href="team-detail.html">Acte notarié</a></h5>
-							<div class="position extra-font italic">Santé ! </div>
+							<div class="position extra-font italic">Vous voilà propriétaire</div>
 							<div class="description">
 								Accompagnement et présence jusqu'à la remise des clés
 							</div>
