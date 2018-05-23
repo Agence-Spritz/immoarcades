@@ -65,7 +65,7 @@ session_start(); ?>
 								<a href="selection-de-biens-immobiliers--177--panier" title="Voir ma sélection de biens" class="header-icon">
 									<i class="flaticon-shopping-cart"></i>
 								</a>
-								<a href="contacter-agence-immo--73--contact" class="header-icon">
+								<a href="callto:+33320250567" class="header-icon mobile">
 									<i class="flaticon-technology-2"></i>
 								</a>
 								<a href="javascript:void(0)" id="menu-mobile" title="Contactez-nous" class="header-icon menu-mobile">
