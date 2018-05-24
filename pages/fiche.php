@@ -333,7 +333,7 @@ google.maps.event.addDomListener(window, 'load', initialize);
 											<a href="#"> <i class="flaticon-construction-8"></i> Cour</a>
 										<?php } ?>
 										<?php if($terrasse==1) { ?>
-											<a href="#"> <i class="flaticon-nature"></i> Terrasse (cours aérée-jardinet)</a>
+											<a href="#"> <i class="flaticon-nature"></i> Terrasse</a>
 										<?php } ?>
 										<?php if($annee>0) { ?>
 											<a href="#"> <i class="flaticon-construction-15"></i><?php echo $annee; ?></a>
