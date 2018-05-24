@@ -93,7 +93,7 @@ $erreur = 0;
 		$localite=preg_replace("/'/","`",stripslashes($bien->ville));
 		
 		// On définit des zones (champs agence)
-		if($localite == 'Wattrelos' || $localite == 'Leers' || $localite == 'Lys-lez-Lannoy' || $localite == 'Lannoy' || $localite == 'Toufflers' || $localite == 'Hem' || $localite == 'Sailly-lez-Lannoy') {
+		if($localite == 'Wattrelos' || $localite == 'Leers' || $localite == 'Lys-lez-Lannoy' || $localite == 'Lannoy' || $localite == 'Toufflers' || $localite == 'Hem' || $localite == 'Sailly-lez-Lannoy' || $localite == 'Roubaix') {
 			// Lys les Lannoy : 2
 			$agence = 2;
 		} else {
