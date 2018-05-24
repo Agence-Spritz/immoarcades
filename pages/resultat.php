@@ -143,6 +143,7 @@
 	            $add_recherche = "";
             }
             
+			if ($add_recherche || $add_terme) {unset ($add_transaction,$add_type,$add_agence,$add_codepostal,$add_localite,$add_surface_min,$add_prix);} 
             $resum_recherche = $add_transaction.$add_type.$add_agence.$add_codepostal.$add_localite.$add_surface_min.$add_prix.$add_terme.$add_recherche;
             
 
@@ -249,7 +250,7 @@
 				$motcle = "";
 			}
 			
-            
+            if ($add_recherche || $add_terme) {unset ($add_transaction,$add_type,$add_agence,$add_codepostal,$add_localite,$add_surface_min,$add_prix);} 
             $resum_recherche = $add_transaction.$add_type.$add_agence.$add_codepostal.$add_localite.$add_surface_min.$add_prix.$add_terme.$add_recherche;
             
 
@@ -305,7 +306,7 @@
 	
 	<?php if(!$_POST['submit']=='Rechercher' && !isset($_GET['search']) && !isset($_GET['page'])) {?>
 	<!--  Biens à la une première ligne-->
-	<div class="section liste-biens pt-4 mobile-hide">
+	<div class="section liste-biens pt-4 "><!--mobile-hide-->
 		<div class="container">
 			<div class="row">
 				
@@ -509,9 +510,9 @@
 								<div class="col-xs-12 col-md-6 col-lg-6 mb-1">
 								<label>Recherche par zone géographique</label>
 								<select name="agence">
-									<option value="" selected=selected>toute zone</option>
-									<option value="1" <?php if(((isset($_POST['agence']) && $_POST['agence']==1)) || ($agence==1)) {echo "selected";} else if(((isset($_GET['agence']) && $_GET['agence']==1)) || ($agence==1)) {echo "selected";} ?>>autour de Tourcoing</option>
-									<option value="2" <?php if(((isset($_POST['agence']) && $_POST['agence']==2)) || ($agence==2)) {echo "selected";} else if(((isset($_GET['agence']) && $_GET['agence']==2)) || ($agence==2)) {echo "selected";} ?>>autour de Lys-lez-lannoy</option>
+									<option value="" selected=selected>Toute les villes</option>
+									<option value="1" <?php if(((isset($_POST['agence']) && $_POST['agence']==1)) || ($agence==1)) {echo "selected";} else if(((isset($_GET['agence']) && $_GET['agence']==1)) || ($agence==1)) {echo "selected";} ?>>Tourcoing et ses environs</option>
+									<option value="2" <?php if(((isset($_POST['agence']) && $_POST['agence']==2)) || ($agence==2)) {echo "selected";} else if(((isset($_GET['agence']) && $_GET['agence']==2)) || ($agence==2)) {echo "selected";} ?>>Lys-lez-lannoy et ses environs</option>
 								</select>
 								</div>
 							
@@ -545,6 +546,7 @@
 							$nombreDeBiensParPage = 10;
 							// On récupère le nombre total de biens
 							$req = mysqli_query($link,"SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$resum_recherche." ORDER BY reftri DESC");
+							echo "SELECT * FROM ".$table_prefix."_biens WHERE 1 ".$resum_recherche." ORDER BY reftri DESC";
 							
 								// Calcule le nbr de biens retournés par la requête
 								$nb_biens = mysqli_num_rows($req);
